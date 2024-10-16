@@ -60,6 +60,7 @@
     <script>DOCUMENTATION_OPTIONS.pagename = 'Tugas-7';</script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Summary" href="Tugas-6.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -122,8 +123,6 @@
       
       
       
-        
-      
       <div class="bd-sidebar-primary bd-sidebar">
         
 
@@ -179,9 +178,12 @@
                 </a>
             </li>
         </ul>
-        <ul class="nav bd-sidenav">
+        <ul class="current nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="Tugas-1.html"><strong>Crawling Berita</strong></a></li>
 <li class="toctree-l1"><a class="reference internal" href="Tugas-2.html"><strong>Membuat VSM Dengan Isi TF-IDF Berdasarkan Hasil Crawling Berita</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="Tugas-5.html">Centrality dokumen</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Tugas-6.html"><strong>Summary</strong></a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#"><strong>Keyword Extraction</strong></a></li>
 </ul>
 
     </div>
@@ -416,60 +418,22 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Collecting selenium
-  Downloading selenium-4.25.0-py3-none-any.whl.metadata (7.1 kB)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: selenium in /usr/local/lib/python3.10/dist-packages (4.25.0)
 Requirement already satisfied: urllib3&lt;3,&gt;=1.26 in /usr/local/lib/python3.10/dist-packages (from urllib3[socks]&lt;3,&gt;=1.26-&gt;selenium) (2.2.3)
-Collecting trio~=0.17 (from selenium)
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  Downloading trio-0.26.2-py3-none-any.whl.metadata (8.6 kB)
-Collecting trio-websocket~=0.9 (from selenium)
-  Downloading trio_websocket-0.11.1-py3-none-any.whl.metadata (4.7 kB)
+Requirement already satisfied: trio~=0.17 in /usr/local/lib/python3.10/dist-packages (from selenium) (0.26.2)
+Requirement already satisfied: trio-websocket~=0.9 in /usr/local/lib/python3.10/dist-packages (from selenium) (0.11.1)
 Requirement already satisfied: certifi&gt;=2021.10.8 in /usr/local/lib/python3.10/dist-packages (from selenium) (2024.8.30)
 Requirement already satisfied: typing_extensions~=4.9 in /usr/local/lib/python3.10/dist-packages (from selenium) (4.12.2)
 Requirement already satisfied: websocket-client~=1.8 in /usr/local/lib/python3.10/dist-packages (from selenium) (1.8.0)
 Requirement already satisfied: attrs&gt;=23.2.0 in /usr/local/lib/python3.10/dist-packages (from trio~=0.17-&gt;selenium) (24.2.0)
 Requirement already satisfied: sortedcontainers in /usr/local/lib/python3.10/dist-packages (from trio~=0.17-&gt;selenium) (2.4.0)
 Requirement already satisfied: idna in /usr/local/lib/python3.10/dist-packages (from trio~=0.17-&gt;selenium) (3.10)
-Collecting outcome (from trio~=0.17-&gt;selenium)
-  Downloading outcome-1.3.0.post0-py2.py3-none-any.whl.metadata (2.6 kB)
+Requirement already satisfied: outcome in /usr/local/lib/python3.10/dist-packages (from trio~=0.17-&gt;selenium) (1.3.0.post0)
 Requirement already satisfied: sniffio&gt;=1.3.0 in /usr/local/lib/python3.10/dist-packages (from trio~=0.17-&gt;selenium) (1.3.1)
 Requirement already satisfied: exceptiongroup in /usr/local/lib/python3.10/dist-packages (from trio~=0.17-&gt;selenium) (1.2.2)
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Collecting wsproto&gt;=0.14 (from trio-websocket~=0.9-&gt;selenium)
-  Downloading wsproto-1.2.0-py3-none-any.whl.metadata (5.6 kB)
+Requirement already satisfied: wsproto&gt;=0.14 in /usr/local/lib/python3.10/dist-packages (from trio-websocket~=0.9-&gt;selenium) (1.2.0)
 Requirement already satisfied: pysocks!=1.5.7,&lt;2.0,&gt;=1.5.6 in /usr/local/lib/python3.10/dist-packages (from urllib3[socks]&lt;3,&gt;=1.26-&gt;selenium) (1.7.1)
-Collecting h11&lt;1,&gt;=0.9.0 (from wsproto&gt;=0.14-&gt;trio-websocket~=0.9-&gt;selenium)
-  Downloading h11-0.14.0-py3-none-any.whl.metadata (8.2 kB)
-Downloading selenium-4.25.0-py3-none-any.whl (9.7 MB)
-?25l   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">0.0/9.7 MB</span> <span class=" -Color -Color-Red">?</span> eta <span class=" -Color -Color-Cyan">-:--:--</span>
-   ━╺━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">0.3/9.7 MB</span> <span class=" -Color -Color-Red">10.3 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━╸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">2.7/9.7 MB</span> <span class=" -Color -Color-Red">38.7 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
-   ━━━━━━━━━━━━━━━━━━━━━━━━━╸━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">6.3/9.7 MB</span> <span class=" -Color -Color-Red">58.7 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
-   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸━━ <span class=" -Color -Color-Green">9.2/9.7 MB</span> <span class=" -Color -Color-Red">64.2 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">9.7/9.7 MB</span> <span class=" -Color -Color-Red">64.3 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
-   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">9.7/9.7 MB</span> <span class=" -Color -Color-Red">47.6 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:00</span>
-?25hDownloading trio-0.26.2-py3-none-any.whl (475 kB)
-?25l   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">0.0/476.0 kB</span> <span class=" -Color -Color-Red">?</span> eta <span class=" -Color -Color-Cyan">-:--:--</span>
-   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">476.0/476.0 kB</span> <span class=" -Color -Color-Red">21.7 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:00</span>
-?25hDownloading trio_websocket-0.11.1-py3-none-any.whl (17 kB)
-Downloading wsproto-1.2.0-py3-none-any.whl (24 kB)
-Downloading outcome-1.3.0.post0-py2.py3-none-any.whl (10 kB)
-Downloading h11-0.14.0-py3-none-any.whl (58 kB)
-?25l   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">0.0/58.3 kB</span> <span class=" -Color -Color-Red">?</span> eta <span class=" -Color -Color-Cyan">-:--:--</span>
-   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">58.3/58.3 kB</span> <span class=" -Color -Color-Red">2.9 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:00</span>
-?25h
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Installing collected packages: outcome, h11, wsproto, trio, trio-websocket, selenium
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Successfully installed h11-0.14.0 outcome-1.3.0.post0 selenium-4.25.0 trio-0.26.2 trio-websocket-0.11.1 wsproto-1.2.0
+Requirement already satisfied: h11&lt;1,&gt;=0.9.0 in /usr/local/lib/python3.10/dist-packages (from wsproto&gt;=0.14-&gt;trio-websocket~=0.9-&gt;selenium) (0.14.0)
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: networkx in /usr/local/lib/python3.10/dist-packages (3.4)
@@ -511,77 +475,23 @@ Requirement already satisfied: six&gt;=1.5 in /usr/local/lib/python3.10/dist-pac
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Collecting sklearn
   Using cached sklearn-0.0.post12.tar.gz (2.6 kB)
-  Preparing metadata (setup.py) ... ?25l?25hcanceled
-Traceback (most recent call last):
-  File &quot;/usr/local/lib/python3.10/dist-packages/pip/_internal/cli/base_command.py&quot;, line 179, in exc_logging_wrapper
-    status = run_func(*args)
-  File &quot;/usr/local/lib/python3.10/dist-packages/pip/_internal/cli/req_command.py&quot;, line 67, in wrapper
-    return func(self, options, args)
-  File &quot;/usr/local/lib/python3.10/dist-packages/pip/_internal/commands/install.py&quot;, line 377, in run
-    requirement_set = resolver.resolve(
-  File &quot;/usr/local/lib/python3.10/dist-packages/pip/_internal/resolution/resolvelib/resolver.py&quot;, line 95, in resolve
-    result = self._result = resolver.resolve(
-  File &quot;/usr/local/lib/python3.10/dist-packages/pip/_vendor/resolvelib/resolvers.py&quot;, line 546, in resolve
-    state = resolution.resolve(requirements, max_rounds=max_rounds)
-  File &quot;/usr/local/lib/python3.10/dist-packages/pip/_vendor/resolvelib/resolvers.py&quot;, line 397, in resolve
-    self._add_to_criteria(self.state.criteria, r, parent=None)
-  File &quot;/usr/local/lib/python3.10/dist-packages/pip/_vendor/resolvelib/resolvers.py&quot;, line 173, in _add_to_criteria
-    if not criterion.candidates:
-  File &quot;/usr/local/lib/python3.10/dist-packages/pip/_vendor/resolvelib/structs.py&quot;, line 156, in __bool__
-    return bool(self._sequence)
-  File &quot;/usr/local/lib/python3.10/dist-packages/pip/_internal/resolution/resolvelib/found_candidates.py&quot;, line 174, in __bool__
-    return any(self)
-  File &quot;/usr/local/lib/python3.10/dist-packages/pip/_internal/resolution/resolvelib/found_candidates.py&quot;, line 162, in &lt;genexpr&gt;
-    return (c for c in iterator if id(c) not in self._incompatible_ids)
-  File &quot;/usr/local/lib/python3.10/dist-packages/pip/_internal/resolution/resolvelib/found_candidates.py&quot;, line 53, in _iter_built
-    candidate = func()
-  File &quot;/usr/local/lib/python3.10/dist-packages/pip/_internal/resolution/resolvelib/factory.py&quot;, line 185, in _make_candidate_from_link
-    base: Optional[BaseCandidate] = self._make_base_candidate_from_link(
-  File &quot;/usr/local/lib/python3.10/dist-packages/pip/_internal/resolution/resolvelib/factory.py&quot;, line 231, in _make_base_candidate_from_link
-    self._link_candidate_cache[link] = LinkCandidate(
-  File &quot;/usr/local/lib/python3.10/dist-packages/pip/_internal/resolution/resolvelib/candidates.py&quot;, line 303, in __init__
-    super().__init__(
-  File &quot;/usr/local/lib/python3.10/dist-packages/pip/_internal/resolution/resolvelib/candidates.py&quot;, line 158, in __init__
-    self.dist = self._prepare()
-  File &quot;/usr/local/lib/python3.10/dist-packages/pip/_internal/resolution/resolvelib/candidates.py&quot;, line 235, in _prepare
-    dist = self._prepare_distribution()
-  File &quot;/usr/local/lib/python3.10/dist-packages/pip/_internal/resolution/resolvelib/candidates.py&quot;, line 314, in _prepare_distribution
-    return preparer.prepare_linked_requirement(self._ireq, parallel_builds=True)
-  File &quot;/usr/local/lib/python3.10/dist-packages/pip/_internal/operations/prepare.py&quot;, line 527, in prepare_linked_requirement
-    return self._prepare_linked_requirement(req, parallel_builds)
-  File &quot;/usr/local/lib/python3.10/dist-packages/pip/_internal/operations/prepare.py&quot;, line 642, in _prepare_linked_requirement
-    dist = _get_prepared_distribution(
-  File &quot;/usr/local/lib/python3.10/dist-packages/pip/_internal/operations/prepare.py&quot;, line 72, in _get_prepared_distribution
-    abstract_dist.prepare_distribution_metadata(
-  File &quot;/usr/local/lib/python3.10/dist-packages/pip/_internal/distributions/sdist.py&quot;, line 69, in prepare_distribution_metadata
-    self.req.prepare_metadata()
-  File &quot;/usr/local/lib/python3.10/dist-packages/pip/_internal/req/req_install.py&quot;, line 580, in prepare_metadata
-    self.metadata_directory = generate_metadata_legacy(
-  File &quot;/usr/local/lib/python3.10/dist-packages/pip/_internal/operations/build/metadata_legacy.py&quot;, line 64, in generate_metadata
-    call_subprocess(
-  File &quot;/usr/local/lib/python3.10/dist-packages/pip/_internal/utils/subprocess.py&quot;, line 151, in call_subprocess
-    line: str = proc.stdout.readline()
-KeyboardInterrupt
-
-During handling of the above exception, another exception occurred:
-
-Traceback (most recent call last):
-  File &quot;/usr/local/bin/pip3&quot;, line 8, in &lt;module&gt;
-    sys.exit(main())
-  File &quot;/usr/local/lib/python3.10/dist-packages/pip/_internal/cli/main.py&quot;, line 80, in main
-    return command.main(cmd_args)
-  File &quot;/usr/local/lib/python3.10/dist-packages/pip/_internal/cli/base_command.py&quot;, line 100, in main
-    return self._main(args)
-  File &quot;/usr/local/lib/python3.10/dist-packages/pip/_internal/cli/base_command.py&quot;, line 232, in _main
-    return run(options, args)
-  File &quot;/usr/local/lib/python3.10/dist-packages/pip/_internal/cli/base_command.py&quot;, line 215, in exc_logging_wrapper
-    logger.critical(&quot;Operation cancelled by user&quot;)
-  File &quot;/usr/lib/python3.10/logging/__init__.py&quot;, line 1514, in critical
-    def critical(self, msg, *args, **kwargs):
-KeyboardInterrupt
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>^C
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  <span class=" -Color -Color-Bold -Color-Bold-Red">error</span>: <span class=" -Color -Color-Bold">subprocess-exited-with-error</span>
+  
+  <span class=" -Color -Color-Red">×</span> <span class=" -Color -Color-Green">python setup.py egg_info</span> did not run successfully.
+  <span class=" -Color -Color-Red">│</span> exit code: <span class=" -Color -Color-Bold -Color-Bold-Cyan">1</span>
+  <span class=" -Color -Color-Red">╰─&gt;</span> See above for output.
+  
+  <span class=" -Color -Color-Bold -Color-Bold-Magenta">note</span>: This error originates from a subprocess, and is likely not a problem with pip.
+  Preparing metadata (setup.py) ... ?25l?25herror
+<span class=" -Color -Color-Bold -Color-Bold-Red">error</span>: <span class=" -Color -Color-Bold">metadata-generation-failed</span>
+
+<span class=" -Color -Color-Red">×</span> Encountered error while generating package metadata.
+<span class=" -Color -Color-Red">╰─&gt;</span> See above for output.
+
+<span class=" -Color -Color-Bold -Color-Bold-Magenta">note</span>: This is an issue with the package mentioned above, not pip.
+<span class=" -Color -Color-Bold -Color-Bold-Cyan">hint</span>: See above for details.
 </pre></div>
 </div>
 </div>
@@ -623,10 +533,11 @@ KeyboardInterrupt
 </div>
 <div class="cell_output docutils container">
 <div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[nltk_data] Downloading package stopwords to /root/nltk_data...
-[nltk_data]   Unzipping corpora/stopwords.zip.
+[nltk_data]   Package stopwords is already up-to-date!
 [nltk_data] Downloading package wordnet to /root/nltk_data...
+[nltk_data]   Package wordnet is already up-to-date!
 [nltk_data] Downloading package punkt to /root/nltk_data...
-[nltk_data]   Unzipping tokenizers/punkt.zip.
+[nltk_data]   Package punkt is already up-to-date!
 </pre></div>
 </div>
 </div>
@@ -694,7 +605,23 @@ KeyboardInterrupt
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Masukkan URL artikel: https://mojok.co/liputan/kuliner/warung-pecel-cepu-blora-dirindukan-di-amerika-dan-rusia/
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">StdinNotImplementedError</span><span class="g g-Whitespace">                  </span>Traceback (most recent call last)
+<span class="nn">&lt;ipython-input-3-6b99981f66e3&gt;</span> in <span class="ni">&lt;cell line: 45&gt;</span><span class="nt">()</span>
+<span class="g g-Whitespace">     </span><span class="mi">43</span> 
+<span class="g g-Whitespace">     </span><span class="mi">44</span> <span class="c1"># Meminta input dari pengguna untuk URL artikel</span>
+<span class="ne">---&gt; </span><span class="mi">45</span> <span class="n">url_input</span> <span class="o">=</span> <span class="nb">input</span><span class="p">(</span><span class="s2">&quot;Masukkan URL artikel: &quot;</span><span class="p">)</span>
+<span class="g g-Whitespace">     </span><span class="mi">46</span> 
+<span class="g g-Whitespace">     </span><span class="mi">47</span> <span class="c1"># Scraping data dari URL artikel yang diberikan oleh pengguna</span>
+
+<span class="nn">/usr/local/lib/python3.10/dist-packages/ipykernel/kernelbase.py</span> in <span class="ni">raw_input</span><span class="nt">(self, prompt)</span>
+<span class="g g-Whitespace">    </span><span class="mi">846</span>         <span class="s2">&quot;&quot;&quot;</span>
+<span class="g g-Whitespace">    </span><span class="mi">847</span><span class="s2">         if not self._allow_stdin:</span>
+<span class="ne">--&gt; </span><span class="mi">848</span><span class="s2">             raise StdinNotImplementedError(</span>
+<span class="g g-Whitespace">    </span><span class="mi">849</span><span class="s2">                 &quot;raw_input was called, but this frontend does not support input requests.&quot;</span>
+<span class="g g-Whitespace">    </span><span class="mi">850</span><span class="s2">             )</span>
+
+<span class="ne">StdinNotImplementedError</span>: raw_input was called, but this frontend does not support input requests.
 </pre></div>
 </div>
 </div>
@@ -1645,6 +1572,15 @@ Rank 3: pecel (Frequency: 21)
                 <footer class="prev-next-footer d-print-none">
                   
 <div class="prev-next-area">
+    <a class="left-prev"
+       href="Tugas-6.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title"><strong>Summary</strong></p>
+      </div>
+    </a>
 </div>
                 </footer>
               

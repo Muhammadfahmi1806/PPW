@@ -1,15 +1,4 @@
 Traceback (most recent call last):
-  File "/usr/local/lib/python3.10/dist-packages/nbclient/client.py", line 782, in _async_poll_for_reply
-    msg = await ensure_async(self.kc.shell_channel.get_msg(timeout=new_timeout))
-  File "/usr/local/lib/python3.10/dist-packages/jupyter_core/utils/__init__.py", line 198, in ensure_async
-    result = await obj
-  File "/usr/local/lib/python3.10/dist-packages/jupyter_client/asynchronous/channels.py", line 48, in get_msg
-    raise Empty
-_queue.Empty
-
-During handling of the above exception, another exception occurred:
-
-Traceback (most recent call last):
   File "/usr/local/lib/python3.10/dist-packages/jupyter_cache/executors/utils.py", line 58, in single_nb_execution
     executenb(
   File "/usr/local/lib/python3.10/dist-packages/nbclient/client.py", line 1314, in execute
@@ -20,23 +9,83 @@ Traceback (most recent call last):
     return future.result()
   File "/usr/local/lib/python3.10/dist-packages/nbclient/client.py", line 709, in async_execute
     await self.async_execute_cell(
-  File "/usr/local/lib/python3.10/dist-packages/nbclient/client.py", line 1005, in async_execute_cell
-    exec_reply = await self.task_poll_for_reply
-  File "/usr/local/lib/python3.10/dist-packages/nbclient/client.py", line 806, in _async_poll_for_reply
-    error_on_timeout_execute_reply = await self._async_handle_timeout(timeout, cell)
-  File "/usr/local/lib/python3.10/dist-packages/nbclient/client.py", line 856, in _async_handle_timeout
-    raise CellTimeoutError.error_from_timeout_and_cell(
-nbclient.exceptions.CellTimeoutError: A cell timed out while it was being executed, after 30 seconds.
-The message was: Cell execution timed out.
-Here is a preview of the cell contents:
--------------------
-!pip install selenium
-!pip install networkx
-!pip install matplotlib
-!pip install nltk
-!pip install Sastrawi
-!pip install tqdm
-!pip install pandas
-!pip install sklearn
--------------------
+  File "/usr/local/lib/python3.10/dist-packages/nbclient/client.py", line 1062, in async_execute_cell
+    await self._check_raise_for_error(cell, cell_index, exec_reply)
+  File "/usr/local/lib/python3.10/dist-packages/nbclient/client.py", line 918, in _check_raise_for_error
+    raise CellExecutionError.from_cell_and_msg(cell, exec_reply_content)
+nbclient.exceptions.CellExecutionError: An error occurred while executing the following cell:
+------------------
+def web_driver():
+    options = Options()
+    options.add_argument('--headless')
+    options.add_argument('--no-sandbox')
+    options.add_argument('--disable-dev-shm-usage')
+    driver = webdriver.Chrome(options=options)
+    return driver
+
+def get_element_text(driver, xpath):
+    try:
+        return WebDriverWait(driver, 10).until(
+            EC.presence_of_element_located((By.XPATH, xpath))
+        ).text.strip()
+    except Exception as e:
+        print(f"Error finding element with XPath {xpath}: {e}")
+        return ""
+
+def extract_article_content(driver, article_url):
+    driver.get(article_url)
+    WebDriverWait(driver, 10).until(
+        EC.presence_of_element_located((By.XPATH, '//h1'))
+    )
+    title = get_element_text(driver, './/h1[@class="jeg_post_title"]')
+
+    # XPath untuk tanggal
+    date = get_element_text(driver, './/div[@class="jeg_meta_date"]')
+
+    # XPath untuk konten
+    content_elements = driver.find_elements(By.XPATH, './/div[@class="content-inner "]/p')
+    content = " ".join(p.text for p in content_elements)
+
+    # XPath untuk kategori
+    kategori = get_element_text(driver, './/span[@class="breadcrumb_last_link"]/a')
+
+    return {
+        "Title": title,
+        "Date": date,
+        "Content": content,
+        "Category": kategori  # Menyimpan kategori dalam hasil
+    }
+
+driver = web_driver()
+
+# Meminta input dari pengguna untuk URL artikel
+url_input = input("Masukkan URL artikel: ")
+
+# Scraping data dari URL artikel yang diberikan oleh pengguna
+article_data = extract_article_content(driver, url_input)
+
+driver.quit()
+
+# Simpan hasil scraping ke dalam DataFrame
+data = pd.DataFrame([article_data])  # Mengonversi hasil ke dalam list untuk membuat DataFrame
+------------------
+
+
+[0;31m---------------------------------------------------------------------------[0m
+[0;31mStdinNotImplementedError[0m                  Traceback (most recent call last)
+[0;32m<ipython-input-3-6b99981f66e3>[0m in [0;36m<cell line: 45>[0;34m()[0m
+[1;32m     43[0m [0;34m[0m[0m
+[1;32m     44[0m [0;31m# Meminta input dari pengguna untuk URL artikel[0m[0;34m[0m[0;34m[0m[0m
+[0;32m---> 45[0;31m [0murl_input[0m [0;34m=[0m [0minput[0m[0;34m([0m[0;34m"Masukkan URL artikel: "[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[0m[1;32m     46[0m [0;34m[0m[0m
+[1;32m     47[0m [0;31m# Scraping data dari URL artikel yang diberikan oleh pengguna[0m[0;34m[0m[0;34m[0m[0m
+
+[0;32m/usr/local/lib/python3.10/dist-packages/ipykernel/kernelbase.py[0m in [0;36mraw_input[0;34m(self, prompt)[0m
+[1;32m    846[0m         """
+[1;32m    847[0m         [0;32mif[0m [0;32mnot[0m [0mself[0m[0;34m.[0m[0m_allow_stdin[0m[0;34m:[0m[0;34m[0m[0;34m[0m[0m
+[0;32m--> 848[0;31m             raise StdinNotImplementedError(
+[0m[1;32m    849[0m                 [0;34m"raw_input was called, but this frontend does not support input requests."[0m[0;34m[0m[0;34m[0m[0m
+[1;32m    850[0m             )
+
+[0;31mStdinNotImplementedError[0m: raw_input was called, but this frontend does not support input requests.
 
