@@ -1,0 +1,85 @@
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.10/dist-packages/jupyter_cache/executors/utils.py", line 58, in single_nb_execution
+    executenb(
+  File "/usr/local/lib/python3.10/dist-packages/nbclient/client.py", line 1314, in execute
+    return NotebookClient(nb=nb, resources=resources, km=km, **kwargs).execute()
+  File "/usr/local/lib/python3.10/dist-packages/jupyter_core/utils/__init__.py", line 165, in wrapped
+    return loop.run_until_complete(inner)
+  File "/usr/lib/python3.10/asyncio/base_events.py", line 649, in run_until_complete
+    return future.result()
+  File "/usr/local/lib/python3.10/dist-packages/nbclient/client.py", line 709, in async_execute
+    await self.async_execute_cell(
+  File "/usr/local/lib/python3.10/dist-packages/nbclient/client.py", line 1062, in async_execute_cell
+    await self._check_raise_for_error(cell, cell_index, exec_reply)
+  File "/usr/local/lib/python3.10/dist-packages/nbclient/client.py", line 918, in _check_raise_for_error
+    raise CellExecutionError.from_cell_and_msg(cell, exec_reply_content)
+nbclient.exceptions.CellExecutionError: An error occurred while executing the following cell:
+------------------
+def crawl_article(url):
+    try:
+        response = requests.get(url)
+        response.raise_for_status()  # Memastikan permintaan berhasil
+        soup = BeautifulSoup(response.content, 'html.parser')
+
+        # Mengambil judul
+        title_element = soup.find('h1', class_='jeg_post_title')
+        title = title_element.get_text(strip=True) if title_element else 'Judul tidak ditemukan'
+
+        # Mengambil Isi
+        content_div = soup.find('div', class_='content-inner')
+        if content_div:
+            paragraphs = content_div.find_all('p')
+            content = "\n".join(p.get_text(strip=True) for p in paragraphs)
+        else:
+            content = 'Isi artikel tidak ditemukan'
+
+        # Mengambil tanggal
+        date_div = soup.find('div', class_='jeg_meta_date')
+        date_text = date_div.find('a').get_text(strip=True) if date_div else 'Tanggal tidak ditemukan'
+
+        # Mengambil kategori
+        category_meta = soup.find('span', class_='breadcrumb_last_link')
+        if category_meta:
+            category_link = category_meta.find('a')
+            category = category_link.get_text(strip=True) if category_link else 'Kategori tidak ditemukan'
+        else:
+            category = 'Kategori tidak ditemukan'
+
+        return {'Judul': title, 'Isi': content, 'Tanggal': date_text, 'Kategori': category}
+
+    except requests.RequestException as e:
+        print(f"Error fetching article: {e}")
+        return None
+
+article_url = input("Masukkan URL artikel: ")
+
+# Melakukan crawl pada satu artikel
+article = crawl_article(article_url)
+
+# Membuat DataFrame dari dictionary
+if article:
+    df = pd.DataFrame([article])
+    print(df)
+else:
+    print("Gagal mengambil artikel.")
+------------------
+
+
+[0;31m---------------------------------------------------------------------------[0m
+[0;31mStdinNotImplementedError[0m                  Traceback (most recent call last)
+[0;32m<ipython-input-3-873d7673154a>[0m in [0;36m<cell line: 37>[0;34m()[0m
+[1;32m     35[0m         [0;32mreturn[0m [0;32mNone[0m[0;34m[0m[0;34m[0m[0m
+[1;32m     36[0m [0;34m[0m[0m
+[0;32m---> 37[0;31m [0marticle_url[0m [0;34m=[0m [0minput[0m[0;34m([0m[0;34m"Masukkan URL artikel: "[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[0m[1;32m     38[0m [0;34m[0m[0m
+[1;32m     39[0m [0;31m# Melakukan crawl pada satu artikel[0m[0;34m[0m[0;34m[0m[0m
+
+[0;32m/usr/local/lib/python3.10/dist-packages/ipykernel/kernelbase.py[0m in [0;36mraw_input[0;34m(self, prompt)[0m
+[1;32m    846[0m         """
+[1;32m    847[0m         [0;32mif[0m [0;32mnot[0m [0mself[0m[0;34m.[0m[0m_allow_stdin[0m[0;34m:[0m[0;34m[0m[0;34m[0m[0m
+[0;32m--> 848[0;31m             raise StdinNotImplementedError(
+[0m[1;32m    849[0m                 [0;34m"raw_input was called, but this frontend does not support input requests."[0m[0;34m[0m[0;34m[0m[0m
+[1;32m    850[0m             )
+
+[0;31mStdinNotImplementedError[0m: raw_input was called, but this frontend does not support input requests.
+
