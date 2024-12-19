@@ -1,0 +1,15 @@
+# Table of contents
+# Learn more at https://jupyterbook.org/customize/toc.html
+
+format: jb-book
+root: intro
+chapters:
+- file: tugas_1
+- file: tugas_2
+- file: tugas_3
+- file: tugas_5
+- file: tugas_6
+- file: tugas_7
+- file: tugas_8
+- file: tugas_9
+- file: tugas_10

@@ -1,0 +1,4719 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="./" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Tugas-10 Clustering Fuzzy C Means &#8212; My sample book</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/sphinx-book-theme.css?v=a3416100" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+    <script src="_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="_static/copybutton.js?v=f281be69"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'tugas_10';</script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Tugas-9 Klasifikasi Dengan Pengurangan Dimensi Secara Bertahap" href="tugas_9.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="_static/logo.png" class="logo__image only-light" alt="My sample book - Home"/>
+    <img src="_static/logo.png" class="logo__image only-dark pst-js-only" alt="My sample book - Home"/>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="intro.html">
+                    Welcome to your Jupyter Book
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="tugas_1.html"><strong>Tugas-1 Crawling Berita</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="tugas_2.html"><strong>Tugas-2 Membuat VSM Dengan Isi TF-IDF Berdasarkan Hasil Crawling Berita</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="tugas_3.html"><strong>Tugas-3 Logistic Regression</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="tugas_5.html"><strong>Tugas-5 Centrality dokumen</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="tugas_6.html"><strong>Tugas-6 Summary</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="tugas_7.html"><strong>Tugas-7 Keyword Extraction</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="tugas_8.html"><strong>Tugas-8 Implementasi Logistic Regression Dengan SVD</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="tugas_9.html"><strong>Tugas-9 Klasifikasi Dengan Pengurangan Dimensi Secara Bertahap</strong></a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#"><strong>Tugas-10 Clustering Fuzzy C Means</strong></a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/executablebooks/jupyter-book" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/executablebooks/jupyter-book/issues/new?title=Issue%20on%20page%20%2Ftugas_10.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="_sources/tugas_10.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Tugas-10 Clustering Fuzzy C Means</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#installasi-library">Installasi Library</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#load-data">Load Data</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#memisahkan-label-dan-data-fitur">Memisahkan label dan data fitur</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#data-sebelum-reduksi"><strong>Data Sebelum Reduksi</strong></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#fuzzy-c-means-clustering-dan-svd-untuk-dimensi-yang-berbeda">Fuzzy C-Means Clustering dan SVD untuk dimensi yang berbeda</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#data-setelah-reduksi"><strong>Data Setelah Reduksi</strong></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#scater-plot-dimensi-2">Scater Plot Dimensi 2</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#akurasi-tiap-dimensi">Akurasi Tiap Dimensi</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#akurasi-terbaik">Akurasi Terbaik</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#scater-plot-dimensi-terbaik">Scater Plot Dimensi Terbaik</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#grafik-akurasi">Grafik Akurasi</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="tugas-10-clustering-fuzzy-c-means">
+<h1><strong>Tugas-10 Clustering Fuzzy C Means</strong><a class="headerlink" href="#tugas-10-clustering-fuzzy-c-means" title="Link to this heading">#</a></h1>
+<ul class="simple">
+<li><p>Nama : Muhammad Fahmi</p></li>
+<li><p>Link Projek : <a class="github reference external" href="https://github.com/Muhammadfahmi1806/PPW">Muhammadfahmi1806/PPW</a></p></li>
+<li><p>Link : <a class="reference external" href="https://huggingface.co/spaces/Muhamamad/Clustering">https://huggingface.co/spaces/Muhamamad/Clustering</a></p></li>
+</ul>
+<section id="installasi-library">
+<h2>Installasi Library<a class="headerlink" href="#installasi-library" title="Link to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>scikit-fuzzy
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: scikit-fuzzy in c:\users\user\appdata\local\programs\python\python313\lib\site-packages (0.5.0)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">from</span> <span class="nn">sklearn.decomposition</span> <span class="kn">import</span> <span class="n">TruncatedSVD</span>
+<span class="kn">from</span> <span class="nn">skfuzzy.cluster</span> <span class="kn">import</span> <span class="n">cmeans</span>
+<span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="kn">import</span> <span class="n">LabelEncoder</span>
+<span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">accuracy_score</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+</pre></div>
+</div>
+</div>
+</div>
+<ul class="simple">
+<li><p><strong>numpy</strong>: Operasi numerik dan manipulasi array.</p></li>
+<li><p><strong>pandas</strong>: Manipulasi dan analisis data berbentuk tabel.</p></li>
+<li><p><strong>TruncatedSVD</strong>: Reduksi dimensi data menggunakan SVD.</p></li>
+<li><p><strong>cmeans</strong>: Clustering menggunakan metode Fuzzy C-Means.</p></li>
+<li><p><strong>LabelEncoder</strong>: Encoding label kategorikal menjadi numerik.</p></li>
+<li><p><strong>accuracy_score</strong>: Menghitung akurasi prediksi.</p></li>
+<li><p><strong>matplotlib.pyplot</strong>: Membuat visualisasi data dan grafik.</p></li>
+</ul>
+</section>
+<section id="load-data">
+<h2>Load Data<a class="headerlink" href="#load-data" title="Link to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">file_path</span> <span class="o">=</span> <span class="s2">&quot;berita_vsm_new.csv&quot;</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">file_path</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">FileNotFoundError</span><span class="g g-Whitespace">                         </span>Traceback (most recent call last)
+<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span> <span class="n">line</span> <span class="mi">2</span>
+<span class="g g-Whitespace">      </span><span class="mi">1</span> <span class="n">file_path</span> <span class="o">=</span> <span class="s2">&quot;berita_vsm_new.csv&quot;</span>
+<span class="ne">----&gt; </span><span class="mi">2</span> <span class="n">data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">file_path</span><span class="p">)</span>
+
+<span class="nn">File ~\AppData\Local\Programs\Python\Python313\Lib\site-packages\pandas\io\parsers\readers.py:1026,</span> in <span class="ni">read_csv</span><span class="nt">(filepath_or_buffer, sep, delimiter, header, names, index_col, usecols, dtype, engine, converters, true_values, false_values, skipinitialspace, skiprows, skipfooter, nrows, na_values, keep_default_na, na_filter, verbose, skip_blank_lines, parse_dates, infer_datetime_format, keep_date_col, date_parser, date_format, dayfirst, cache_dates, iterator, chunksize, compression, thousands, decimal, lineterminator, quotechar, quoting, doublequote, escapechar, comment, encoding, encoding_errors, dialect, on_bad_lines, delim_whitespace, low_memory, memory_map, float_precision, storage_options, dtype_backend)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1013</span> <span class="n">kwds_defaults</span> <span class="o">=</span> <span class="n">_refine_defaults_read</span><span class="p">(</span>
+<span class="g g-Whitespace">   </span><span class="mi">1014</span>     <span class="n">dialect</span><span class="p">,</span>
+<span class="g g-Whitespace">   </span><span class="mi">1015</span>     <span class="n">delimiter</span><span class="p">,</span>
+   <span class="p">(</span><span class="o">...</span><span class="p">)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1022</span>     <span class="n">dtype_backend</span><span class="o">=</span><span class="n">dtype_backend</span><span class="p">,</span>
+<span class="g g-Whitespace">   </span><span class="mi">1023</span> <span class="p">)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1024</span> <span class="n">kwds</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">kwds_defaults</span><span class="p">)</span>
+<span class="ne">-&gt; </span><span class="mi">1026</span> <span class="k">return</span> <span class="n">_read</span><span class="p">(</span><span class="n">filepath_or_buffer</span><span class="p">,</span> <span class="n">kwds</span><span class="p">)</span>
+
+<span class="nn">File ~\AppData\Local\Programs\Python\Python313\Lib\site-packages\pandas\io\parsers\readers.py:620,</span> in <span class="ni">_read</span><span class="nt">(filepath_or_buffer, kwds)</span>
+<span class="g g-Whitespace">    </span><span class="mi">617</span> <span class="n">_validate_names</span><span class="p">(</span><span class="n">kwds</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;names&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">))</span>
+<span class="g g-Whitespace">    </span><span class="mi">619</span> <span class="c1"># Create the parser.</span>
+<span class="ne">--&gt; </span><span class="mi">620</span> <span class="n">parser</span> <span class="o">=</span> <span class="n">TextFileReader</span><span class="p">(</span><span class="n">filepath_or_buffer</span><span class="p">,</span> <span class="o">**</span><span class="n">kwds</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">622</span> <span class="k">if</span> <span class="n">chunksize</span> <span class="ow">or</span> <span class="n">iterator</span><span class="p">:</span>
+<span class="g g-Whitespace">    </span><span class="mi">623</span>     <span class="k">return</span> <span class="n">parser</span>
+
+<span class="nn">File ~\AppData\Local\Programs\Python\Python313\Lib\site-packages\pandas\io\parsers\readers.py:1620,</span> in <span class="ni">TextFileReader.__init__</span><span class="nt">(self, f, engine, **kwds)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1617</span>     <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="p">[</span><span class="s2">&quot;has_index_names&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">kwds</span><span class="p">[</span><span class="s2">&quot;has_index_names&quot;</span><span class="p">]</span>
+<span class="g g-Whitespace">   </span><span class="mi">1619</span> <span class="bp">self</span><span class="o">.</span><span class="n">handles</span><span class="p">:</span> <span class="n">IOHandles</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="ne">-&gt; </span><span class="mi">1620</span> <span class="bp">self</span><span class="o">.</span><span class="n">_engine</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_make_engine</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">engine</span><span class="p">)</span>
+
+<span class="nn">File ~\AppData\Local\Programs\Python\Python313\Lib\site-packages\pandas\io\parsers\readers.py:1880,</span> in <span class="ni">TextFileReader._make_engine</span><span class="nt">(self, f, engine)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1878</span>     <span class="k">if</span> <span class="s2">&quot;b&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">mode</span><span class="p">:</span>
+<span class="g g-Whitespace">   </span><span class="mi">1879</span>         <span class="n">mode</span> <span class="o">+=</span> <span class="s2">&quot;b&quot;</span>
+<span class="ne">-&gt; </span><span class="mi">1880</span> <span class="bp">self</span><span class="o">.</span><span class="n">handles</span> <span class="o">=</span> <span class="n">get_handle</span><span class="p">(</span>
+<span class="g g-Whitespace">   </span><span class="mi">1881</span>     <span class="n">f</span><span class="p">,</span>
+<span class="g g-Whitespace">   </span><span class="mi">1882</span>     <span class="n">mode</span><span class="p">,</span>
+<span class="g g-Whitespace">   </span><span class="mi">1883</span>     <span class="n">encoding</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;encoding&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
+<span class="g g-Whitespace">   </span><span class="mi">1884</span>     <span class="n">compression</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;compression&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
+<span class="g g-Whitespace">   </span><span class="mi">1885</span>     <span class="n">memory_map</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;memory_map&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">),</span>
+<span class="g g-Whitespace">   </span><span class="mi">1886</span>     <span class="n">is_text</span><span class="o">=</span><span class="n">is_text</span><span class="p">,</span>
+<span class="g g-Whitespace">   </span><span class="mi">1887</span>     <span class="n">errors</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;encoding_errors&quot;</span><span class="p">,</span> <span class="s2">&quot;strict&quot;</span><span class="p">),</span>
+<span class="g g-Whitespace">   </span><span class="mi">1888</span>     <span class="n">storage_options</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;storage_options&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
+<span class="g g-Whitespace">   </span><span class="mi">1889</span> <span class="p">)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1890</span> <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">handles</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+<span class="g g-Whitespace">   </span><span class="mi">1891</span> <span class="n">f</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">handles</span><span class="o">.</span><span class="n">handle</span>
+
+<span class="nn">File ~\AppData\Local\Programs\Python\Python313\Lib\site-packages\pandas\io\common.py:873,</span> in <span class="ni">get_handle</span><span class="nt">(path_or_buf, mode, encoding, compression, memory_map, is_text, errors, storage_options)</span>
+<span class="g g-Whitespace">    </span><span class="mi">868</span> <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">handle</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+<span class="g g-Whitespace">    </span><span class="mi">869</span>     <span class="c1"># Check whether the filename is to be opened in binary mode.</span>
+<span class="g g-Whitespace">    </span><span class="mi">870</span>     <span class="c1"># Binary mode does not support &#39;encoding&#39; and &#39;newline&#39;.</span>
+<span class="g g-Whitespace">    </span><span class="mi">871</span>     <span class="k">if</span> <span class="n">ioargs</span><span class="o">.</span><span class="n">encoding</span> <span class="ow">and</span> <span class="s2">&quot;b&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">ioargs</span><span class="o">.</span><span class="n">mode</span><span class="p">:</span>
+<span class="g g-Whitespace">    </span><span class="mi">872</span>         <span class="c1"># Encoding</span>
+<span class="ne">--&gt; </span><span class="mi">873</span>         <span class="n">handle</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span>
+<span class="g g-Whitespace">    </span><span class="mi">874</span>             <span class="n">handle</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">875</span>             <span class="n">ioargs</span><span class="o">.</span><span class="n">mode</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">876</span>             <span class="n">encoding</span><span class="o">=</span><span class="n">ioargs</span><span class="o">.</span><span class="n">encoding</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">877</span>             <span class="n">errors</span><span class="o">=</span><span class="n">errors</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">878</span>             <span class="n">newline</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">879</span>         <span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">880</span>     <span class="k">else</span><span class="p">:</span>
+<span class="g g-Whitespace">    </span><span class="mi">881</span>         <span class="c1"># Binary mode</span>
+<span class="g g-Whitespace">    </span><span class="mi">882</span>         <span class="n">handle</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">handle</span><span class="p">,</span> <span class="n">ioargs</span><span class="o">.</span><span class="n">mode</span><span class="p">)</span>
+
+<span class="ne">FileNotFoundError</span>: [Errno 2] No such file or directory: &#39;berita_vsm_new.csv&#39;
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="memisahkan-label-dan-data-fitur">
+<h2>Memisahkan label dan data fitur<a class="headerlink" href="#memisahkan-label-dan-data-fitur" title="Link to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">labels</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;Category&#39;</span><span class="p">]</span>
+<span class="n">features</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="s1">&#39;Category&#39;</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">values</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">label_encoder</span> <span class="o">=</span> <span class="n">LabelEncoder</span><span class="p">()</span>
+<span class="n">encoded_labels</span> <span class="o">=</span> <span class="n">label_encoder</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">labels</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<section id="data-sebelum-reduksi">
+<h3><strong>Data Sebelum Reduksi</strong><a class="headerlink" href="#data-sebelum-reduksi" title="Link to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">results</span> <span class="o">=</span> <span class="p">{}</span>
+
+<span class="n">data_before_reduction</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">features</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="sa">f</span><span class="s1">&#39;Feature_</span><span class="si">{</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s1">&#39;</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">features</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">])])</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Data Sebelum Reduksi Dimensi:&quot;</span><span class="p">)</span>
+<span class="n">data_before_reduction</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Data Sebelum Reduksi Dimensi:
+</pre></div>
+</div>
+<div class="output text_html">
+  <div id="df-7f951bd0-9ac8-47f4-81bf-e47f2eaee9b9" class="colab-df-container">
+    <div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Feature_1</th>
+      <th>Feature_2</th>
+      <th>Feature_3</th>
+      <th>Feature_4</th>
+      <th>Feature_5</th>
+      <th>Feature_6</th>
+      <th>Feature_7</th>
+      <th>Feature_8</th>
+      <th>Feature_9</th>
+      <th>Feature_10</th>
+      <th>...</th>
+      <th>Feature_2800</th>
+      <th>Feature_2801</th>
+      <th>Feature_2802</th>
+      <th>Feature_2803</th>
+      <th>Feature_2804</th>
+      <th>Feature_2805</th>
+      <th>Feature_2806</th>
+      <th>Feature_2807</th>
+      <th>Feature_2808</th>
+      <th>Feature_2809</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>0.0</td>
+      <td>0.000000</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.000000</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>...</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.000000</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>0.0</td>
+      <td>0.000000</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.000000</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>...</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.000000</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>0.0</td>
+      <td>0.000000</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.000000</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>...</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.070723</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>0.0</td>
+      <td>0.000000</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.000000</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>...</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.000000</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>0.0</td>
+      <td>0.074545</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.000000</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>...</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.000000</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>95</th>
+      <td>0.0</td>
+      <td>0.000000</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.099906</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>...</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.000000</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>96</th>
+      <td>0.0</td>
+      <td>0.000000</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.041807</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>...</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.000000</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>97</th>
+      <td>0.0</td>
+      <td>0.000000</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.000000</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>...</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.000000</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>98</th>
+      <td>0.0</td>
+      <td>0.000000</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.000000</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>...</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.000000</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>99</th>
+      <td>0.0</td>
+      <td>0.000000</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.000000</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>...</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.000000</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+  </tbody>
+</table>
+<p>100 rows × 2809 columns</p>
+</div>
+    <div class="colab-df-buttons">
+
+  <div class="colab-df-container">
+    <button class="colab-df-convert" onclick="convertToInteractive('df-7f951bd0-9ac8-47f4-81bf-e47f2eaee9b9')"
+            title="Convert this dataframe to an interactive table."
+            style="display:none;">
+
+  <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960">
+    <path d="M120-120v-720h720v720H120Zm60-500h600v-160H180v160Zm220 220h160v-160H400v160Zm0 220h160v-160H400v160ZM180-400h160v-160H180v160Zm440 0h160v-160H620v160ZM180-180h160v-160H180v160Zm440 0h160v-160H620v160Z"/>
+  </svg>
+    </button>
+
+  <style>
+    .colab-df-container {
+      display:flex;
+      gap: 12px;
+    }
+
+    .colab-df-convert {
+      background-color: #E8F0FE;
+      border: none;
+      border-radius: 50%;
+      cursor: pointer;
+      display: none;
+      fill: #1967D2;
+      height: 32px;
+      padding: 0 0 0 0;
+      width: 32px;
+    }
+
+    .colab-df-convert:hover {
+      background-color: #E2EBFA;
+      box-shadow: 0px 1px 2px rgba(60, 64, 67, 0.3), 0px 1px 3px 1px rgba(60, 64, 67, 0.15);
+      fill: #174EA6;
+    }
+
+    .colab-df-buttons div {
+      margin-bottom: 4px;
+    }
+
+    [theme=dark] .colab-df-convert {
+      background-color: #3B4455;
+      fill: #D2E3FC;
+    }
+
+    [theme=dark] .colab-df-convert:hover {
+      background-color: #434B5C;
+      box-shadow: 0px 1px 3px 1px rgba(0, 0, 0, 0.15);
+      filter: drop-shadow(0px 1px 2px rgba(0, 0, 0, 0.3));
+      fill: #FFFFFF;
+    }
+  </style>
+
+    <script>
+      const buttonEl =
+        document.querySelector('#df-7f951bd0-9ac8-47f4-81bf-e47f2eaee9b9 button.colab-df-convert');
+      buttonEl.style.display =
+        google.colab.kernel.accessAllowed ? 'block' : 'none';
+
+      async function convertToInteractive(key) {
+        const element = document.querySelector('#df-7f951bd0-9ac8-47f4-81bf-e47f2eaee9b9');
+        const dataTable =
+          await google.colab.kernel.invokeFunction('convertToInteractive',
+                                                    [key], {});
+        if (!dataTable) return;
+
+        const docLinkHtml = 'Like what you see? Visit the ' +
+          '<a target="_blank" href=https://colab.research.google.com/notebooks/data_table.ipynb>data table notebook</a>'
+          + ' to learn more about interactive tables.';
+        element.innerHTML = '';
+        dataTable['output_type'] = 'display_data';
+        await google.colab.output.renderOutput(dataTable, element);
+        const docLink = document.createElement('div');
+        docLink.innerHTML = docLinkHtml;
+        element.appendChild(docLink);
+      }
+    </script>
+  </div>
+
+
+<div id="df-ba519d90-e3bc-49dc-995b-69f21c3db8ab">
+  <button class="colab-df-quickchart" onclick="quickchart('df-ba519d90-e3bc-49dc-995b-69f21c3db8ab')"
+            title="Suggest charts"
+            style="display:none;">
+
+<svg xmlns="http://www.w3.org/2000/svg" height="24px"viewBox="0 0 24 24"
+     width="24px">
+    <g>
+        <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z"/>
+    </g>
+</svg>
+  </button>
+
+<style>
+  .colab-df-quickchart {
+      --bg-color: #E8F0FE;
+      --fill-color: #1967D2;
+      --hover-bg-color: #E2EBFA;
+      --hover-fill-color: #174EA6;
+      --disabled-fill-color: #AAA;
+      --disabled-bg-color: #DDD;
+  }
+
+  [theme=dark] .colab-df-quickchart {
+      --bg-color: #3B4455;
+      --fill-color: #D2E3FC;
+      --hover-bg-color: #434B5C;
+      --hover-fill-color: #FFFFFF;
+      --disabled-bg-color: #3B4455;
+      --disabled-fill-color: #666;
+  }
+
+  .colab-df-quickchart {
+    background-color: var(--bg-color);
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    display: none;
+    fill: var(--fill-color);
+    height: 32px;
+    padding: 0;
+    width: 32px;
+  }
+
+  .colab-df-quickchart:hover {
+    background-color: var(--hover-bg-color);
+    box-shadow: 0 1px 2px rgba(60, 64, 67, 0.3), 0 1px 3px 1px rgba(60, 64, 67, 0.15);
+    fill: var(--button-hover-fill-color);
+  }
+
+  .colab-df-quickchart-complete:disabled,
+  .colab-df-quickchart-complete:disabled:hover {
+    background-color: var(--disabled-bg-color);
+    fill: var(--disabled-fill-color);
+    box-shadow: none;
+  }
+
+  .colab-df-spinner {
+    border: 2px solid var(--fill-color);
+    border-color: transparent;
+    border-bottom-color: var(--fill-color);
+    animation:
+      spin 1s steps(1) infinite;
+  }
+
+  @keyframes spin {
+    0% {
+      border-color: transparent;
+      border-bottom-color: var(--fill-color);
+      border-left-color: var(--fill-color);
+    }
+    20% {
+      border-color: transparent;
+      border-left-color: var(--fill-color);
+      border-top-color: var(--fill-color);
+    }
+    30% {
+      border-color: transparent;
+      border-left-color: var(--fill-color);
+      border-top-color: var(--fill-color);
+      border-right-color: var(--fill-color);
+    }
+    40% {
+      border-color: transparent;
+      border-right-color: var(--fill-color);
+      border-top-color: var(--fill-color);
+    }
+    60% {
+      border-color: transparent;
+      border-right-color: var(--fill-color);
+    }
+    80% {
+      border-color: transparent;
+      border-right-color: var(--fill-color);
+      border-bottom-color: var(--fill-color);
+    }
+    90% {
+      border-color: transparent;
+      border-bottom-color: var(--fill-color);
+    }
+  }
+</style>
+
+  <script>
+    async function quickchart(key) {
+      const quickchartButtonEl =
+        document.querySelector('#' + key + ' button');
+      quickchartButtonEl.disabled = true;  // To prevent multiple clicks.
+      quickchartButtonEl.classList.add('colab-df-spinner');
+      try {
+        const charts = await google.colab.kernel.invokeFunction(
+            'suggestCharts', [key], {});
+      } catch (error) {
+        console.error('Error during call to suggestCharts:', error);
+      }
+      quickchartButtonEl.classList.remove('colab-df-spinner');
+      quickchartButtonEl.classList.add('colab-df-quickchart-complete');
+    }
+    (() => {
+      let quickchartButtonEl =
+        document.querySelector('#df-ba519d90-e3bc-49dc-995b-69f21c3db8ab button');
+      quickchartButtonEl.style.display =
+        google.colab.kernel.accessAllowed ? 'block' : 'none';
+    })();
+  </script>
+</div>
+
+  <div id="id_1726a3fb-e27d-43ae-9f07-151e52f28264">
+    <style>
+      .colab-df-generate {
+        background-color: #E8F0FE;
+        border: none;
+        border-radius: 50%;
+        cursor: pointer;
+        display: none;
+        fill: #1967D2;
+        height: 32px;
+        padding: 0 0 0 0;
+        width: 32px;
+      }
+
+      .colab-df-generate:hover {
+        background-color: #E2EBFA;
+        box-shadow: 0px 1px 2px rgba(60, 64, 67, 0.3), 0px 1px 3px 1px rgba(60, 64, 67, 0.15);
+        fill: #174EA6;
+      }
+
+      [theme=dark] .colab-df-generate {
+        background-color: #3B4455;
+        fill: #D2E3FC;
+      }
+
+      [theme=dark] .colab-df-generate:hover {
+        background-color: #434B5C;
+        box-shadow: 0px 1px 3px 1px rgba(0, 0, 0, 0.15);
+        filter: drop-shadow(0px 1px 2px rgba(0, 0, 0, 0.3));
+        fill: #FFFFFF;
+      }
+    </style>
+    <button class="colab-df-generate" onclick="generateWithVariable('data_before_reduction')"
+            title="Generate code using this dataframe."
+            style="display:none;">
+
+  <svg xmlns="http://www.w3.org/2000/svg" height="24px"viewBox="0 0 24 24"
+       width="24px">
+    <path d="M7,19H8.4L18.45,9,17,7.55,7,17.6ZM5,21V16.75L18.45,3.32a2,2,0,0,1,2.83,0l1.4,1.43a1.91,1.91,0,0,1,.58,1.4,1.91,1.91,0,0,1-.58,1.4L9.25,21ZM18.45,9,17,7.55Zm-12,3A5.31,5.31,0,0,0,4.9,8.1,5.31,5.31,0,0,0,1,6.5,5.31,5.31,0,0,0,4.9,4.9,5.31,5.31,0,0,0,6.5,1,5.31,5.31,0,0,0,8.1,4.9,5.31,5.31,0,0,0,12,6.5,5.46,5.46,0,0,0,6.5,12Z"/>
+  </svg>
+    </button>
+    <script>
+      (() => {
+      const buttonEl =
+        document.querySelector('#id_1726a3fb-e27d-43ae-9f07-151e52f28264 button.colab-df-generate');
+      buttonEl.style.display =
+        google.colab.kernel.accessAllowed ? 'block' : 'none';
+
+      buttonEl.onclick = () => {
+        google.colab.notebook.generateWithVariable('data_before_reduction');
+      }
+      })();
+    </script>
+  </div>
+
+    </div>
+  </div>
+</div></div>
+</div>
+</section>
+</section>
+<section id="fuzzy-c-means-clustering-dan-svd-untuk-dimensi-yang-berbeda">
+<h2>Fuzzy C-Means Clustering dan SVD untuk dimensi yang berbeda<a class="headerlink" href="#fuzzy-c-means-clustering-dan-svd-untuk-dimensi-yang-berbeda" title="Link to this heading">#</a></h2>
+<p>SVD adalah metode matematis yang digunakan untuk dekomposisi matriks. Dalam konteks pemrosesan data, SVD memecah matriks menjadi tiga matriks yang lebih sederhana. Tujuan utamanya adalah untuk mengurangi dimensi data dan menemukan pola tersembunyi dalam data. Fuzzy C-Means (FCM) adalah metode clustering yang memperbolehkan sebuah data menjadi anggota lebih dari satu cluster dengan derajat keanggotaan tertentu (bukan hanya keanggotaan keras seperti pada K-Means).</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">dim</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">features</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="mi">99</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+    <span class="n">svd</span> <span class="o">=</span> <span class="n">TruncatedSVD</span><span class="p">(</span><span class="n">n_components</span><span class="o">=</span><span class="n">dim</span><span class="p">)</span>
+    <span class="n">reduced_features</span> <span class="o">=</span> <span class="n">svd</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">features</span><span class="p">)</span>
+
+    <span class="n">cntr</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">u0</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="n">jm</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">fpc</span> <span class="o">=</span> <span class="n">cmeans</span><span class="p">(</span>
+        <span class="n">data</span><span class="o">=</span><span class="n">reduced_features</span><span class="o">.</span><span class="n">T</span><span class="p">,</span>
+        <span class="n">c</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+        <span class="n">m</span><span class="o">=</span><span class="mf">2.0</span><span class="p">,</span>
+        <span class="n">error</span><span class="o">=</span><span class="mf">0.005</span><span class="p">,</span>
+        <span class="n">maxiter</span><span class="o">=</span><span class="mi">1000</span>
+    <span class="p">)</span>
+
+    <span class="n">cluster_membership</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+    <span class="n">accuracy</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span>
+        <span class="n">accuracy_score</span><span class="p">(</span><span class="n">encoded_labels</span><span class="p">,</span> <span class="n">cluster_membership</span><span class="p">),</span>
+        <span class="n">accuracy_score</span><span class="p">(</span><span class="n">encoded_labels</span><span class="p">,</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">cluster_membership</span><span class="p">)</span>
+    <span class="p">)</span>
+
+    <span class="n">results</span><span class="p">[</span><span class="n">dim</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;svd_features&#39;</span><span class="p">:</span> <span class="n">reduced_features</span><span class="p">,</span>
+        <span class="s1">&#39;centroids&#39;</span><span class="p">:</span> <span class="n">cntr</span><span class="p">,</span>
+        <span class="s1">&#39;membership&#39;</span><span class="p">:</span> <span class="n">cluster_membership</span><span class="p">,</span>
+        <span class="s1">&#39;accuracy&#39;</span><span class="p">:</span> <span class="n">accuracy</span>
+    <span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+<section id="data-setelah-reduksi">
+<h3><strong>Data Setelah Reduksi</strong><a class="headerlink" href="#data-setelah-reduksi" title="Link to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">final_result</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span><span class="mi">100</span><span class="p">]</span>
+<span class="n">svd_features</span> <span class="o">=</span> <span class="n">final_result</span><span class="p">[</span><span class="s1">&#39;svd_features&#39;</span><span class="p">]</span>
+<span class="n">data_after_reduction</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">svd_features</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="sa">f</span><span class="s1">&#39;SVD_Component_</span><span class="si">{</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s1">&#39;</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">svd_features</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">])])</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Data Setelah Reduksi Dimensi (100 dimensi):&quot;</span><span class="p">)</span>
+<span class="n">data_after_reduction</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Data Setelah Reduksi Dimensi (100 dimensi):
+</pre></div>
+</div>
+<div class="output text_html">
+  <div id="df-72467134-af5f-4e9f-bd71-f2db683f785a" class="colab-df-container">
+    <div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>SVD_Component_1</th>
+      <th>SVD_Component_2</th>
+      <th>SVD_Component_3</th>
+      <th>SVD_Component_4</th>
+      <th>SVD_Component_5</th>
+      <th>SVD_Component_6</th>
+      <th>SVD_Component_7</th>
+      <th>SVD_Component_8</th>
+      <th>SVD_Component_9</th>
+      <th>SVD_Component_10</th>
+      <th>...</th>
+      <th>SVD_Component_91</th>
+      <th>SVD_Component_92</th>
+      <th>SVD_Component_93</th>
+      <th>SVD_Component_94</th>
+      <th>SVD_Component_95</th>
+      <th>SVD_Component_96</th>
+      <th>SVD_Component_97</th>
+      <th>SVD_Component_98</th>
+      <th>SVD_Component_99</th>
+      <th>SVD_Component_100</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>0.306413</td>
+      <td>-0.147986</td>
+      <td>0.328073</td>
+      <td>-0.006153</td>
+      <td>-0.029639</td>
+      <td>0.008228</td>
+      <td>0.065608</td>
+      <td>-0.094432</td>
+      <td>0.090398</td>
+      <td>-0.166860</td>
+      <td>...</td>
+      <td>0.040895</td>
+      <td>0.048102</td>
+      <td>0.041483</td>
+      <td>0.058444</td>
+      <td>-0.013457</td>
+      <td>0.044800</td>
+      <td>0.015591</td>
+      <td>0.006095</td>
+      <td>-0.008849</td>
+      <td>-0.000315</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>0.109184</td>
+      <td>-0.101372</td>
+      <td>0.061930</td>
+      <td>0.059828</td>
+      <td>0.039581</td>
+      <td>0.022015</td>
+      <td>0.020911</td>
+      <td>0.011857</td>
+      <td>0.035327</td>
+      <td>-0.001513</td>
+      <td>...</td>
+      <td>-0.031353</td>
+      <td>-0.009594</td>
+      <td>-0.029479</td>
+      <td>0.011864</td>
+      <td>0.025014</td>
+      <td>-0.027362</td>
+      <td>-0.007758</td>
+      <td>-0.010654</td>
+      <td>0.008499</td>
+      <td>0.002273</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>0.435123</td>
+      <td>0.124422</td>
+      <td>0.070231</td>
+      <td>-0.027458</td>
+      <td>0.012832</td>
+      <td>0.022024</td>
+      <td>-0.114094</td>
+      <td>0.179828</td>
+      <td>0.019299</td>
+      <td>-0.207100</td>
+      <td>...</td>
+      <td>0.003517</td>
+      <td>0.119355</td>
+      <td>-0.311041</td>
+      <td>-0.042145</td>
+      <td>0.197151</td>
+      <td>-0.011630</td>
+      <td>-0.023912</td>
+      <td>0.025906</td>
+      <td>0.000107</td>
+      <td>0.003375</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>0.147943</td>
+      <td>-0.184795</td>
+      <td>0.297279</td>
+      <td>-0.044936</td>
+      <td>-0.179886</td>
+      <td>-0.032705</td>
+      <td>-0.110904</td>
+      <td>0.102213</td>
+      <td>-0.004656</td>
+      <td>-0.097335</td>
+      <td>...</td>
+      <td>0.011020</td>
+      <td>0.000761</td>
+      <td>0.012594</td>
+      <td>0.007924</td>
+      <td>-0.017362</td>
+      <td>-0.008665</td>
+      <td>-0.003334</td>
+      <td>-0.014812</td>
+      <td>0.011600</td>
+      <td>0.000298</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>0.336555</td>
+      <td>-0.212578</td>
+      <td>0.386219</td>
+      <td>-0.134260</td>
+      <td>-0.134770</td>
+      <td>-0.029009</td>
+      <td>-0.127980</td>
+      <td>-0.003751</td>
+      <td>-0.023625</td>
+      <td>-0.050038</td>
+      <td>...</td>
+      <td>0.046336</td>
+      <td>-0.024946</td>
+      <td>-0.143004</td>
+      <td>-0.021751</td>
+      <td>-0.049014</td>
+      <td>-0.014761</td>
+      <td>0.009729</td>
+      <td>0.027495</td>
+      <td>-0.011706</td>
+      <td>0.002693</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>95</th>
+      <td>0.056749</td>
+      <td>-0.143352</td>
+      <td>-0.093414</td>
+      <td>-0.082935</td>
+      <td>0.038523</td>
+      <td>-0.024340</td>
+      <td>-0.037224</td>
+      <td>0.167790</td>
+      <td>0.529492</td>
+      <td>0.388373</td>
+      <td>...</td>
+      <td>0.023597</td>
+      <td>-0.010853</td>
+      <td>0.066091</td>
+      <td>-0.005164</td>
+      <td>0.058351</td>
+      <td>0.084032</td>
+      <td>-0.387400</td>
+      <td>-0.005914</td>
+      <td>-0.013070</td>
+      <td>0.008870</td>
+    </tr>
+    <tr>
+      <th>96</th>
+      <td>0.067654</td>
+      <td>-0.189175</td>
+      <td>-0.111212</td>
+      <td>-0.108010</td>
+      <td>0.040164</td>
+      <td>-0.030665</td>
+      <td>-0.033796</td>
+      <td>0.169885</td>
+      <td>0.554016</td>
+      <td>0.390112</td>
+      <td>...</td>
+      <td>-0.021297</td>
+      <td>0.012201</td>
+      <td>-0.075892</td>
+      <td>0.003201</td>
+      <td>-0.063944</td>
+      <td>-0.090819</td>
+      <td>0.394065</td>
+      <td>-0.001433</td>
+      <td>0.017724</td>
+      <td>-0.006887</td>
+    </tr>
+    <tr>
+      <th>97</th>
+      <td>0.113087</td>
+      <td>-0.418609</td>
+      <td>-0.334410</td>
+      <td>-0.348561</td>
+      <td>0.172595</td>
+      <td>-0.139917</td>
+      <td>-0.092610</td>
+      <td>0.103436</td>
+      <td>0.151290</td>
+      <td>-0.096037</td>
+      <td>...</td>
+      <td>-0.040514</td>
+      <td>0.102930</td>
+      <td>-0.069465</td>
+      <td>-0.244180</td>
+      <td>-0.261330</td>
+      <td>-0.014548</td>
+      <td>-0.094450</td>
+      <td>-0.007797</td>
+      <td>0.011555</td>
+      <td>-0.004624</td>
+    </tr>
+    <tr>
+      <th>98</th>
+      <td>0.099101</td>
+      <td>-0.071538</td>
+      <td>-0.008447</td>
+      <td>0.037296</td>
+      <td>-0.040852</td>
+      <td>-0.011420</td>
+      <td>0.074116</td>
+      <td>-0.076727</td>
+      <td>0.044838</td>
+      <td>-0.032937</td>
+      <td>...</td>
+      <td>-0.005745</td>
+      <td>0.015465</td>
+      <td>0.008960</td>
+      <td>-0.004006</td>
+      <td>0.014300</td>
+      <td>-0.007093</td>
+      <td>0.001874</td>
+      <td>0.020185</td>
+      <td>-0.006060</td>
+      <td>0.000819</td>
+    </tr>
+    <tr>
+      <th>99</th>
+      <td>0.118357</td>
+      <td>-0.420784</td>
+      <td>-0.299237</td>
+      <td>-0.342643</td>
+      <td>0.171827</td>
+      <td>-0.153398</td>
+      <td>-0.069910</td>
+      <td>0.116098</td>
+      <td>0.168377</td>
+      <td>-0.079242</td>
+      <td>...</td>
+      <td>-0.038742</td>
+      <td>-0.209527</td>
+      <td>0.054369</td>
+      <td>0.278177</td>
+      <td>0.326204</td>
+      <td>0.019906</td>
+      <td>0.040247</td>
+      <td>0.006144</td>
+      <td>-0.010157</td>
+      <td>0.010603</td>
+    </tr>
+  </tbody>
+</table>
+<p>100 rows × 100 columns</p>
+</div>
+    <div class="colab-df-buttons">
+
+  <div class="colab-df-container">
+    <button class="colab-df-convert" onclick="convertToInteractive('df-72467134-af5f-4e9f-bd71-f2db683f785a')"
+            title="Convert this dataframe to an interactive table."
+            style="display:none;">
+
+  <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960">
+    <path d="M120-120v-720h720v720H120Zm60-500h600v-160H180v160Zm220 220h160v-160H400v160Zm0 220h160v-160H400v160ZM180-400h160v-160H180v160Zm440 0h160v-160H620v160ZM180-180h160v-160H180v160Zm440 0h160v-160H620v160Z"/>
+  </svg>
+    </button>
+
+  <style>
+    .colab-df-container {
+      display:flex;
+      gap: 12px;
+    }
+
+    .colab-df-convert {
+      background-color: #E8F0FE;
+      border: none;
+      border-radius: 50%;
+      cursor: pointer;
+      display: none;
+      fill: #1967D2;
+      height: 32px;
+      padding: 0 0 0 0;
+      width: 32px;
+    }
+
+    .colab-df-convert:hover {
+      background-color: #E2EBFA;
+      box-shadow: 0px 1px 2px rgba(60, 64, 67, 0.3), 0px 1px 3px 1px rgba(60, 64, 67, 0.15);
+      fill: #174EA6;
+    }
+
+    .colab-df-buttons div {
+      margin-bottom: 4px;
+    }
+
+    [theme=dark] .colab-df-convert {
+      background-color: #3B4455;
+      fill: #D2E3FC;
+    }
+
+    [theme=dark] .colab-df-convert:hover {
+      background-color: #434B5C;
+      box-shadow: 0px 1px 3px 1px rgba(0, 0, 0, 0.15);
+      filter: drop-shadow(0px 1px 2px rgba(0, 0, 0, 0.3));
+      fill: #FFFFFF;
+    }
+  </style>
+
+    <script>
+      const buttonEl =
+        document.querySelector('#df-72467134-af5f-4e9f-bd71-f2db683f785a button.colab-df-convert');
+      buttonEl.style.display =
+        google.colab.kernel.accessAllowed ? 'block' : 'none';
+
+      async function convertToInteractive(key) {
+        const element = document.querySelector('#df-72467134-af5f-4e9f-bd71-f2db683f785a');
+        const dataTable =
+          await google.colab.kernel.invokeFunction('convertToInteractive',
+                                                    [key], {});
+        if (!dataTable) return;
+
+        const docLinkHtml = 'Like what you see? Visit the ' +
+          '<a target="_blank" href=https://colab.research.google.com/notebooks/data_table.ipynb>data table notebook</a>'
+          + ' to learn more about interactive tables.';
+        element.innerHTML = '';
+        dataTable['output_type'] = 'display_data';
+        await google.colab.output.renderOutput(dataTable, element);
+        const docLink = document.createElement('div');
+        docLink.innerHTML = docLinkHtml;
+        element.appendChild(docLink);
+      }
+    </script>
+  </div>
+
+
+<div id="df-0ca5871e-03c6-42c4-abb4-363d4ee20c34">
+  <button class="colab-df-quickchart" onclick="quickchart('df-0ca5871e-03c6-42c4-abb4-363d4ee20c34')"
+            title="Suggest charts"
+            style="display:none;">
+
+<svg xmlns="http://www.w3.org/2000/svg" height="24px"viewBox="0 0 24 24"
+     width="24px">
+    <g>
+        <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z"/>
+    </g>
+</svg>
+  </button>
+
+<style>
+  .colab-df-quickchart {
+      --bg-color: #E8F0FE;
+      --fill-color: #1967D2;
+      --hover-bg-color: #E2EBFA;
+      --hover-fill-color: #174EA6;
+      --disabled-fill-color: #AAA;
+      --disabled-bg-color: #DDD;
+  }
+
+  [theme=dark] .colab-df-quickchart {
+      --bg-color: #3B4455;
+      --fill-color: #D2E3FC;
+      --hover-bg-color: #434B5C;
+      --hover-fill-color: #FFFFFF;
+      --disabled-bg-color: #3B4455;
+      --disabled-fill-color: #666;
+  }
+
+  .colab-df-quickchart {
+    background-color: var(--bg-color);
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    display: none;
+    fill: var(--fill-color);
+    height: 32px;
+    padding: 0;
+    width: 32px;
+  }
+
+  .colab-df-quickchart:hover {
+    background-color: var(--hover-bg-color);
+    box-shadow: 0 1px 2px rgba(60, 64, 67, 0.3), 0 1px 3px 1px rgba(60, 64, 67, 0.15);
+    fill: var(--button-hover-fill-color);
+  }
+
+  .colab-df-quickchart-complete:disabled,
+  .colab-df-quickchart-complete:disabled:hover {
+    background-color: var(--disabled-bg-color);
+    fill: var(--disabled-fill-color);
+    box-shadow: none;
+  }
+
+  .colab-df-spinner {
+    border: 2px solid var(--fill-color);
+    border-color: transparent;
+    border-bottom-color: var(--fill-color);
+    animation:
+      spin 1s steps(1) infinite;
+  }
+
+  @keyframes spin {
+    0% {
+      border-color: transparent;
+      border-bottom-color: var(--fill-color);
+      border-left-color: var(--fill-color);
+    }
+    20% {
+      border-color: transparent;
+      border-left-color: var(--fill-color);
+      border-top-color: var(--fill-color);
+    }
+    30% {
+      border-color: transparent;
+      border-left-color: var(--fill-color);
+      border-top-color: var(--fill-color);
+      border-right-color: var(--fill-color);
+    }
+    40% {
+      border-color: transparent;
+      border-right-color: var(--fill-color);
+      border-top-color: var(--fill-color);
+    }
+    60% {
+      border-color: transparent;
+      border-right-color: var(--fill-color);
+    }
+    80% {
+      border-color: transparent;
+      border-right-color: var(--fill-color);
+      border-bottom-color: var(--fill-color);
+    }
+    90% {
+      border-color: transparent;
+      border-bottom-color: var(--fill-color);
+    }
+  }
+</style>
+
+  <script>
+    async function quickchart(key) {
+      const quickchartButtonEl =
+        document.querySelector('#' + key + ' button');
+      quickchartButtonEl.disabled = true;  // To prevent multiple clicks.
+      quickchartButtonEl.classList.add('colab-df-spinner');
+      try {
+        const charts = await google.colab.kernel.invokeFunction(
+            'suggestCharts', [key], {});
+      } catch (error) {
+        console.error('Error during call to suggestCharts:', error);
+      }
+      quickchartButtonEl.classList.remove('colab-df-spinner');
+      quickchartButtonEl.classList.add('colab-df-quickchart-complete');
+    }
+    (() => {
+      let quickchartButtonEl =
+        document.querySelector('#df-0ca5871e-03c6-42c4-abb4-363d4ee20c34 button');
+      quickchartButtonEl.style.display =
+        google.colab.kernel.accessAllowed ? 'block' : 'none';
+    })();
+  </script>
+</div>
+
+  <div id="id_e0a580b8-fe7e-4bef-9c44-70278c5f1dc1">
+    <style>
+      .colab-df-generate {
+        background-color: #E8F0FE;
+        border: none;
+        border-radius: 50%;
+        cursor: pointer;
+        display: none;
+        fill: #1967D2;
+        height: 32px;
+        padding: 0 0 0 0;
+        width: 32px;
+      }
+
+      .colab-df-generate:hover {
+        background-color: #E2EBFA;
+        box-shadow: 0px 1px 2px rgba(60, 64, 67, 0.3), 0px 1px 3px 1px rgba(60, 64, 67, 0.15);
+        fill: #174EA6;
+      }
+
+      [theme=dark] .colab-df-generate {
+        background-color: #3B4455;
+        fill: #D2E3FC;
+      }
+
+      [theme=dark] .colab-df-generate:hover {
+        background-color: #434B5C;
+        box-shadow: 0px 1px 3px 1px rgba(0, 0, 0, 0.15);
+        filter: drop-shadow(0px 1px 2px rgba(0, 0, 0, 0.3));
+        fill: #FFFFFF;
+      }
+    </style>
+    <button class="colab-df-generate" onclick="generateWithVariable('data_after_reduction')"
+            title="Generate code using this dataframe."
+            style="display:none;">
+
+  <svg xmlns="http://www.w3.org/2000/svg" height="24px"viewBox="0 0 24 24"
+       width="24px">
+    <path d="M7,19H8.4L18.45,9,17,7.55,7,17.6ZM5,21V16.75L18.45,3.32a2,2,0,0,1,2.83,0l1.4,1.43a1.91,1.91,0,0,1,.58,1.4,1.91,1.91,0,0,1-.58,1.4L9.25,21ZM18.45,9,17,7.55Zm-12,3A5.31,5.31,0,0,0,4.9,8.1,5.31,5.31,0,0,0,1,6.5,5.31,5.31,0,0,0,4.9,4.9,5.31,5.31,0,0,0,6.5,1,5.31,5.31,0,0,0,8.1,4.9,5.31,5.31,0,0,0,12,6.5,5.46,5.46,0,0,0,6.5,12Z"/>
+  </svg>
+    </button>
+    <script>
+      (() => {
+      const buttonEl =
+        document.querySelector('#id_e0a580b8-fe7e-4bef-9c44-70278c5f1dc1 button.colab-df-generate');
+      buttonEl.style.display =
+        google.colab.kernel.accessAllowed ? 'block' : 'none';
+
+      buttonEl.onclick = () => {
+        google.colab.notebook.generateWithVariable('data_after_reduction');
+      }
+      })();
+    </script>
+  </div>
+
+    </div>
+  </div>
+</div></div>
+</div>
+</section>
+</section>
+<section id="scater-plot-dimensi-2">
+<h2>Scater Plot Dimensi 2<a class="headerlink" href="#scater-plot-dimensi-2" title="Link to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">centroids</span> <span class="o">=</span> <span class="n">final_result</span><span class="p">[</span><span class="s1">&#39;centroids&#39;</span><span class="p">]</span>
+<span class="n">membership</span> <span class="o">=</span> <span class="n">final_result</span><span class="p">[</span><span class="s1">&#39;membership&#39;</span><span class="p">]</span>
+<span class="n">accuracy</span> <span class="o">=</span> <span class="n">final_result</span><span class="p">[</span><span class="s1">&#39;accuracy&#39;</span><span class="p">]</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+<span class="n">colors</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="s1">&#39;blue&#39;</span><span class="p">]</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">):</span>
+    <span class="n">cluster_points</span> <span class="o">=</span> <span class="n">svd_features</span><span class="p">[</span><span class="n">membership</span> <span class="o">==</span> <span class="n">i</span><span class="p">]</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">cluster_points</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">cluster_points</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">c</span><span class="o">=</span><span class="n">colors</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;Cluster </span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.6</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">centroids</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">centroids</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">c</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Centroid&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Fuzzy C-Means Clustering (Dimensi SVD 2) - Akurasi: </span><span class="si">{</span><span class="n">accuracy</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Komponen SVD 1&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Komponen SVD 2&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/ff2cc163f6826b99c4ba05ec5d63fbb2024e3352b2c5d760f7deb66124f0977a.png" src="_images/ff2cc163f6826b99c4ba05ec5d63fbb2024e3352b2c5d760f7deb66124f0977a.png" />
+</div>
+</div>
+</section>
+<section id="akurasi-tiap-dimensi">
+<h2>Akurasi Tiap Dimensi<a class="headerlink" href="#akurasi-tiap-dimensi" title="Link to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">dim</span><span class="p">,</span> <span class="n">result</span> <span class="ow">in</span> <span class="n">results</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Dimensi: </span><span class="si">{</span><span class="n">dim</span><span class="si">}</span><span class="s2">, Akurasi: </span><span class="si">{</span><span class="n">result</span><span class="p">[</span><span class="s1">&#39;accuracy&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Dimensi: 2809, Akurasi: 0.68
+Dimensi: 2808, Akurasi: 0.85
+Dimensi: 2807, Akurasi: 0.75
+Dimensi: 2806, Akurasi: 0.65
+Dimensi: 2805, Akurasi: 0.70
+Dimensi: 2804, Akurasi: 0.64
+Dimensi: 2803, Akurasi: 0.52
+Dimensi: 2802, Akurasi: 0.70
+Dimensi: 2801, Akurasi: 0.72
+Dimensi: 2800, Akurasi: 0.59
+Dimensi: 2799, Akurasi: 0.62
+Dimensi: 2798, Akurasi: 0.59
+Dimensi: 2797, Akurasi: 0.79
+Dimensi: 2796, Akurasi: 0.68
+Dimensi: 2795, Akurasi: 0.72
+Dimensi: 2794, Akurasi: 0.79
+Dimensi: 2793, Akurasi: 0.67
+Dimensi: 2792, Akurasi: 0.74
+Dimensi: 2791, Akurasi: 0.82
+Dimensi: 2790, Akurasi: 0.74
+Dimensi: 2789, Akurasi: 0.82
+Dimensi: 2788, Akurasi: 0.70
+Dimensi: 2787, Akurasi: 0.81
+Dimensi: 2786, Akurasi: 0.52
+Dimensi: 2785, Akurasi: 0.76
+Dimensi: 2784, Akurasi: 0.74
+Dimensi: 2783, Akurasi: 0.69
+Dimensi: 2782, Akurasi: 0.77
+Dimensi: 2781, Akurasi: 0.80
+Dimensi: 2780, Akurasi: 0.68
+Dimensi: 2779, Akurasi: 0.78
+Dimensi: 2778, Akurasi: 0.71
+Dimensi: 2777, Akurasi: 0.68
+Dimensi: 2776, Akurasi: 0.64
+Dimensi: 2775, Akurasi: 0.61
+Dimensi: 2774, Akurasi: 0.71
+Dimensi: 2773, Akurasi: 0.89
+Dimensi: 2772, Akurasi: 0.61
+Dimensi: 2771, Akurasi: 0.81
+Dimensi: 2770, Akurasi: 0.53
+Dimensi: 2769, Akurasi: 0.63
+Dimensi: 2768, Akurasi: 0.61
+Dimensi: 2767, Akurasi: 0.64
+Dimensi: 2766, Akurasi: 0.54
+Dimensi: 2765, Akurasi: 0.72
+Dimensi: 2764, Akurasi: 0.70
+Dimensi: 2763, Akurasi: 0.74
+Dimensi: 2762, Akurasi: 0.80
+Dimensi: 2761, Akurasi: 0.86
+Dimensi: 2760, Akurasi: 0.64
+Dimensi: 2759, Akurasi: 0.77
+Dimensi: 2758, Akurasi: 0.70
+Dimensi: 2757, Akurasi: 0.63
+Dimensi: 2756, Akurasi: 0.69
+Dimensi: 2755, Akurasi: 0.86
+Dimensi: 2754, Akurasi: 0.88
+Dimensi: 2753, Akurasi: 0.80
+Dimensi: 2752, Akurasi: 0.79
+Dimensi: 2751, Akurasi: 0.84
+Dimensi: 2750, Akurasi: 0.60
+Dimensi: 2749, Akurasi: 0.67
+Dimensi: 2748, Akurasi: 0.85
+Dimensi: 2747, Akurasi: 0.78
+Dimensi: 2746, Akurasi: 0.54
+Dimensi: 2745, Akurasi: 0.82
+Dimensi: 2744, Akurasi: 0.64
+Dimensi: 2743, Akurasi: 0.80
+Dimensi: 2742, Akurasi: 0.78
+Dimensi: 2741, Akurasi: 0.74
+Dimensi: 2740, Akurasi: 0.65
+Dimensi: 2739, Akurasi: 0.79
+Dimensi: 2738, Akurasi: 0.69
+Dimensi: 2737, Akurasi: 0.61
+Dimensi: 2736, Akurasi: 0.85
+Dimensi: 2735, Akurasi: 0.66
+Dimensi: 2734, Akurasi: 0.92
+Dimensi: 2733, Akurasi: 0.81
+Dimensi: 2732, Akurasi: 0.76
+Dimensi: 2731, Akurasi: 0.76
+Dimensi: 2730, Akurasi: 0.71
+Dimensi: 2729, Akurasi: 0.83
+Dimensi: 2728, Akurasi: 0.65
+Dimensi: 2727, Akurasi: 0.82
+Dimensi: 2726, Akurasi: 0.83
+Dimensi: 2725, Akurasi: 0.74
+Dimensi: 2724, Akurasi: 0.65
+Dimensi: 2723, Akurasi: 0.86
+Dimensi: 2722, Akurasi: 0.76
+Dimensi: 2721, Akurasi: 0.80
+Dimensi: 2720, Akurasi: 0.63
+Dimensi: 2719, Akurasi: 0.71
+Dimensi: 2718, Akurasi: 0.89
+Dimensi: 2717, Akurasi: 0.62
+Dimensi: 2716, Akurasi: 0.68
+Dimensi: 2715, Akurasi: 0.77
+Dimensi: 2714, Akurasi: 0.85
+Dimensi: 2713, Akurasi: 0.72
+Dimensi: 2712, Akurasi: 0.78
+Dimensi: 2711, Akurasi: 0.69
+Dimensi: 2710, Akurasi: 0.77
+Dimensi: 2709, Akurasi: 0.79
+Dimensi: 2708, Akurasi: 0.74
+Dimensi: 2707, Akurasi: 0.71
+Dimensi: 2706, Akurasi: 0.58
+Dimensi: 2705, Akurasi: 0.67
+Dimensi: 2704, Akurasi: 0.68
+Dimensi: 2703, Akurasi: 0.87
+Dimensi: 2702, Akurasi: 0.67
+Dimensi: 2701, Akurasi: 0.59
+Dimensi: 2700, Akurasi: 0.88
+Dimensi: 2699, Akurasi: 0.73
+Dimensi: 2698, Akurasi: 0.77
+Dimensi: 2697, Akurasi: 0.65
+Dimensi: 2696, Akurasi: 0.81
+Dimensi: 2695, Akurasi: 0.86
+Dimensi: 2694, Akurasi: 0.55
+Dimensi: 2693, Akurasi: 0.61
+Dimensi: 2692, Akurasi: 0.84
+Dimensi: 2691, Akurasi: 0.78
+Dimensi: 2690, Akurasi: 0.74
+Dimensi: 2689, Akurasi: 0.69
+Dimensi: 2688, Akurasi: 0.69
+Dimensi: 2687, Akurasi: 0.81
+Dimensi: 2686, Akurasi: 0.79
+Dimensi: 2685, Akurasi: 0.76
+Dimensi: 2684, Akurasi: 0.85
+Dimensi: 2683, Akurasi: 0.78
+Dimensi: 2682, Akurasi: 0.57
+Dimensi: 2681, Akurasi: 0.83
+Dimensi: 2680, Akurasi: 0.66
+Dimensi: 2679, Akurasi: 0.66
+Dimensi: 2678, Akurasi: 0.72
+Dimensi: 2677, Akurasi: 0.71
+Dimensi: 2676, Akurasi: 0.80
+Dimensi: 2675, Akurasi: 0.82
+Dimensi: 2674, Akurasi: 0.78
+Dimensi: 2673, Akurasi: 0.82
+Dimensi: 2672, Akurasi: 0.77
+Dimensi: 2671, Akurasi: 0.73
+Dimensi: 2670, Akurasi: 0.54
+Dimensi: 2669, Akurasi: 0.51
+Dimensi: 2668, Akurasi: 0.77
+Dimensi: 2667, Akurasi: 0.68
+Dimensi: 2666, Akurasi: 0.77
+Dimensi: 2665, Akurasi: 0.80
+Dimensi: 2664, Akurasi: 0.64
+Dimensi: 2663, Akurasi: 0.84
+Dimensi: 2662, Akurasi: 0.71
+Dimensi: 2661, Akurasi: 0.79
+Dimensi: 2660, Akurasi: 0.83
+Dimensi: 2659, Akurasi: 0.76
+Dimensi: 2658, Akurasi: 0.75
+Dimensi: 2657, Akurasi: 0.77
+Dimensi: 2656, Akurasi: 0.74
+Dimensi: 2655, Akurasi: 0.62
+Dimensi: 2654, Akurasi: 0.71
+Dimensi: 2653, Akurasi: 0.76
+Dimensi: 2652, Akurasi: 0.73
+Dimensi: 2651, Akurasi: 0.80
+Dimensi: 2650, Akurasi: 0.71
+Dimensi: 2649, Akurasi: 0.83
+Dimensi: 2648, Akurasi: 0.77
+Dimensi: 2647, Akurasi: 0.72
+Dimensi: 2646, Akurasi: 0.67
+Dimensi: 2645, Akurasi: 0.82
+Dimensi: 2644, Akurasi: 0.71
+Dimensi: 2643, Akurasi: 0.57
+Dimensi: 2642, Akurasi: 0.80
+Dimensi: 2641, Akurasi: 0.81
+Dimensi: 2640, Akurasi: 0.71
+Dimensi: 2639, Akurasi: 0.70
+Dimensi: 2638, Akurasi: 0.70
+Dimensi: 2637, Akurasi: 0.78
+Dimensi: 2636, Akurasi: 0.80
+Dimensi: 2635, Akurasi: 0.69
+Dimensi: 2634, Akurasi: 0.77
+Dimensi: 2633, Akurasi: 0.79
+Dimensi: 2632, Akurasi: 0.72
+Dimensi: 2631, Akurasi: 0.77
+Dimensi: 2630, Akurasi: 0.82
+Dimensi: 2629, Akurasi: 0.71
+Dimensi: 2628, Akurasi: 0.79
+Dimensi: 2627, Akurasi: 0.73
+Dimensi: 2626, Akurasi: 0.61
+Dimensi: 2625, Akurasi: 0.74
+Dimensi: 2624, Akurasi: 0.81
+Dimensi: 2623, Akurasi: 0.68
+Dimensi: 2622, Akurasi: 0.62
+Dimensi: 2621, Akurasi: 0.80
+Dimensi: 2620, Akurasi: 0.78
+Dimensi: 2619, Akurasi: 0.70
+Dimensi: 2618, Akurasi: 0.79
+Dimensi: 2617, Akurasi: 0.81
+Dimensi: 2616, Akurasi: 0.67
+Dimensi: 2615, Akurasi: 0.70
+Dimensi: 2614, Akurasi: 0.61
+Dimensi: 2613, Akurasi: 0.66
+Dimensi: 2612, Akurasi: 0.83
+Dimensi: 2611, Akurasi: 0.73
+Dimensi: 2610, Akurasi: 0.81
+Dimensi: 2609, Akurasi: 0.75
+Dimensi: 2608, Akurasi: 0.79
+Dimensi: 2607, Akurasi: 0.81
+Dimensi: 2606, Akurasi: 0.74
+Dimensi: 2605, Akurasi: 0.77
+Dimensi: 2604, Akurasi: 0.72
+Dimensi: 2603, Akurasi: 0.90
+Dimensi: 2602, Akurasi: 0.57
+Dimensi: 2601, Akurasi: 0.80
+Dimensi: 2600, Akurasi: 0.84
+Dimensi: 2599, Akurasi: 0.67
+Dimensi: 2598, Akurasi: 0.81
+Dimensi: 2597, Akurasi: 0.73
+Dimensi: 2596, Akurasi: 0.65
+Dimensi: 2595, Akurasi: 0.67
+Dimensi: 2594, Akurasi: 0.80
+Dimensi: 2593, Akurasi: 0.81
+Dimensi: 2592, Akurasi: 0.80
+Dimensi: 2591, Akurasi: 0.82
+Dimensi: 2590, Akurasi: 0.63
+Dimensi: 2589, Akurasi: 0.77
+Dimensi: 2588, Akurasi: 0.88
+Dimensi: 2587, Akurasi: 0.83
+Dimensi: 2586, Akurasi: 0.71
+Dimensi: 2585, Akurasi: 0.73
+Dimensi: 2584, Akurasi: 0.78
+Dimensi: 2583, Akurasi: 0.73
+Dimensi: 2582, Akurasi: 0.85
+Dimensi: 2581, Akurasi: 0.66
+Dimensi: 2580, Akurasi: 0.68
+Dimensi: 2579, Akurasi: 0.89
+Dimensi: 2578, Akurasi: 0.85
+Dimensi: 2577, Akurasi: 0.80
+Dimensi: 2576, Akurasi: 0.81
+Dimensi: 2575, Akurasi: 0.85
+Dimensi: 2574, Akurasi: 0.72
+Dimensi: 2573, Akurasi: 0.71
+Dimensi: 2572, Akurasi: 0.69
+Dimensi: 2571, Akurasi: 0.60
+Dimensi: 2570, Akurasi: 0.67
+Dimensi: 2569, Akurasi: 0.68
+Dimensi: 2568, Akurasi: 0.64
+Dimensi: 2567, Akurasi: 0.56
+Dimensi: 2566, Akurasi: 0.80
+Dimensi: 2565, Akurasi: 0.67
+Dimensi: 2564, Akurasi: 0.69
+Dimensi: 2563, Akurasi: 0.80
+Dimensi: 2562, Akurasi: 0.79
+Dimensi: 2561, Akurasi: 0.74
+Dimensi: 2560, Akurasi: 0.80
+Dimensi: 2559, Akurasi: 0.86
+Dimensi: 2558, Akurasi: 0.58
+Dimensi: 2557, Akurasi: 0.85
+Dimensi: 2556, Akurasi: 0.78
+Dimensi: 2555, Akurasi: 0.68
+Dimensi: 2554, Akurasi: 0.53
+Dimensi: 2553, Akurasi: 0.61
+Dimensi: 2552, Akurasi: 0.61
+Dimensi: 2551, Akurasi: 0.61
+Dimensi: 2550, Akurasi: 0.79
+Dimensi: 2549, Akurasi: 0.70
+Dimensi: 2548, Akurasi: 0.82
+Dimensi: 2547, Akurasi: 0.70
+Dimensi: 2546, Akurasi: 0.71
+Dimensi: 2545, Akurasi: 0.51
+Dimensi: 2544, Akurasi: 0.54
+Dimensi: 2543, Akurasi: 0.73
+Dimensi: 2542, Akurasi: 0.59
+Dimensi: 2541, Akurasi: 0.70
+Dimensi: 2540, Akurasi: 0.54
+Dimensi: 2539, Akurasi: 0.77
+Dimensi: 2538, Akurasi: 0.53
+Dimensi: 2537, Akurasi: 0.86
+Dimensi: 2536, Akurasi: 0.70
+Dimensi: 2535, Akurasi: 0.86
+Dimensi: 2534, Akurasi: 0.78
+Dimensi: 2533, Akurasi: 0.73
+Dimensi: 2532, Akurasi: 0.68
+Dimensi: 2531, Akurasi: 0.82
+Dimensi: 2530, Akurasi: 0.89
+Dimensi: 2529, Akurasi: 0.71
+Dimensi: 2528, Akurasi: 0.90
+Dimensi: 2527, Akurasi: 0.70
+Dimensi: 2526, Akurasi: 0.80
+Dimensi: 2525, Akurasi: 0.72
+Dimensi: 2524, Akurasi: 0.78
+Dimensi: 2523, Akurasi: 0.87
+Dimensi: 2522, Akurasi: 0.86
+Dimensi: 2521, Akurasi: 0.72
+Dimensi: 2520, Akurasi: 0.80
+Dimensi: 2519, Akurasi: 0.62
+Dimensi: 2518, Akurasi: 0.50
+Dimensi: 2517, Akurasi: 0.83
+Dimensi: 2516, Akurasi: 0.74
+Dimensi: 2515, Akurasi: 0.60
+Dimensi: 2514, Akurasi: 0.73
+Dimensi: 2513, Akurasi: 0.61
+Dimensi: 2512, Akurasi: 0.62
+Dimensi: 2511, Akurasi: 0.70
+Dimensi: 2510, Akurasi: 0.55
+Dimensi: 2509, Akurasi: 0.51
+Dimensi: 2508, Akurasi: 0.81
+Dimensi: 2507, Akurasi: 0.80
+Dimensi: 2506, Akurasi: 0.86
+Dimensi: 2505, Akurasi: 0.79
+Dimensi: 2504, Akurasi: 0.84
+Dimensi: 2503, Akurasi: 0.55
+Dimensi: 2502, Akurasi: 0.74
+Dimensi: 2501, Akurasi: 0.56
+Dimensi: 2500, Akurasi: 0.73
+Dimensi: 2499, Akurasi: 0.89
+Dimensi: 2498, Akurasi: 0.78
+Dimensi: 2497, Akurasi: 0.51
+Dimensi: 2496, Akurasi: 0.63
+Dimensi: 2495, Akurasi: 0.67
+Dimensi: 2494, Akurasi: 0.79
+Dimensi: 2493, Akurasi: 0.67
+Dimensi: 2492, Akurasi: 0.63
+Dimensi: 2491, Akurasi: 0.81
+Dimensi: 2490, Akurasi: 0.82
+Dimensi: 2489, Akurasi: 0.78
+Dimensi: 2488, Akurasi: 0.71
+Dimensi: 2487, Akurasi: 0.78
+Dimensi: 2486, Akurasi: 0.80
+Dimensi: 2485, Akurasi: 0.71
+Dimensi: 2484, Akurasi: 0.82
+Dimensi: 2483, Akurasi: 0.77
+Dimensi: 2482, Akurasi: 0.64
+Dimensi: 2481, Akurasi: 0.73
+Dimensi: 2480, Akurasi: 0.72
+Dimensi: 2479, Akurasi: 0.66
+Dimensi: 2478, Akurasi: 0.72
+Dimensi: 2477, Akurasi: 0.80
+Dimensi: 2476, Akurasi: 0.66
+Dimensi: 2475, Akurasi: 0.54
+Dimensi: 2474, Akurasi: 0.82
+Dimensi: 2473, Akurasi: 0.80
+Dimensi: 2472, Akurasi: 0.72
+Dimensi: 2471, Akurasi: 0.67
+Dimensi: 2470, Akurasi: 0.74
+Dimensi: 2469, Akurasi: 0.54
+Dimensi: 2468, Akurasi: 0.74
+Dimensi: 2467, Akurasi: 0.84
+Dimensi: 2466, Akurasi: 0.60
+Dimensi: 2465, Akurasi: 0.54
+Dimensi: 2464, Akurasi: 0.82
+Dimensi: 2463, Akurasi: 0.82
+Dimensi: 2462, Akurasi: 0.71
+Dimensi: 2461, Akurasi: 0.72
+Dimensi: 2460, Akurasi: 0.79
+Dimensi: 2459, Akurasi: 0.81
+Dimensi: 2458, Akurasi: 0.78
+Dimensi: 2457, Akurasi: 0.85
+Dimensi: 2456, Akurasi: 0.56
+Dimensi: 2455, Akurasi: 0.78
+Dimensi: 2454, Akurasi: 0.69
+Dimensi: 2453, Akurasi: 0.75
+Dimensi: 2452, Akurasi: 0.56
+Dimensi: 2451, Akurasi: 0.60
+Dimensi: 2450, Akurasi: 0.64
+Dimensi: 2449, Akurasi: 0.61
+Dimensi: 2448, Akurasi: 0.85
+Dimensi: 2447, Akurasi: 0.90
+Dimensi: 2446, Akurasi: 0.86
+Dimensi: 2445, Akurasi: 0.80
+Dimensi: 2444, Akurasi: 0.68
+Dimensi: 2443, Akurasi: 0.80
+Dimensi: 2442, Akurasi: 0.77
+Dimensi: 2441, Akurasi: 0.82
+Dimensi: 2440, Akurasi: 0.87
+Dimensi: 2439, Akurasi: 0.84
+Dimensi: 2438, Akurasi: 0.88
+Dimensi: 2437, Akurasi: 0.74
+Dimensi: 2436, Akurasi: 0.83
+Dimensi: 2435, Akurasi: 0.63
+Dimensi: 2434, Akurasi: 0.75
+Dimensi: 2433, Akurasi: 0.65
+Dimensi: 2432, Akurasi: 0.87
+Dimensi: 2431, Akurasi: 0.84
+Dimensi: 2430, Akurasi: 0.79
+Dimensi: 2429, Akurasi: 0.78
+Dimensi: 2428, Akurasi: 0.55
+Dimensi: 2427, Akurasi: 0.80
+Dimensi: 2426, Akurasi: 0.72
+Dimensi: 2425, Akurasi: 0.58
+Dimensi: 2424, Akurasi: 0.70
+Dimensi: 2423, Akurasi: 0.73
+Dimensi: 2422, Akurasi: 0.65
+Dimensi: 2421, Akurasi: 0.54
+Dimensi: 2420, Akurasi: 0.83
+Dimensi: 2419, Akurasi: 0.77
+Dimensi: 2418, Akurasi: 0.77
+Dimensi: 2417, Akurasi: 0.58
+Dimensi: 2416, Akurasi: 0.89
+Dimensi: 2415, Akurasi: 0.72
+Dimensi: 2414, Akurasi: 0.93
+Dimensi: 2413, Akurasi: 0.70
+Dimensi: 2412, Akurasi: 0.76
+Dimensi: 2411, Akurasi: 0.78
+Dimensi: 2410, Akurasi: 0.55
+Dimensi: 2409, Akurasi: 0.79
+Dimensi: 2408, Akurasi: 0.72
+Dimensi: 2407, Akurasi: 0.77
+Dimensi: 2406, Akurasi: 0.69
+Dimensi: 2405, Akurasi: 0.90
+Dimensi: 2404, Akurasi: 0.75
+Dimensi: 2403, Akurasi: 0.88
+Dimensi: 2402, Akurasi: 0.87
+Dimensi: 2401, Akurasi: 0.72
+Dimensi: 2400, Akurasi: 0.80
+Dimensi: 2399, Akurasi: 0.80
+Dimensi: 2398, Akurasi: 0.85
+Dimensi: 2397, Akurasi: 0.77
+Dimensi: 2396, Akurasi: 0.79
+Dimensi: 2395, Akurasi: 0.86
+Dimensi: 2394, Akurasi: 0.66
+Dimensi: 2393, Akurasi: 0.77
+Dimensi: 2392, Akurasi: 0.73
+Dimensi: 2391, Akurasi: 0.64
+Dimensi: 2390, Akurasi: 0.72
+Dimensi: 2389, Akurasi: 0.81
+Dimensi: 2388, Akurasi: 0.72
+Dimensi: 2387, Akurasi: 0.67
+Dimensi: 2386, Akurasi: 0.76
+Dimensi: 2385, Akurasi: 0.86
+Dimensi: 2384, Akurasi: 0.74
+Dimensi: 2383, Akurasi: 0.72
+Dimensi: 2382, Akurasi: 0.82
+Dimensi: 2381, Akurasi: 0.73
+Dimensi: 2380, Akurasi: 0.68
+Dimensi: 2379, Akurasi: 0.62
+Dimensi: 2378, Akurasi: 0.73
+Dimensi: 2377, Akurasi: 0.77
+Dimensi: 2376, Akurasi: 0.86
+Dimensi: 2375, Akurasi: 0.68
+Dimensi: 2374, Akurasi: 0.82
+Dimensi: 2373, Akurasi: 0.82
+Dimensi: 2372, Akurasi: 0.57
+Dimensi: 2371, Akurasi: 0.76
+Dimensi: 2370, Akurasi: 0.79
+Dimensi: 2369, Akurasi: 0.77
+Dimensi: 2368, Akurasi: 0.70
+Dimensi: 2367, Akurasi: 0.82
+Dimensi: 2366, Akurasi: 0.65
+Dimensi: 2365, Akurasi: 0.61
+Dimensi: 2364, Akurasi: 0.53
+Dimensi: 2363, Akurasi: 0.75
+Dimensi: 2362, Akurasi: 0.64
+Dimensi: 2361, Akurasi: 0.50
+Dimensi: 2360, Akurasi: 0.88
+Dimensi: 2359, Akurasi: 0.71
+Dimensi: 2358, Akurasi: 0.80
+Dimensi: 2357, Akurasi: 0.72
+Dimensi: 2356, Akurasi: 0.71
+Dimensi: 2355, Akurasi: 0.59
+Dimensi: 2354, Akurasi: 0.78
+Dimensi: 2353, Akurasi: 0.87
+Dimensi: 2352, Akurasi: 0.81
+Dimensi: 2351, Akurasi: 0.81
+Dimensi: 2350, Akurasi: 0.75
+Dimensi: 2349, Akurasi: 0.53
+Dimensi: 2348, Akurasi: 0.74
+Dimensi: 2347, Akurasi: 0.85
+Dimensi: 2346, Akurasi: 0.62
+Dimensi: 2345, Akurasi: 0.72
+Dimensi: 2344, Akurasi: 0.54
+Dimensi: 2343, Akurasi: 0.83
+Dimensi: 2342, Akurasi: 0.68
+Dimensi: 2341, Akurasi: 0.73
+Dimensi: 2340, Akurasi: 0.80
+Dimensi: 2339, Akurasi: 0.71
+Dimensi: 2338, Akurasi: 0.69
+Dimensi: 2337, Akurasi: 0.75
+Dimensi: 2336, Akurasi: 0.79
+Dimensi: 2335, Akurasi: 0.77
+Dimensi: 2334, Akurasi: 0.61
+Dimensi: 2333, Akurasi: 0.69
+Dimensi: 2332, Akurasi: 0.82
+Dimensi: 2331, Akurasi: 0.55
+Dimensi: 2330, Akurasi: 0.81
+Dimensi: 2329, Akurasi: 0.85
+Dimensi: 2328, Akurasi: 0.74
+Dimensi: 2327, Akurasi: 0.81
+Dimensi: 2326, Akurasi: 0.78
+Dimensi: 2325, Akurasi: 0.75
+Dimensi: 2324, Akurasi: 0.73
+Dimensi: 2323, Akurasi: 0.82
+Dimensi: 2322, Akurasi: 0.77
+Dimensi: 2321, Akurasi: 0.70
+Dimensi: 2320, Akurasi: 0.78
+Dimensi: 2319, Akurasi: 0.71
+Dimensi: 2318, Akurasi: 0.57
+Dimensi: 2317, Akurasi: 0.75
+Dimensi: 2316, Akurasi: 0.85
+Dimensi: 2315, Akurasi: 0.82
+Dimensi: 2314, Akurasi: 0.59
+Dimensi: 2313, Akurasi: 0.54
+Dimensi: 2312, Akurasi: 0.75
+Dimensi: 2311, Akurasi: 0.82
+Dimensi: 2310, Akurasi: 0.85
+Dimensi: 2309, Akurasi: 0.61
+Dimensi: 2308, Akurasi: 0.86
+Dimensi: 2307, Akurasi: 0.72
+Dimensi: 2306, Akurasi: 0.66
+Dimensi: 2305, Akurasi: 0.55
+Dimensi: 2304, Akurasi: 0.71
+Dimensi: 2303, Akurasi: 0.53
+Dimensi: 2302, Akurasi: 0.71
+Dimensi: 2301, Akurasi: 0.81
+Dimensi: 2300, Akurasi: 0.73
+Dimensi: 2299, Akurasi: 0.77
+Dimensi: 2298, Akurasi: 0.74
+Dimensi: 2297, Akurasi: 0.68
+Dimensi: 2296, Akurasi: 0.81
+Dimensi: 2295, Akurasi: 0.79
+Dimensi: 2294, Akurasi: 0.83
+Dimensi: 2293, Akurasi: 0.84
+Dimensi: 2292, Akurasi: 0.71
+Dimensi: 2291, Akurasi: 0.57
+Dimensi: 2290, Akurasi: 0.81
+Dimensi: 2289, Akurasi: 0.67
+Dimensi: 2288, Akurasi: 0.77
+Dimensi: 2287, Akurasi: 0.72
+Dimensi: 2286, Akurasi: 0.73
+Dimensi: 2285, Akurasi: 0.82
+Dimensi: 2284, Akurasi: 0.62
+Dimensi: 2283, Akurasi: 0.76
+Dimensi: 2282, Akurasi: 0.71
+Dimensi: 2281, Akurasi: 0.68
+Dimensi: 2280, Akurasi: 0.76
+Dimensi: 2279, Akurasi: 0.73
+Dimensi: 2278, Akurasi: 0.74
+Dimensi: 2277, Akurasi: 0.72
+Dimensi: 2276, Akurasi: 0.88
+Dimensi: 2275, Akurasi: 0.71
+Dimensi: 2274, Akurasi: 0.80
+Dimensi: 2273, Akurasi: 0.73
+Dimensi: 2272, Akurasi: 0.66
+Dimensi: 2271, Akurasi: 0.87
+Dimensi: 2270, Akurasi: 0.67
+Dimensi: 2269, Akurasi: 0.90
+Dimensi: 2268, Akurasi: 0.78
+Dimensi: 2267, Akurasi: 0.92
+Dimensi: 2266, Akurasi: 0.77
+Dimensi: 2265, Akurasi: 0.63
+Dimensi: 2264, Akurasi: 0.76
+Dimensi: 2263, Akurasi: 0.82
+Dimensi: 2262, Akurasi: 0.82
+Dimensi: 2261, Akurasi: 0.79
+Dimensi: 2260, Akurasi: 0.77
+Dimensi: 2259, Akurasi: 0.61
+Dimensi: 2258, Akurasi: 0.69
+Dimensi: 2257, Akurasi: 0.79
+Dimensi: 2256, Akurasi: 0.89
+Dimensi: 2255, Akurasi: 0.87
+Dimensi: 2254, Akurasi: 0.69
+Dimensi: 2253, Akurasi: 0.79
+Dimensi: 2252, Akurasi: 0.73
+Dimensi: 2251, Akurasi: 0.76
+Dimensi: 2250, Akurasi: 0.69
+Dimensi: 2249, Akurasi: 0.77
+Dimensi: 2248, Akurasi: 0.88
+Dimensi: 2247, Akurasi: 0.79
+Dimensi: 2246, Akurasi: 0.73
+Dimensi: 2245, Akurasi: 0.69
+Dimensi: 2244, Akurasi: 0.81
+Dimensi: 2243, Akurasi: 0.72
+Dimensi: 2242, Akurasi: 0.72
+Dimensi: 2241, Akurasi: 0.64
+Dimensi: 2240, Akurasi: 0.54
+Dimensi: 2239, Akurasi: 0.83
+Dimensi: 2238, Akurasi: 0.72
+Dimensi: 2237, Akurasi: 0.83
+Dimensi: 2236, Akurasi: 0.74
+Dimensi: 2235, Akurasi: 0.75
+Dimensi: 2234, Akurasi: 0.81
+Dimensi: 2233, Akurasi: 0.79
+Dimensi: 2232, Akurasi: 0.72
+Dimensi: 2231, Akurasi: 0.70
+Dimensi: 2230, Akurasi: 0.87
+Dimensi: 2229, Akurasi: 0.74
+Dimensi: 2228, Akurasi: 0.84
+Dimensi: 2227, Akurasi: 0.71
+Dimensi: 2226, Akurasi: 0.67
+Dimensi: 2225, Akurasi: 0.63
+Dimensi: 2224, Akurasi: 0.65
+Dimensi: 2223, Akurasi: 0.80
+Dimensi: 2222, Akurasi: 0.61
+Dimensi: 2221, Akurasi: 0.82
+Dimensi: 2220, Akurasi: 0.73
+Dimensi: 2219, Akurasi: 0.80
+Dimensi: 2218, Akurasi: 0.70
+Dimensi: 2217, Akurasi: 0.77
+Dimensi: 2216, Akurasi: 0.72
+Dimensi: 2215, Akurasi: 0.77
+Dimensi: 2214, Akurasi: 0.77
+Dimensi: 2213, Akurasi: 0.86
+Dimensi: 2212, Akurasi: 0.81
+Dimensi: 2211, Akurasi: 0.94
+Dimensi: 2210, Akurasi: 0.82
+Dimensi: 2209, Akurasi: 0.82
+Dimensi: 2208, Akurasi: 0.81
+Dimensi: 2207, Akurasi: 0.85
+Dimensi: 2206, Akurasi: 0.79
+Dimensi: 2205, Akurasi: 0.72
+Dimensi: 2204, Akurasi: 0.62
+Dimensi: 2203, Akurasi: 0.84
+Dimensi: 2202, Akurasi: 0.69
+Dimensi: 2201, Akurasi: 0.73
+Dimensi: 2200, Akurasi: 0.54
+Dimensi: 2199, Akurasi: 0.73
+Dimensi: 2198, Akurasi: 0.73
+Dimensi: 2197, Akurasi: 0.72
+Dimensi: 2196, Akurasi: 0.54
+Dimensi: 2195, Akurasi: 0.67
+Dimensi: 2194, Akurasi: 0.92
+Dimensi: 2193, Akurasi: 0.81
+Dimensi: 2192, Akurasi: 0.84
+Dimensi: 2191, Akurasi: 0.84
+Dimensi: 2190, Akurasi: 0.77
+Dimensi: 2189, Akurasi: 0.69
+Dimensi: 2188, Akurasi: 0.82
+Dimensi: 2187, Akurasi: 0.76
+Dimensi: 2186, Akurasi: 0.81
+Dimensi: 2185, Akurasi: 0.81
+Dimensi: 2184, Akurasi: 0.70
+Dimensi: 2183, Akurasi: 0.71
+Dimensi: 2182, Akurasi: 0.83
+Dimensi: 2181, Akurasi: 0.76
+Dimensi: 2180, Akurasi: 0.79
+Dimensi: 2179, Akurasi: 0.80
+Dimensi: 2178, Akurasi: 0.88
+Dimensi: 2177, Akurasi: 0.64
+Dimensi: 2176, Akurasi: 0.82
+Dimensi: 2175, Akurasi: 0.79
+Dimensi: 2174, Akurasi: 0.80
+Dimensi: 2173, Akurasi: 0.70
+Dimensi: 2172, Akurasi: 0.75
+Dimensi: 2171, Akurasi: 0.81
+Dimensi: 2170, Akurasi: 0.72
+Dimensi: 2169, Akurasi: 0.73
+Dimensi: 2168, Akurasi: 0.75
+Dimensi: 2167, Akurasi: 0.58
+Dimensi: 2166, Akurasi: 0.74
+Dimensi: 2165, Akurasi: 0.76
+Dimensi: 2164, Akurasi: 0.64
+Dimensi: 2163, Akurasi: 0.72
+Dimensi: 2162, Akurasi: 0.72
+Dimensi: 2161, Akurasi: 0.84
+Dimensi: 2160, Akurasi: 0.82
+Dimensi: 2159, Akurasi: 0.69
+Dimensi: 2158, Akurasi: 0.80
+Dimensi: 2157, Akurasi: 0.74
+Dimensi: 2156, Akurasi: 0.66
+Dimensi: 2155, Akurasi: 0.67
+Dimensi: 2154, Akurasi: 0.77
+Dimensi: 2153, Akurasi: 0.69
+Dimensi: 2152, Akurasi: 0.71
+Dimensi: 2151, Akurasi: 0.75
+Dimensi: 2150, Akurasi: 0.84
+Dimensi: 2149, Akurasi: 0.77
+Dimensi: 2148, Akurasi: 0.79
+Dimensi: 2147, Akurasi: 0.81
+Dimensi: 2146, Akurasi: 0.72
+Dimensi: 2145, Akurasi: 0.78
+Dimensi: 2144, Akurasi: 0.69
+Dimensi: 2143, Akurasi: 0.62
+Dimensi: 2142, Akurasi: 0.88
+Dimensi: 2141, Akurasi: 0.86
+Dimensi: 2140, Akurasi: 0.84
+Dimensi: 2139, Akurasi: 0.53
+Dimensi: 2138, Akurasi: 0.76
+Dimensi: 2137, Akurasi: 0.79
+Dimensi: 2136, Akurasi: 0.88
+Dimensi: 2135, Akurasi: 0.81
+Dimensi: 2134, Akurasi: 0.87
+Dimensi: 2133, Akurasi: 0.83
+Dimensi: 2132, Akurasi: 0.78
+Dimensi: 2131, Akurasi: 0.87
+Dimensi: 2130, Akurasi: 0.72
+Dimensi: 2129, Akurasi: 0.64
+Dimensi: 2128, Akurasi: 0.66
+Dimensi: 2127, Akurasi: 0.67
+Dimensi: 2126, Akurasi: 0.77
+Dimensi: 2125, Akurasi: 0.78
+Dimensi: 2124, Akurasi: 0.69
+Dimensi: 2123, Akurasi: 0.74
+Dimensi: 2122, Akurasi: 0.58
+Dimensi: 2121, Akurasi: 0.67
+Dimensi: 2120, Akurasi: 0.74
+Dimensi: 2119, Akurasi: 0.65
+Dimensi: 2118, Akurasi: 0.82
+Dimensi: 2117, Akurasi: 0.80
+Dimensi: 2116, Akurasi: 0.75
+Dimensi: 2115, Akurasi: 0.77
+Dimensi: 2114, Akurasi: 0.81
+Dimensi: 2113, Akurasi: 0.59
+Dimensi: 2112, Akurasi: 0.79
+Dimensi: 2111, Akurasi: 0.67
+Dimensi: 2110, Akurasi: 0.83
+Dimensi: 2109, Akurasi: 0.80
+Dimensi: 2108, Akurasi: 0.64
+Dimensi: 2107, Akurasi: 0.79
+Dimensi: 2106, Akurasi: 0.74
+Dimensi: 2105, Akurasi: 0.59
+Dimensi: 2104, Akurasi: 0.69
+Dimensi: 2103, Akurasi: 0.74
+Dimensi: 2102, Akurasi: 0.79
+Dimensi: 2101, Akurasi: 0.62
+Dimensi: 2100, Akurasi: 0.89
+Dimensi: 2099, Akurasi: 0.71
+Dimensi: 2098, Akurasi: 0.57
+Dimensi: 2097, Akurasi: 0.62
+Dimensi: 2096, Akurasi: 0.70
+Dimensi: 2095, Akurasi: 0.73
+Dimensi: 2094, Akurasi: 0.74
+Dimensi: 2093, Akurasi: 0.73
+Dimensi: 2092, Akurasi: 0.71
+Dimensi: 2091, Akurasi: 0.87
+Dimensi: 2090, Akurasi: 0.83
+Dimensi: 2089, Akurasi: 0.82
+Dimensi: 2088, Akurasi: 0.71
+Dimensi: 2087, Akurasi: 0.76
+Dimensi: 2086, Akurasi: 0.76
+Dimensi: 2085, Akurasi: 0.63
+Dimensi: 2084, Akurasi: 0.88
+Dimensi: 2083, Akurasi: 0.82
+Dimensi: 2082, Akurasi: 0.54
+Dimensi: 2081, Akurasi: 0.64
+Dimensi: 2080, Akurasi: 0.60
+Dimensi: 2079, Akurasi: 0.74
+Dimensi: 2078, Akurasi: 0.86
+Dimensi: 2077, Akurasi: 0.73
+Dimensi: 2076, Akurasi: 0.85
+Dimensi: 2075, Akurasi: 0.63
+Dimensi: 2074, Akurasi: 0.67
+Dimensi: 2073, Akurasi: 0.74
+Dimensi: 2072, Akurasi: 0.78
+Dimensi: 2071, Akurasi: 0.69
+Dimensi: 2070, Akurasi: 0.82
+Dimensi: 2069, Akurasi: 0.60
+Dimensi: 2068, Akurasi: 0.72
+Dimensi: 2067, Akurasi: 0.69
+Dimensi: 2066, Akurasi: 0.76
+Dimensi: 2065, Akurasi: 0.85
+Dimensi: 2064, Akurasi: 0.77
+Dimensi: 2063, Akurasi: 0.85
+Dimensi: 2062, Akurasi: 0.52
+Dimensi: 2061, Akurasi: 0.83
+Dimensi: 2060, Akurasi: 0.66
+Dimensi: 2059, Akurasi: 0.74
+Dimensi: 2058, Akurasi: 0.82
+Dimensi: 2057, Akurasi: 0.74
+Dimensi: 2056, Akurasi: 0.53
+Dimensi: 2055, Akurasi: 0.83
+Dimensi: 2054, Akurasi: 0.63
+Dimensi: 2053, Akurasi: 0.69
+Dimensi: 2052, Akurasi: 0.58
+Dimensi: 2051, Akurasi: 0.72
+Dimensi: 2050, Akurasi: 0.84
+Dimensi: 2049, Akurasi: 0.65
+Dimensi: 2048, Akurasi: 0.59
+Dimensi: 2047, Akurasi: 0.75
+Dimensi: 2046, Akurasi: 0.81
+Dimensi: 2045, Akurasi: 0.68
+Dimensi: 2044, Akurasi: 0.61
+Dimensi: 2043, Akurasi: 0.70
+Dimensi: 2042, Akurasi: 0.66
+Dimensi: 2041, Akurasi: 0.58
+Dimensi: 2040, Akurasi: 0.92
+Dimensi: 2039, Akurasi: 0.65
+Dimensi: 2038, Akurasi: 0.56
+Dimensi: 2037, Akurasi: 0.79
+Dimensi: 2036, Akurasi: 0.73
+Dimensi: 2035, Akurasi: 0.53
+Dimensi: 2034, Akurasi: 0.74
+Dimensi: 2033, Akurasi: 0.79
+Dimensi: 2032, Akurasi: 0.69
+Dimensi: 2031, Akurasi: 0.77
+Dimensi: 2030, Akurasi: 0.58
+Dimensi: 2029, Akurasi: 0.66
+Dimensi: 2028, Akurasi: 0.79
+Dimensi: 2027, Akurasi: 0.70
+Dimensi: 2026, Akurasi: 0.65
+Dimensi: 2025, Akurasi: 0.73
+Dimensi: 2024, Akurasi: 0.84
+Dimensi: 2023, Akurasi: 0.65
+Dimensi: 2022, Akurasi: 0.58
+Dimensi: 2021, Akurasi: 0.70
+Dimensi: 2020, Akurasi: 0.79
+Dimensi: 2019, Akurasi: 0.65
+Dimensi: 2018, Akurasi: 0.77
+Dimensi: 2017, Akurasi: 0.69
+Dimensi: 2016, Akurasi: 0.79
+Dimensi: 2015, Akurasi: 0.77
+Dimensi: 2014, Akurasi: 0.69
+Dimensi: 2013, Akurasi: 0.71
+Dimensi: 2012, Akurasi: 0.74
+Dimensi: 2011, Akurasi: 0.61
+Dimensi: 2010, Akurasi: 0.79
+Dimensi: 2009, Akurasi: 0.67
+Dimensi: 2008, Akurasi: 0.61
+Dimensi: 2007, Akurasi: 0.86
+Dimensi: 2006, Akurasi: 0.87
+Dimensi: 2005, Akurasi: 0.84
+Dimensi: 2004, Akurasi: 0.67
+Dimensi: 2003, Akurasi: 0.86
+Dimensi: 2002, Akurasi: 0.80
+Dimensi: 2001, Akurasi: 0.78
+Dimensi: 2000, Akurasi: 0.72
+Dimensi: 1999, Akurasi: 0.76
+Dimensi: 1998, Akurasi: 0.54
+Dimensi: 1997, Akurasi: 0.69
+Dimensi: 1996, Akurasi: 0.79
+Dimensi: 1995, Akurasi: 0.72
+Dimensi: 1994, Akurasi: 0.72
+Dimensi: 1993, Akurasi: 0.72
+Dimensi: 1992, Akurasi: 0.53
+Dimensi: 1991, Akurasi: 0.76
+Dimensi: 1990, Akurasi: 0.66
+Dimensi: 1989, Akurasi: 0.63
+Dimensi: 1988, Akurasi: 0.82
+Dimensi: 1987, Akurasi: 0.71
+Dimensi: 1986, Akurasi: 0.72
+Dimensi: 1985, Akurasi: 0.79
+Dimensi: 1984, Akurasi: 0.70
+Dimensi: 1983, Akurasi: 0.54
+Dimensi: 1982, Akurasi: 0.80
+Dimensi: 1981, Akurasi: 0.61
+Dimensi: 1980, Akurasi: 0.86
+Dimensi: 1979, Akurasi: 0.69
+Dimensi: 1978, Akurasi: 0.72
+Dimensi: 1977, Akurasi: 0.80
+Dimensi: 1976, Akurasi: 0.84
+Dimensi: 1975, Akurasi: 0.72
+Dimensi: 1974, Akurasi: 0.73
+Dimensi: 1973, Akurasi: 0.68
+Dimensi: 1972, Akurasi: 0.74
+Dimensi: 1971, Akurasi: 0.77
+Dimensi: 1970, Akurasi: 0.59
+Dimensi: 1969, Akurasi: 0.62
+Dimensi: 1968, Akurasi: 0.81
+Dimensi: 1967, Akurasi: 0.85
+Dimensi: 1966, Akurasi: 0.81
+Dimensi: 1965, Akurasi: 0.78
+Dimensi: 1964, Akurasi: 0.66
+Dimensi: 1963, Akurasi: 0.78
+Dimensi: 1962, Akurasi: 0.78
+Dimensi: 1961, Akurasi: 0.52
+Dimensi: 1960, Akurasi: 0.83
+Dimensi: 1959, Akurasi: 0.75
+Dimensi: 1958, Akurasi: 0.52
+Dimensi: 1957, Akurasi: 0.68
+Dimensi: 1956, Akurasi: 0.81
+Dimensi: 1955, Akurasi: 0.71
+Dimensi: 1954, Akurasi: 0.71
+Dimensi: 1953, Akurasi: 0.60
+Dimensi: 1952, Akurasi: 0.71
+Dimensi: 1951, Akurasi: 0.90
+Dimensi: 1950, Akurasi: 0.73
+Dimensi: 1949, Akurasi: 0.75
+Dimensi: 1948, Akurasi: 0.78
+Dimensi: 1947, Akurasi: 0.77
+Dimensi: 1946, Akurasi: 0.72
+Dimensi: 1945, Akurasi: 0.63
+Dimensi: 1944, Akurasi: 0.79
+Dimensi: 1943, Akurasi: 0.62
+Dimensi: 1942, Akurasi: 0.72
+Dimensi: 1941, Akurasi: 0.87
+Dimensi: 1940, Akurasi: 0.70
+Dimensi: 1939, Akurasi: 0.67
+Dimensi: 1938, Akurasi: 0.82
+Dimensi: 1937, Akurasi: 0.60
+Dimensi: 1936, Akurasi: 0.70
+Dimensi: 1935, Akurasi: 0.80
+Dimensi: 1934, Akurasi: 0.86
+Dimensi: 1933, Akurasi: 0.80
+Dimensi: 1932, Akurasi: 0.62
+Dimensi: 1931, Akurasi: 0.71
+Dimensi: 1930, Akurasi: 0.80
+Dimensi: 1929, Akurasi: 0.80
+Dimensi: 1928, Akurasi: 0.69
+Dimensi: 1927, Akurasi: 0.78
+Dimensi: 1926, Akurasi: 0.69
+Dimensi: 1925, Akurasi: 0.79
+Dimensi: 1924, Akurasi: 0.57
+Dimensi: 1923, Akurasi: 0.77
+Dimensi: 1922, Akurasi: 0.76
+Dimensi: 1921, Akurasi: 0.81
+Dimensi: 1920, Akurasi: 0.72
+Dimensi: 1919, Akurasi: 0.65
+Dimensi: 1918, Akurasi: 0.72
+Dimensi: 1917, Akurasi: 0.77
+Dimensi: 1916, Akurasi: 0.79
+Dimensi: 1915, Akurasi: 0.74
+Dimensi: 1914, Akurasi: 0.71
+Dimensi: 1913, Akurasi: 0.85
+Dimensi: 1912, Akurasi: 0.78
+Dimensi: 1911, Akurasi: 0.70
+Dimensi: 1910, Akurasi: 0.69
+Dimensi: 1909, Akurasi: 0.60
+Dimensi: 1908, Akurasi: 0.74
+Dimensi: 1907, Akurasi: 0.76
+Dimensi: 1906, Akurasi: 0.82
+Dimensi: 1905, Akurasi: 0.79
+Dimensi: 1904, Akurasi: 0.75
+Dimensi: 1903, Akurasi: 0.81
+Dimensi: 1902, Akurasi: 0.88
+Dimensi: 1901, Akurasi: 0.62
+Dimensi: 1900, Akurasi: 0.80
+Dimensi: 1899, Akurasi: 0.67
+Dimensi: 1898, Akurasi: 0.88
+Dimensi: 1897, Akurasi: 0.79
+Dimensi: 1896, Akurasi: 0.63
+Dimensi: 1895, Akurasi: 0.68
+Dimensi: 1894, Akurasi: 0.83
+Dimensi: 1893, Akurasi: 0.55
+Dimensi: 1892, Akurasi: 0.76
+Dimensi: 1891, Akurasi: 0.86
+Dimensi: 1890, Akurasi: 0.76
+Dimensi: 1889, Akurasi: 0.67
+Dimensi: 1888, Akurasi: 0.60
+Dimensi: 1887, Akurasi: 0.79
+Dimensi: 1886, Akurasi: 0.73
+Dimensi: 1885, Akurasi: 0.69
+Dimensi: 1884, Akurasi: 0.65
+Dimensi: 1883, Akurasi: 0.69
+Dimensi: 1882, Akurasi: 0.78
+Dimensi: 1881, Akurasi: 0.69
+Dimensi: 1880, Akurasi: 0.84
+Dimensi: 1879, Akurasi: 0.86
+Dimensi: 1878, Akurasi: 0.60
+Dimensi: 1877, Akurasi: 0.76
+Dimensi: 1876, Akurasi: 0.83
+Dimensi: 1875, Akurasi: 0.73
+Dimensi: 1874, Akurasi: 0.81
+Dimensi: 1873, Akurasi: 0.77
+Dimensi: 1872, Akurasi: 0.69
+Dimensi: 1871, Akurasi: 0.64
+Dimensi: 1870, Akurasi: 0.63
+Dimensi: 1869, Akurasi: 0.81
+Dimensi: 1868, Akurasi: 0.72
+Dimensi: 1867, Akurasi: 0.87
+Dimensi: 1866, Akurasi: 0.69
+Dimensi: 1865, Akurasi: 0.62
+Dimensi: 1864, Akurasi: 0.67
+Dimensi: 1863, Akurasi: 0.84
+Dimensi: 1862, Akurasi: 0.75
+Dimensi: 1861, Akurasi: 0.79
+Dimensi: 1860, Akurasi: 0.87
+Dimensi: 1859, Akurasi: 0.77
+Dimensi: 1858, Akurasi: 0.77
+Dimensi: 1857, Akurasi: 0.72
+Dimensi: 1856, Akurasi: 0.61
+Dimensi: 1855, Akurasi: 0.87
+Dimensi: 1854, Akurasi: 0.63
+Dimensi: 1853, Akurasi: 0.56
+Dimensi: 1852, Akurasi: 0.70
+Dimensi: 1851, Akurasi: 0.89
+Dimensi: 1850, Akurasi: 0.80
+Dimensi: 1849, Akurasi: 0.78
+Dimensi: 1848, Akurasi: 0.72
+Dimensi: 1847, Akurasi: 0.67
+Dimensi: 1846, Akurasi: 0.80
+Dimensi: 1845, Akurasi: 0.68
+Dimensi: 1844, Akurasi: 0.85
+Dimensi: 1843, Akurasi: 0.69
+Dimensi: 1842, Akurasi: 0.77
+Dimensi: 1841, Akurasi: 0.53
+Dimensi: 1840, Akurasi: 0.60
+Dimensi: 1839, Akurasi: 0.71
+Dimensi: 1838, Akurasi: 0.78
+Dimensi: 1837, Akurasi: 0.75
+Dimensi: 1836, Akurasi: 0.75
+Dimensi: 1835, Akurasi: 0.77
+Dimensi: 1834, Akurasi: 0.55
+Dimensi: 1833, Akurasi: 0.75
+Dimensi: 1832, Akurasi: 0.65
+Dimensi: 1831, Akurasi: 0.54
+Dimensi: 1830, Akurasi: 0.80
+Dimensi: 1829, Akurasi: 0.71
+Dimensi: 1828, Akurasi: 0.77
+Dimensi: 1827, Akurasi: 0.79
+Dimensi: 1826, Akurasi: 0.70
+Dimensi: 1825, Akurasi: 0.81
+Dimensi: 1824, Akurasi: 0.74
+Dimensi: 1823, Akurasi: 0.61
+Dimensi: 1822, Akurasi: 0.63
+Dimensi: 1821, Akurasi: 0.54
+Dimensi: 1820, Akurasi: 0.68
+Dimensi: 1819, Akurasi: 0.81
+Dimensi: 1818, Akurasi: 0.85
+Dimensi: 1817, Akurasi: 0.73
+Dimensi: 1816, Akurasi: 0.71
+Dimensi: 1815, Akurasi: 0.59
+Dimensi: 1814, Akurasi: 0.79
+Dimensi: 1813, Akurasi: 0.72
+Dimensi: 1812, Akurasi: 0.68
+Dimensi: 1811, Akurasi: 0.74
+Dimensi: 1810, Akurasi: 0.63
+Dimensi: 1809, Akurasi: 0.68
+Dimensi: 1808, Akurasi: 0.58
+Dimensi: 1807, Akurasi: 0.61
+Dimensi: 1806, Akurasi: 0.62
+Dimensi: 1805, Akurasi: 0.78
+Dimensi: 1804, Akurasi: 0.68
+Dimensi: 1803, Akurasi: 0.77
+Dimensi: 1802, Akurasi: 0.63
+Dimensi: 1801, Akurasi: 0.81
+Dimensi: 1800, Akurasi: 0.70
+Dimensi: 1799, Akurasi: 0.80
+Dimensi: 1798, Akurasi: 0.54
+Dimensi: 1797, Akurasi: 0.81
+Dimensi: 1796, Akurasi: 0.82
+Dimensi: 1795, Akurasi: 0.75
+Dimensi: 1794, Akurasi: 0.79
+Dimensi: 1793, Akurasi: 0.77
+Dimensi: 1792, Akurasi: 0.90
+Dimensi: 1791, Akurasi: 0.63
+Dimensi: 1790, Akurasi: 0.81
+Dimensi: 1789, Akurasi: 0.76
+Dimensi: 1788, Akurasi: 0.67
+Dimensi: 1787, Akurasi: 0.61
+Dimensi: 1786, Akurasi: 0.58
+Dimensi: 1785, Akurasi: 0.81
+Dimensi: 1784, Akurasi: 0.80
+Dimensi: 1783, Akurasi: 0.73
+Dimensi: 1782, Akurasi: 0.68
+Dimensi: 1781, Akurasi: 0.78
+Dimensi: 1780, Akurasi: 0.65
+Dimensi: 1779, Akurasi: 0.80
+Dimensi: 1778, Akurasi: 0.71
+Dimensi: 1777, Akurasi: 0.77
+Dimensi: 1776, Akurasi: 0.64
+Dimensi: 1775, Akurasi: 0.80
+Dimensi: 1774, Akurasi: 0.59
+Dimensi: 1773, Akurasi: 0.59
+Dimensi: 1772, Akurasi: 0.80
+Dimensi: 1771, Akurasi: 0.57
+Dimensi: 1770, Akurasi: 0.67
+Dimensi: 1769, Akurasi: 0.83
+Dimensi: 1768, Akurasi: 0.75
+Dimensi: 1767, Akurasi: 0.78
+Dimensi: 1766, Akurasi: 0.74
+Dimensi: 1765, Akurasi: 0.69
+Dimensi: 1764, Akurasi: 0.64
+Dimensi: 1763, Akurasi: 0.72
+Dimensi: 1762, Akurasi: 0.66
+Dimensi: 1761, Akurasi: 0.74
+Dimensi: 1760, Akurasi: 0.84
+Dimensi: 1759, Akurasi: 0.56
+Dimensi: 1758, Akurasi: 0.76
+Dimensi: 1757, Akurasi: 0.69
+Dimensi: 1756, Akurasi: 0.82
+Dimensi: 1755, Akurasi: 0.86
+Dimensi: 1754, Akurasi: 0.82
+Dimensi: 1753, Akurasi: 0.78
+Dimensi: 1752, Akurasi: 0.58
+Dimensi: 1751, Akurasi: 0.73
+Dimensi: 1750, Akurasi: 0.72
+Dimensi: 1749, Akurasi: 0.82
+Dimensi: 1748, Akurasi: 0.78
+Dimensi: 1747, Akurasi: 0.67
+Dimensi: 1746, Akurasi: 0.68
+Dimensi: 1745, Akurasi: 0.80
+Dimensi: 1744, Akurasi: 0.80
+Dimensi: 1743, Akurasi: 0.74
+Dimensi: 1742, Akurasi: 0.79
+Dimensi: 1741, Akurasi: 0.68
+Dimensi: 1740, Akurasi: 0.80
+Dimensi: 1739, Akurasi: 0.58
+Dimensi: 1738, Akurasi: 0.84
+Dimensi: 1737, Akurasi: 0.82
+Dimensi: 1736, Akurasi: 0.79
+Dimensi: 1735, Akurasi: 0.55
+Dimensi: 1734, Akurasi: 0.75
+Dimensi: 1733, Akurasi: 0.56
+Dimensi: 1732, Akurasi: 0.78
+Dimensi: 1731, Akurasi: 0.54
+Dimensi: 1730, Akurasi: 0.81
+Dimensi: 1729, Akurasi: 0.75
+Dimensi: 1728, Akurasi: 0.81
+Dimensi: 1727, Akurasi: 0.79
+Dimensi: 1726, Akurasi: 0.78
+Dimensi: 1725, Akurasi: 0.51
+Dimensi: 1724, Akurasi: 0.76
+Dimensi: 1723, Akurasi: 0.83
+Dimensi: 1722, Akurasi: 0.75
+Dimensi: 1721, Akurasi: 0.86
+Dimensi: 1720, Akurasi: 0.63
+Dimensi: 1719, Akurasi: 0.67
+Dimensi: 1718, Akurasi: 0.69
+Dimensi: 1717, Akurasi: 0.59
+Dimensi: 1716, Akurasi: 0.71
+Dimensi: 1715, Akurasi: 0.74
+Dimensi: 1714, Akurasi: 0.73
+Dimensi: 1713, Akurasi: 0.70
+Dimensi: 1712, Akurasi: 0.78
+Dimensi: 1711, Akurasi: 0.81
+Dimensi: 1710, Akurasi: 0.79
+Dimensi: 1709, Akurasi: 0.83
+Dimensi: 1708, Akurasi: 0.74
+Dimensi: 1707, Akurasi: 0.91
+Dimensi: 1706, Akurasi: 0.84
+Dimensi: 1705, Akurasi: 0.85
+Dimensi: 1704, Akurasi: 0.73
+Dimensi: 1703, Akurasi: 0.79
+Dimensi: 1702, Akurasi: 0.57
+Dimensi: 1701, Akurasi: 0.74
+Dimensi: 1700, Akurasi: 0.70
+Dimensi: 1699, Akurasi: 0.78
+Dimensi: 1698, Akurasi: 0.58
+Dimensi: 1697, Akurasi: 0.81
+Dimensi: 1696, Akurasi: 0.67
+Dimensi: 1695, Akurasi: 0.78
+Dimensi: 1694, Akurasi: 0.78
+Dimensi: 1693, Akurasi: 0.65
+Dimensi: 1692, Akurasi: 0.82
+Dimensi: 1691, Akurasi: 0.79
+Dimensi: 1690, Akurasi: 0.70
+Dimensi: 1689, Akurasi: 0.78
+Dimensi: 1688, Akurasi: 0.70
+Dimensi: 1687, Akurasi: 0.88
+Dimensi: 1686, Akurasi: 0.75
+Dimensi: 1685, Akurasi: 0.77
+Dimensi: 1684, Akurasi: 0.59
+Dimensi: 1683, Akurasi: 0.73
+Dimensi: 1682, Akurasi: 0.72
+Dimensi: 1681, Akurasi: 0.86
+Dimensi: 1680, Akurasi: 0.72
+Dimensi: 1679, Akurasi: 0.51
+Dimensi: 1678, Akurasi: 0.90
+Dimensi: 1677, Akurasi: 0.81
+Dimensi: 1676, Akurasi: 0.78
+Dimensi: 1675, Akurasi: 0.87
+Dimensi: 1674, Akurasi: 0.67
+Dimensi: 1673, Akurasi: 0.83
+Dimensi: 1672, Akurasi: 0.85
+Dimensi: 1671, Akurasi: 0.54
+Dimensi: 1670, Akurasi: 0.69
+Dimensi: 1669, Akurasi: 0.86
+Dimensi: 1668, Akurasi: 0.63
+Dimensi: 1667, Akurasi: 0.72
+Dimensi: 1666, Akurasi: 0.75
+Dimensi: 1665, Akurasi: 0.81
+Dimensi: 1664, Akurasi: 0.83
+Dimensi: 1663, Akurasi: 0.79
+Dimensi: 1662, Akurasi: 0.86
+Dimensi: 1661, Akurasi: 0.69
+Dimensi: 1660, Akurasi: 0.76
+Dimensi: 1659, Akurasi: 0.78
+Dimensi: 1658, Akurasi: 0.75
+Dimensi: 1657, Akurasi: 0.71
+Dimensi: 1656, Akurasi: 0.73
+Dimensi: 1655, Akurasi: 0.83
+Dimensi: 1654, Akurasi: 0.82
+Dimensi: 1653, Akurasi: 0.70
+Dimensi: 1652, Akurasi: 0.65
+Dimensi: 1651, Akurasi: 0.70
+Dimensi: 1650, Akurasi: 0.74
+Dimensi: 1649, Akurasi: 0.61
+Dimensi: 1648, Akurasi: 0.89
+Dimensi: 1647, Akurasi: 0.57
+Dimensi: 1646, Akurasi: 0.72
+Dimensi: 1645, Akurasi: 0.62
+Dimensi: 1644, Akurasi: 0.70
+Dimensi: 1643, Akurasi: 0.71
+Dimensi: 1642, Akurasi: 0.72
+Dimensi: 1641, Akurasi: 0.76
+Dimensi: 1640, Akurasi: 0.76
+Dimensi: 1639, Akurasi: 0.69
+Dimensi: 1638, Akurasi: 0.60
+Dimensi: 1637, Akurasi: 0.74
+Dimensi: 1636, Akurasi: 0.76
+Dimensi: 1635, Akurasi: 0.60
+Dimensi: 1634, Akurasi: 0.56
+Dimensi: 1633, Akurasi: 0.66
+Dimensi: 1632, Akurasi: 0.85
+Dimensi: 1631, Akurasi: 0.81
+Dimensi: 1630, Akurasi: 0.84
+Dimensi: 1629, Akurasi: 0.68
+Dimensi: 1628, Akurasi: 0.72
+Dimensi: 1627, Akurasi: 0.65
+Dimensi: 1626, Akurasi: 0.78
+Dimensi: 1625, Akurasi: 0.83
+Dimensi: 1624, Akurasi: 0.60
+Dimensi: 1623, Akurasi: 0.73
+Dimensi: 1622, Akurasi: 0.61
+Dimensi: 1621, Akurasi: 0.85
+Dimensi: 1620, Akurasi: 0.66
+Dimensi: 1619, Akurasi: 0.87
+Dimensi: 1618, Akurasi: 0.80
+Dimensi: 1617, Akurasi: 0.86
+Dimensi: 1616, Akurasi: 0.73
+Dimensi: 1615, Akurasi: 0.71
+Dimensi: 1614, Akurasi: 0.69
+Dimensi: 1613, Akurasi: 0.80
+Dimensi: 1612, Akurasi: 0.76
+Dimensi: 1611, Akurasi: 0.76
+Dimensi: 1610, Akurasi: 0.68
+Dimensi: 1609, Akurasi: 0.64
+Dimensi: 1608, Akurasi: 0.85
+Dimensi: 1607, Akurasi: 0.78
+Dimensi: 1606, Akurasi: 0.72
+Dimensi: 1605, Akurasi: 0.82
+Dimensi: 1604, Akurasi: 0.66
+Dimensi: 1603, Akurasi: 0.53
+Dimensi: 1602, Akurasi: 0.75
+Dimensi: 1601, Akurasi: 0.76
+Dimensi: 1600, Akurasi: 0.72
+Dimensi: 1599, Akurasi: 0.55
+Dimensi: 1598, Akurasi: 0.84
+Dimensi: 1597, Akurasi: 0.78
+Dimensi: 1596, Akurasi: 0.51
+Dimensi: 1595, Akurasi: 0.91
+Dimensi: 1594, Akurasi: 0.76
+Dimensi: 1593, Akurasi: 0.51
+Dimensi: 1592, Akurasi: 0.56
+Dimensi: 1591, Akurasi: 0.59
+Dimensi: 1590, Akurasi: 0.50
+Dimensi: 1589, Akurasi: 0.77
+Dimensi: 1588, Akurasi: 0.66
+Dimensi: 1587, Akurasi: 0.80
+Dimensi: 1586, Akurasi: 0.70
+Dimensi: 1585, Akurasi: 0.79
+Dimensi: 1584, Akurasi: 0.58
+Dimensi: 1583, Akurasi: 0.76
+Dimensi: 1582, Akurasi: 0.52
+Dimensi: 1581, Akurasi: 0.61
+Dimensi: 1580, Akurasi: 0.71
+Dimensi: 1579, Akurasi: 0.88
+Dimensi: 1578, Akurasi: 0.75
+Dimensi: 1577, Akurasi: 0.78
+Dimensi: 1576, Akurasi: 0.78
+Dimensi: 1575, Akurasi: 0.70
+Dimensi: 1574, Akurasi: 0.53
+Dimensi: 1573, Akurasi: 0.90
+Dimensi: 1572, Akurasi: 0.79
+Dimensi: 1571, Akurasi: 0.55
+Dimensi: 1570, Akurasi: 0.72
+Dimensi: 1569, Akurasi: 0.70
+Dimensi: 1568, Akurasi: 0.86
+Dimensi: 1567, Akurasi: 0.77
+Dimensi: 1566, Akurasi: 0.72
+Dimensi: 1565, Akurasi: 0.73
+Dimensi: 1564, Akurasi: 0.69
+Dimensi: 1563, Akurasi: 0.64
+Dimensi: 1562, Akurasi: 0.84
+Dimensi: 1561, Akurasi: 0.58
+Dimensi: 1560, Akurasi: 0.56
+Dimensi: 1559, Akurasi: 0.52
+Dimensi: 1558, Akurasi: 0.84
+Dimensi: 1557, Akurasi: 0.56
+Dimensi: 1556, Akurasi: 0.85
+Dimensi: 1555, Akurasi: 0.93
+Dimensi: 1554, Akurasi: 0.63
+Dimensi: 1553, Akurasi: 0.76
+Dimensi: 1552, Akurasi: 0.78
+Dimensi: 1551, Akurasi: 0.53
+Dimensi: 1550, Akurasi: 0.81
+Dimensi: 1549, Akurasi: 0.79
+Dimensi: 1548, Akurasi: 0.91
+Dimensi: 1547, Akurasi: 0.80
+Dimensi: 1546, Akurasi: 0.78
+Dimensi: 1545, Akurasi: 0.66
+Dimensi: 1544, Akurasi: 0.72
+Dimensi: 1543, Akurasi: 0.80
+Dimensi: 1542, Akurasi: 0.73
+Dimensi: 1541, Akurasi: 0.73
+Dimensi: 1540, Akurasi: 0.69
+Dimensi: 1539, Akurasi: 0.74
+Dimensi: 1538, Akurasi: 0.70
+Dimensi: 1537, Akurasi: 0.81
+Dimensi: 1536, Akurasi: 0.85
+Dimensi: 1535, Akurasi: 0.85
+Dimensi: 1534, Akurasi: 0.55
+Dimensi: 1533, Akurasi: 0.84
+Dimensi: 1532, Akurasi: 0.66
+Dimensi: 1531, Akurasi: 0.75
+Dimensi: 1530, Akurasi: 0.84
+Dimensi: 1529, Akurasi: 0.85
+Dimensi: 1528, Akurasi: 0.77
+Dimensi: 1527, Akurasi: 0.60
+Dimensi: 1526, Akurasi: 0.89
+Dimensi: 1525, Akurasi: 0.77
+Dimensi: 1524, Akurasi: 0.59
+Dimensi: 1523, Akurasi: 0.79
+Dimensi: 1522, Akurasi: 0.77
+Dimensi: 1521, Akurasi: 0.79
+Dimensi: 1520, Akurasi: 0.83
+Dimensi: 1519, Akurasi: 0.76
+Dimensi: 1518, Akurasi: 0.67
+Dimensi: 1517, Akurasi: 0.86
+Dimensi: 1516, Akurasi: 0.73
+Dimensi: 1515, Akurasi: 0.76
+Dimensi: 1514, Akurasi: 0.80
+Dimensi: 1513, Akurasi: 0.82
+Dimensi: 1512, Akurasi: 0.79
+Dimensi: 1511, Akurasi: 0.68
+Dimensi: 1510, Akurasi: 0.77
+Dimensi: 1509, Akurasi: 0.86
+Dimensi: 1508, Akurasi: 0.63
+Dimensi: 1507, Akurasi: 0.50
+Dimensi: 1506, Akurasi: 0.87
+Dimensi: 1505, Akurasi: 0.60
+Dimensi: 1504, Akurasi: 0.66
+Dimensi: 1503, Akurasi: 0.75
+Dimensi: 1502, Akurasi: 0.82
+Dimensi: 1501, Akurasi: 0.72
+Dimensi: 1500, Akurasi: 0.85
+Dimensi: 1499, Akurasi: 0.84
+Dimensi: 1498, Akurasi: 0.55
+Dimensi: 1497, Akurasi: 0.85
+Dimensi: 1496, Akurasi: 0.77
+Dimensi: 1495, Akurasi: 0.57
+Dimensi: 1494, Akurasi: 0.86
+Dimensi: 1493, Akurasi: 0.58
+Dimensi: 1492, Akurasi: 0.76
+Dimensi: 1491, Akurasi: 0.81
+Dimensi: 1490, Akurasi: 0.75
+Dimensi: 1489, Akurasi: 0.86
+Dimensi: 1488, Akurasi: 0.84
+Dimensi: 1487, Akurasi: 0.82
+Dimensi: 1486, Akurasi: 0.80
+Dimensi: 1485, Akurasi: 0.57
+Dimensi: 1484, Akurasi: 0.83
+Dimensi: 1483, Akurasi: 0.67
+Dimensi: 1482, Akurasi: 0.75
+Dimensi: 1481, Akurasi: 0.73
+Dimensi: 1480, Akurasi: 0.81
+Dimensi: 1479, Akurasi: 0.78
+Dimensi: 1478, Akurasi: 0.81
+Dimensi: 1477, Akurasi: 0.74
+Dimensi: 1476, Akurasi: 0.70
+Dimensi: 1475, Akurasi: 0.84
+Dimensi: 1474, Akurasi: 0.72
+Dimensi: 1473, Akurasi: 0.55
+Dimensi: 1472, Akurasi: 0.77
+Dimensi: 1471, Akurasi: 0.73
+Dimensi: 1470, Akurasi: 0.81
+Dimensi: 1469, Akurasi: 0.64
+Dimensi: 1468, Akurasi: 0.56
+Dimensi: 1467, Akurasi: 0.79
+Dimensi: 1466, Akurasi: 0.77
+Dimensi: 1465, Akurasi: 0.63
+Dimensi: 1464, Akurasi: 0.64
+Dimensi: 1463, Akurasi: 0.65
+Dimensi: 1462, Akurasi: 0.72
+Dimensi: 1461, Akurasi: 0.63
+Dimensi: 1460, Akurasi: 0.77
+Dimensi: 1459, Akurasi: 0.70
+Dimensi: 1458, Akurasi: 0.74
+Dimensi: 1457, Akurasi: 0.78
+Dimensi: 1456, Akurasi: 0.60
+Dimensi: 1455, Akurasi: 0.75
+Dimensi: 1454, Akurasi: 0.62
+Dimensi: 1453, Akurasi: 0.83
+Dimensi: 1452, Akurasi: 0.80
+Dimensi: 1451, Akurasi: 0.76
+Dimensi: 1450, Akurasi: 0.85
+Dimensi: 1449, Akurasi: 0.80
+Dimensi: 1448, Akurasi: 0.75
+Dimensi: 1447, Akurasi: 0.61
+Dimensi: 1446, Akurasi: 0.83
+Dimensi: 1445, Akurasi: 0.69
+Dimensi: 1444, Akurasi: 0.81
+Dimensi: 1443, Akurasi: 0.72
+Dimensi: 1442, Akurasi: 0.67
+Dimensi: 1441, Akurasi: 0.79
+Dimensi: 1440, Akurasi: 0.61
+Dimensi: 1439, Akurasi: 0.61
+Dimensi: 1438, Akurasi: 0.71
+Dimensi: 1437, Akurasi: 0.69
+Dimensi: 1436, Akurasi: 0.82
+Dimensi: 1435, Akurasi: 0.78
+Dimensi: 1434, Akurasi: 0.76
+Dimensi: 1433, Akurasi: 0.58
+Dimensi: 1432, Akurasi: 0.78
+Dimensi: 1431, Akurasi: 0.65
+Dimensi: 1430, Akurasi: 0.85
+Dimensi: 1429, Akurasi: 0.85
+Dimensi: 1428, Akurasi: 0.62
+Dimensi: 1427, Akurasi: 0.70
+Dimensi: 1426, Akurasi: 0.56
+Dimensi: 1425, Akurasi: 0.76
+Dimensi: 1424, Akurasi: 0.83
+Dimensi: 1423, Akurasi: 0.61
+Dimensi: 1422, Akurasi: 0.59
+Dimensi: 1421, Akurasi: 0.67
+Dimensi: 1420, Akurasi: 0.73
+Dimensi: 1419, Akurasi: 0.68
+Dimensi: 1418, Akurasi: 0.81
+Dimensi: 1417, Akurasi: 0.78
+Dimensi: 1416, Akurasi: 0.87
+Dimensi: 1415, Akurasi: 0.72
+Dimensi: 1414, Akurasi: 0.78
+Dimensi: 1413, Akurasi: 0.82
+Dimensi: 1412, Akurasi: 0.84
+Dimensi: 1411, Akurasi: 0.84
+Dimensi: 1410, Akurasi: 0.80
+Dimensi: 1409, Akurasi: 0.64
+Dimensi: 1408, Akurasi: 0.66
+Dimensi: 1407, Akurasi: 0.68
+Dimensi: 1406, Akurasi: 0.72
+Dimensi: 1405, Akurasi: 0.73
+Dimensi: 1404, Akurasi: 0.76
+Dimensi: 1403, Akurasi: 0.74
+Dimensi: 1402, Akurasi: 0.58
+Dimensi: 1401, Akurasi: 0.74
+Dimensi: 1400, Akurasi: 0.72
+Dimensi: 1399, Akurasi: 0.75
+Dimensi: 1398, Akurasi: 0.64
+Dimensi: 1397, Akurasi: 0.71
+Dimensi: 1396, Akurasi: 0.81
+Dimensi: 1395, Akurasi: 0.82
+Dimensi: 1394, Akurasi: 0.76
+Dimensi: 1393, Akurasi: 0.84
+Dimensi: 1392, Akurasi: 0.76
+Dimensi: 1391, Akurasi: 0.52
+Dimensi: 1390, Akurasi: 0.64
+Dimensi: 1389, Akurasi: 0.74
+Dimensi: 1388, Akurasi: 0.90
+Dimensi: 1387, Akurasi: 0.65
+Dimensi: 1386, Akurasi: 0.64
+Dimensi: 1385, Akurasi: 0.67
+Dimensi: 1384, Akurasi: 0.74
+Dimensi: 1383, Akurasi: 0.76
+Dimensi: 1382, Akurasi: 0.71
+Dimensi: 1381, Akurasi: 0.54
+Dimensi: 1380, Akurasi: 0.70
+Dimensi: 1379, Akurasi: 0.60
+Dimensi: 1378, Akurasi: 0.70
+Dimensi: 1377, Akurasi: 0.85
+Dimensi: 1376, Akurasi: 0.68
+Dimensi: 1375, Akurasi: 0.75
+Dimensi: 1374, Akurasi: 0.62
+Dimensi: 1373, Akurasi: 0.67
+Dimensi: 1372, Akurasi: 0.62
+Dimensi: 1371, Akurasi: 0.62
+Dimensi: 1370, Akurasi: 0.71
+Dimensi: 1369, Akurasi: 0.66
+Dimensi: 1368, Akurasi: 0.78
+Dimensi: 1367, Akurasi: 0.53
+Dimensi: 1366, Akurasi: 0.76
+Dimensi: 1365, Akurasi: 0.83
+Dimensi: 1364, Akurasi: 0.81
+Dimensi: 1363, Akurasi: 0.74
+Dimensi: 1362, Akurasi: 0.84
+Dimensi: 1361, Akurasi: 0.81
+Dimensi: 1360, Akurasi: 0.69
+Dimensi: 1359, Akurasi: 0.82
+Dimensi: 1358, Akurasi: 0.87
+Dimensi: 1357, Akurasi: 0.66
+Dimensi: 1356, Akurasi: 0.77
+Dimensi: 1355, Akurasi: 0.59
+Dimensi: 1354, Akurasi: 0.61
+Dimensi: 1353, Akurasi: 0.71
+Dimensi: 1352, Akurasi: 0.80
+Dimensi: 1351, Akurasi: 0.55
+Dimensi: 1350, Akurasi: 0.78
+Dimensi: 1349, Akurasi: 0.58
+Dimensi: 1348, Akurasi: 0.89
+Dimensi: 1347, Akurasi: 0.69
+Dimensi: 1346, Akurasi: 0.80
+Dimensi: 1345, Akurasi: 0.75
+Dimensi: 1344, Akurasi: 0.71
+Dimensi: 1343, Akurasi: 0.83
+Dimensi: 1342, Akurasi: 0.54
+Dimensi: 1341, Akurasi: 0.77
+Dimensi: 1340, Akurasi: 0.84
+Dimensi: 1339, Akurasi: 0.88
+Dimensi: 1338, Akurasi: 0.52
+Dimensi: 1337, Akurasi: 0.79
+Dimensi: 1336, Akurasi: 0.68
+Dimensi: 1335, Akurasi: 0.79
+Dimensi: 1334, Akurasi: 0.79
+Dimensi: 1333, Akurasi: 0.82
+Dimensi: 1332, Akurasi: 0.77
+Dimensi: 1331, Akurasi: 0.72
+Dimensi: 1330, Akurasi: 0.70
+Dimensi: 1329, Akurasi: 0.84
+Dimensi: 1328, Akurasi: 0.54
+Dimensi: 1327, Akurasi: 0.78
+Dimensi: 1326, Akurasi: 0.85
+Dimensi: 1325, Akurasi: 0.82
+Dimensi: 1324, Akurasi: 0.84
+Dimensi: 1323, Akurasi: 0.71
+Dimensi: 1322, Akurasi: 0.79
+Dimensi: 1321, Akurasi: 0.70
+Dimensi: 1320, Akurasi: 0.82
+Dimensi: 1319, Akurasi: 0.80
+Dimensi: 1318, Akurasi: 0.78
+Dimensi: 1317, Akurasi: 0.59
+Dimensi: 1316, Akurasi: 0.76
+Dimensi: 1315, Akurasi: 0.81
+Dimensi: 1314, Akurasi: 0.64
+Dimensi: 1313, Akurasi: 0.79
+Dimensi: 1312, Akurasi: 0.57
+Dimensi: 1311, Akurasi: 0.73
+Dimensi: 1310, Akurasi: 0.75
+Dimensi: 1309, Akurasi: 0.88
+Dimensi: 1308, Akurasi: 0.75
+Dimensi: 1307, Akurasi: 0.80
+Dimensi: 1306, Akurasi: 0.88
+Dimensi: 1305, Akurasi: 0.83
+Dimensi: 1304, Akurasi: 0.56
+Dimensi: 1303, Akurasi: 0.64
+Dimensi: 1302, Akurasi: 0.71
+Dimensi: 1301, Akurasi: 0.86
+Dimensi: 1300, Akurasi: 0.76
+Dimensi: 1299, Akurasi: 0.73
+Dimensi: 1298, Akurasi: 0.55
+Dimensi: 1297, Akurasi: 0.69
+Dimensi: 1296, Akurasi: 0.73
+Dimensi: 1295, Akurasi: 0.56
+Dimensi: 1294, Akurasi: 0.91
+Dimensi: 1293, Akurasi: 0.83
+Dimensi: 1292, Akurasi: 0.83
+Dimensi: 1291, Akurasi: 0.63
+Dimensi: 1290, Akurasi: 0.67
+Dimensi: 1289, Akurasi: 0.74
+Dimensi: 1288, Akurasi: 0.77
+Dimensi: 1287, Akurasi: 0.85
+Dimensi: 1286, Akurasi: 0.71
+Dimensi: 1285, Akurasi: 0.80
+Dimensi: 1284, Akurasi: 0.60
+Dimensi: 1283, Akurasi: 0.86
+Dimensi: 1282, Akurasi: 0.59
+Dimensi: 1281, Akurasi: 0.81
+Dimensi: 1280, Akurasi: 0.62
+Dimensi: 1279, Akurasi: 0.77
+Dimensi: 1278, Akurasi: 0.64
+Dimensi: 1277, Akurasi: 0.72
+Dimensi: 1276, Akurasi: 0.85
+Dimensi: 1275, Akurasi: 0.55
+Dimensi: 1274, Akurasi: 0.86
+Dimensi: 1273, Akurasi: 0.78
+Dimensi: 1272, Akurasi: 0.70
+Dimensi: 1271, Akurasi: 0.73
+Dimensi: 1270, Akurasi: 0.52
+Dimensi: 1269, Akurasi: 0.72
+Dimensi: 1268, Akurasi: 0.76
+Dimensi: 1267, Akurasi: 0.81
+Dimensi: 1266, Akurasi: 0.81
+Dimensi: 1265, Akurasi: 0.71
+Dimensi: 1264, Akurasi: 0.82
+Dimensi: 1263, Akurasi: 0.64
+Dimensi: 1262, Akurasi: 0.59
+Dimensi: 1261, Akurasi: 0.82
+Dimensi: 1260, Akurasi: 0.89
+Dimensi: 1259, Akurasi: 0.65
+Dimensi: 1258, Akurasi: 0.79
+Dimensi: 1257, Akurasi: 0.76
+Dimensi: 1256, Akurasi: 0.57
+Dimensi: 1255, Akurasi: 0.57
+Dimensi: 1254, Akurasi: 0.68
+Dimensi: 1253, Akurasi: 0.77
+Dimensi: 1252, Akurasi: 0.81
+Dimensi: 1251, Akurasi: 0.68
+Dimensi: 1250, Akurasi: 0.80
+Dimensi: 1249, Akurasi: 0.73
+Dimensi: 1248, Akurasi: 0.85
+Dimensi: 1247, Akurasi: 0.84
+Dimensi: 1246, Akurasi: 0.63
+Dimensi: 1245, Akurasi: 0.75
+Dimensi: 1244, Akurasi: 0.76
+Dimensi: 1243, Akurasi: 0.62
+Dimensi: 1242, Akurasi: 0.74
+Dimensi: 1241, Akurasi: 0.73
+Dimensi: 1240, Akurasi: 0.63
+Dimensi: 1239, Akurasi: 0.76
+Dimensi: 1238, Akurasi: 0.72
+Dimensi: 1237, Akurasi: 0.81
+Dimensi: 1236, Akurasi: 0.74
+Dimensi: 1235, Akurasi: 0.74
+Dimensi: 1234, Akurasi: 0.81
+Dimensi: 1233, Akurasi: 0.84
+Dimensi: 1232, Akurasi: 0.87
+Dimensi: 1231, Akurasi: 0.83
+Dimensi: 1230, Akurasi: 0.77
+Dimensi: 1229, Akurasi: 0.71
+Dimensi: 1228, Akurasi: 0.67
+Dimensi: 1227, Akurasi: 0.57
+Dimensi: 1226, Akurasi: 0.69
+Dimensi: 1225, Akurasi: 0.64
+Dimensi: 1224, Akurasi: 0.70
+Dimensi: 1223, Akurasi: 0.74
+Dimensi: 1222, Akurasi: 0.77
+Dimensi: 1221, Akurasi: 0.80
+Dimensi: 1220, Akurasi: 0.73
+Dimensi: 1219, Akurasi: 0.84
+Dimensi: 1218, Akurasi: 0.93
+Dimensi: 1217, Akurasi: 0.79
+Dimensi: 1216, Akurasi: 0.85
+Dimensi: 1215, Akurasi: 0.69
+Dimensi: 1214, Akurasi: 0.71
+Dimensi: 1213, Akurasi: 0.58
+Dimensi: 1212, Akurasi: 0.63
+Dimensi: 1211, Akurasi: 0.73
+Dimensi: 1210, Akurasi: 0.83
+Dimensi: 1209, Akurasi: 0.57
+Dimensi: 1208, Akurasi: 0.67
+Dimensi: 1207, Akurasi: 0.86
+Dimensi: 1206, Akurasi: 0.55
+Dimensi: 1205, Akurasi: 0.55
+Dimensi: 1204, Akurasi: 0.79
+Dimensi: 1203, Akurasi: 0.80
+Dimensi: 1202, Akurasi: 0.82
+Dimensi: 1201, Akurasi: 0.70
+Dimensi: 1200, Akurasi: 0.58
+Dimensi: 1199, Akurasi: 0.79
+Dimensi: 1198, Akurasi: 0.76
+Dimensi: 1197, Akurasi: 0.80
+Dimensi: 1196, Akurasi: 0.91
+Dimensi: 1195, Akurasi: 0.63
+Dimensi: 1194, Akurasi: 0.52
+Dimensi: 1193, Akurasi: 0.68
+Dimensi: 1192, Akurasi: 0.81
+Dimensi: 1191, Akurasi: 0.83
+Dimensi: 1190, Akurasi: 0.73
+Dimensi: 1189, Akurasi: 0.73
+Dimensi: 1188, Akurasi: 0.72
+Dimensi: 1187, Akurasi: 0.74
+Dimensi: 1186, Akurasi: 0.78
+Dimensi: 1185, Akurasi: 0.73
+Dimensi: 1184, Akurasi: 0.76
+Dimensi: 1183, Akurasi: 0.80
+Dimensi: 1182, Akurasi: 0.65
+Dimensi: 1181, Akurasi: 0.74
+Dimensi: 1180, Akurasi: 0.62
+Dimensi: 1179, Akurasi: 0.72
+Dimensi: 1178, Akurasi: 0.68
+Dimensi: 1177, Akurasi: 0.60
+Dimensi: 1176, Akurasi: 0.80
+Dimensi: 1175, Akurasi: 0.51
+Dimensi: 1174, Akurasi: 0.54
+Dimensi: 1173, Akurasi: 0.72
+Dimensi: 1172, Akurasi: 0.67
+Dimensi: 1171, Akurasi: 0.79
+Dimensi: 1170, Akurasi: 0.72
+Dimensi: 1169, Akurasi: 0.58
+Dimensi: 1168, Akurasi: 0.69
+Dimensi: 1167, Akurasi: 0.86
+Dimensi: 1166, Akurasi: 0.55
+Dimensi: 1165, Akurasi: 0.80
+Dimensi: 1164, Akurasi: 0.71
+Dimensi: 1163, Akurasi: 0.79
+Dimensi: 1162, Akurasi: 0.74
+Dimensi: 1161, Akurasi: 0.79
+Dimensi: 1160, Akurasi: 0.70
+Dimensi: 1159, Akurasi: 0.79
+Dimensi: 1158, Akurasi: 0.72
+Dimensi: 1157, Akurasi: 0.70
+Dimensi: 1156, Akurasi: 0.77
+Dimensi: 1155, Akurasi: 0.73
+Dimensi: 1154, Akurasi: 0.86
+Dimensi: 1153, Akurasi: 0.77
+Dimensi: 1152, Akurasi: 0.84
+Dimensi: 1151, Akurasi: 0.82
+Dimensi: 1150, Akurasi: 0.66
+Dimensi: 1149, Akurasi: 0.81
+Dimensi: 1148, Akurasi: 0.77
+Dimensi: 1147, Akurasi: 0.68
+Dimensi: 1146, Akurasi: 0.72
+Dimensi: 1145, Akurasi: 0.66
+Dimensi: 1144, Akurasi: 0.74
+Dimensi: 1143, Akurasi: 0.65
+Dimensi: 1142, Akurasi: 0.74
+Dimensi: 1141, Akurasi: 0.69
+Dimensi: 1140, Akurasi: 0.71
+Dimensi: 1139, Akurasi: 0.70
+Dimensi: 1138, Akurasi: 0.77
+Dimensi: 1137, Akurasi: 0.62
+Dimensi: 1136, Akurasi: 0.86
+Dimensi: 1135, Akurasi: 0.70
+Dimensi: 1134, Akurasi: 0.78
+Dimensi: 1133, Akurasi: 0.82
+Dimensi: 1132, Akurasi: 0.82
+Dimensi: 1131, Akurasi: 0.53
+Dimensi: 1130, Akurasi: 0.71
+Dimensi: 1129, Akurasi: 0.81
+Dimensi: 1128, Akurasi: 0.66
+Dimensi: 1127, Akurasi: 0.54
+Dimensi: 1126, Akurasi: 0.71
+Dimensi: 1125, Akurasi: 0.88
+Dimensi: 1124, Akurasi: 0.75
+Dimensi: 1123, Akurasi: 0.66
+Dimensi: 1122, Akurasi: 0.73
+Dimensi: 1121, Akurasi: 0.62
+Dimensi: 1120, Akurasi: 0.71
+Dimensi: 1119, Akurasi: 0.83
+Dimensi: 1118, Akurasi: 0.51
+Dimensi: 1117, Akurasi: 0.81
+Dimensi: 1116, Akurasi: 0.75
+Dimensi: 1115, Akurasi: 0.84
+Dimensi: 1114, Akurasi: 0.74
+Dimensi: 1113, Akurasi: 0.71
+Dimensi: 1112, Akurasi: 0.74
+Dimensi: 1111, Akurasi: 0.75
+Dimensi: 1110, Akurasi: 0.83
+Dimensi: 1109, Akurasi: 0.72
+Dimensi: 1108, Akurasi: 0.70
+Dimensi: 1107, Akurasi: 0.77
+Dimensi: 1106, Akurasi: 0.63
+Dimensi: 1105, Akurasi: 0.77
+Dimensi: 1104, Akurasi: 0.69
+Dimensi: 1103, Akurasi: 0.90
+Dimensi: 1102, Akurasi: 0.79
+Dimensi: 1101, Akurasi: 0.73
+Dimensi: 1100, Akurasi: 0.74
+Dimensi: 1099, Akurasi: 0.82
+Dimensi: 1098, Akurasi: 0.85
+Dimensi: 1097, Akurasi: 0.57
+Dimensi: 1096, Akurasi: 0.72
+Dimensi: 1095, Akurasi: 0.78
+Dimensi: 1094, Akurasi: 0.78
+Dimensi: 1093, Akurasi: 0.85
+Dimensi: 1092, Akurasi: 0.75
+Dimensi: 1091, Akurasi: 0.94
+Dimensi: 1090, Akurasi: 0.86
+Dimensi: 1089, Akurasi: 0.72
+Dimensi: 1088, Akurasi: 0.80
+Dimensi: 1087, Akurasi: 0.79
+Dimensi: 1086, Akurasi: 0.81
+Dimensi: 1085, Akurasi: 0.76
+Dimensi: 1084, Akurasi: 0.81
+Dimensi: 1083, Akurasi: 0.65
+Dimensi: 1082, Akurasi: 0.81
+Dimensi: 1081, Akurasi: 0.71
+Dimensi: 1080, Akurasi: 0.76
+Dimensi: 1079, Akurasi: 0.80
+Dimensi: 1078, Akurasi: 0.81
+Dimensi: 1077, Akurasi: 0.62
+Dimensi: 1076, Akurasi: 0.90
+Dimensi: 1075, Akurasi: 0.68
+Dimensi: 1074, Akurasi: 0.80
+Dimensi: 1073, Akurasi: 0.74
+Dimensi: 1072, Akurasi: 0.74
+Dimensi: 1071, Akurasi: 0.83
+Dimensi: 1070, Akurasi: 0.77
+Dimensi: 1069, Akurasi: 0.78
+Dimensi: 1068, Akurasi: 0.81
+Dimensi: 1067, Akurasi: 0.77
+Dimensi: 1066, Akurasi: 0.74
+Dimensi: 1065, Akurasi: 0.65
+Dimensi: 1064, Akurasi: 0.63
+Dimensi: 1063, Akurasi: 0.67
+Dimensi: 1062, Akurasi: 0.81
+Dimensi: 1061, Akurasi: 0.75
+Dimensi: 1060, Akurasi: 0.91
+Dimensi: 1059, Akurasi: 0.73
+Dimensi: 1058, Akurasi: 0.70
+Dimensi: 1057, Akurasi: 0.82
+Dimensi: 1056, Akurasi: 0.68
+Dimensi: 1055, Akurasi: 0.71
+Dimensi: 1054, Akurasi: 0.81
+Dimensi: 1053, Akurasi: 0.69
+Dimensi: 1052, Akurasi: 0.74
+Dimensi: 1051, Akurasi: 0.76
+Dimensi: 1050, Akurasi: 0.68
+Dimensi: 1049, Akurasi: 0.79
+Dimensi: 1048, Akurasi: 0.75
+Dimensi: 1047, Akurasi: 0.70
+Dimensi: 1046, Akurasi: 0.63
+Dimensi: 1045, Akurasi: 0.51
+Dimensi: 1044, Akurasi: 0.77
+Dimensi: 1043, Akurasi: 0.74
+Dimensi: 1042, Akurasi: 0.60
+Dimensi: 1041, Akurasi: 0.53
+Dimensi: 1040, Akurasi: 0.83
+Dimensi: 1039, Akurasi: 0.68
+Dimensi: 1038, Akurasi: 0.81
+Dimensi: 1037, Akurasi: 0.75
+Dimensi: 1036, Akurasi: 0.68
+Dimensi: 1035, Akurasi: 0.70
+Dimensi: 1034, Akurasi: 0.86
+Dimensi: 1033, Akurasi: 0.80
+Dimensi: 1032, Akurasi: 0.72
+Dimensi: 1031, Akurasi: 0.70
+Dimensi: 1030, Akurasi: 0.61
+Dimensi: 1029, Akurasi: 0.78
+Dimensi: 1028, Akurasi: 0.82
+Dimensi: 1027, Akurasi: 0.68
+Dimensi: 1026, Akurasi: 0.92
+Dimensi: 1025, Akurasi: 0.70
+Dimensi: 1024, Akurasi: 0.72
+Dimensi: 1023, Akurasi: 0.80
+Dimensi: 1022, Akurasi: 0.80
+Dimensi: 1021, Akurasi: 0.75
+Dimensi: 1020, Akurasi: 0.82
+Dimensi: 1019, Akurasi: 0.75
+Dimensi: 1018, Akurasi: 0.60
+Dimensi: 1017, Akurasi: 0.68
+Dimensi: 1016, Akurasi: 0.71
+Dimensi: 1015, Akurasi: 0.59
+Dimensi: 1014, Akurasi: 0.78
+Dimensi: 1013, Akurasi: 0.85
+Dimensi: 1012, Akurasi: 0.59
+Dimensi: 1011, Akurasi: 0.82
+Dimensi: 1010, Akurasi: 0.60
+Dimensi: 1009, Akurasi: 0.80
+Dimensi: 1008, Akurasi: 0.75
+Dimensi: 1007, Akurasi: 0.82
+Dimensi: 1006, Akurasi: 0.73
+Dimensi: 1005, Akurasi: 0.79
+Dimensi: 1004, Akurasi: 0.53
+Dimensi: 1003, Akurasi: 0.75
+Dimensi: 1002, Akurasi: 0.83
+Dimensi: 1001, Akurasi: 0.90
+Dimensi: 1000, Akurasi: 0.71
+Dimensi: 999, Akurasi: 0.87
+Dimensi: 998, Akurasi: 0.71
+Dimensi: 997, Akurasi: 0.83
+Dimensi: 996, Akurasi: 0.81
+Dimensi: 995, Akurasi: 0.69
+Dimensi: 994, Akurasi: 0.88
+Dimensi: 993, Akurasi: 0.72
+Dimensi: 992, Akurasi: 0.78
+Dimensi: 991, Akurasi: 0.70
+Dimensi: 990, Akurasi: 0.94
+Dimensi: 989, Akurasi: 0.83
+Dimensi: 988, Akurasi: 0.75
+Dimensi: 987, Akurasi: 0.67
+Dimensi: 986, Akurasi: 0.60
+Dimensi: 985, Akurasi: 0.56
+Dimensi: 984, Akurasi: 0.63
+Dimensi: 983, Akurasi: 0.52
+Dimensi: 982, Akurasi: 0.68
+Dimensi: 981, Akurasi: 0.71
+Dimensi: 980, Akurasi: 0.78
+Dimensi: 979, Akurasi: 0.74
+Dimensi: 978, Akurasi: 0.86
+Dimensi: 977, Akurasi: 0.60
+Dimensi: 976, Akurasi: 0.81
+Dimensi: 975, Akurasi: 0.78
+Dimensi: 974, Akurasi: 0.62
+Dimensi: 973, Akurasi: 0.70
+Dimensi: 972, Akurasi: 0.66
+Dimensi: 971, Akurasi: 0.79
+Dimensi: 970, Akurasi: 0.51
+Dimensi: 969, Akurasi: 0.79
+Dimensi: 968, Akurasi: 0.80
+Dimensi: 967, Akurasi: 0.75
+Dimensi: 966, Akurasi: 0.69
+Dimensi: 965, Akurasi: 0.69
+Dimensi: 964, Akurasi: 0.74
+Dimensi: 963, Akurasi: 0.89
+Dimensi: 962, Akurasi: 0.67
+Dimensi: 961, Akurasi: 0.59
+Dimensi: 960, Akurasi: 0.72
+Dimensi: 959, Akurasi: 0.74
+Dimensi: 958, Akurasi: 0.67
+Dimensi: 957, Akurasi: 0.74
+Dimensi: 956, Akurasi: 0.72
+Dimensi: 955, Akurasi: 0.79
+Dimensi: 954, Akurasi: 0.65
+Dimensi: 953, Akurasi: 0.61
+Dimensi: 952, Akurasi: 0.72
+Dimensi: 951, Akurasi: 0.80
+Dimensi: 950, Akurasi: 0.73
+Dimensi: 949, Akurasi: 0.71
+Dimensi: 948, Akurasi: 0.82
+Dimensi: 947, Akurasi: 0.72
+Dimensi: 946, Akurasi: 0.66
+Dimensi: 945, Akurasi: 0.77
+Dimensi: 944, Akurasi: 0.85
+Dimensi: 943, Akurasi: 0.71
+Dimensi: 942, Akurasi: 0.66
+Dimensi: 941, Akurasi: 0.83
+Dimensi: 940, Akurasi: 0.73
+Dimensi: 939, Akurasi: 0.63
+Dimensi: 938, Akurasi: 0.63
+Dimensi: 937, Akurasi: 0.75
+Dimensi: 936, Akurasi: 0.69
+Dimensi: 935, Akurasi: 0.73
+Dimensi: 934, Akurasi: 0.76
+Dimensi: 933, Akurasi: 0.67
+Dimensi: 932, Akurasi: 0.70
+Dimensi: 931, Akurasi: 0.80
+Dimensi: 930, Akurasi: 0.80
+Dimensi: 929, Akurasi: 0.86
+Dimensi: 928, Akurasi: 0.61
+Dimensi: 927, Akurasi: 0.76
+Dimensi: 926, Akurasi: 0.63
+Dimensi: 925, Akurasi: 0.64
+Dimensi: 924, Akurasi: 0.84
+Dimensi: 923, Akurasi: 0.51
+Dimensi: 922, Akurasi: 0.80
+Dimensi: 921, Akurasi: 0.84
+Dimensi: 920, Akurasi: 0.74
+Dimensi: 919, Akurasi: 0.74
+Dimensi: 918, Akurasi: 0.80
+Dimensi: 917, Akurasi: 0.59
+Dimensi: 916, Akurasi: 0.60
+Dimensi: 915, Akurasi: 0.76
+Dimensi: 914, Akurasi: 0.72
+Dimensi: 913, Akurasi: 0.66
+Dimensi: 912, Akurasi: 0.83
+Dimensi: 911, Akurasi: 0.74
+Dimensi: 910, Akurasi: 0.73
+Dimensi: 909, Akurasi: 0.61
+Dimensi: 908, Akurasi: 0.76
+Dimensi: 907, Akurasi: 0.63
+Dimensi: 906, Akurasi: 0.55
+Dimensi: 905, Akurasi: 0.65
+Dimensi: 904, Akurasi: 0.74
+Dimensi: 903, Akurasi: 0.73
+Dimensi: 902, Akurasi: 0.79
+Dimensi: 901, Akurasi: 0.62
+Dimensi: 900, Akurasi: 0.80
+Dimensi: 899, Akurasi: 0.61
+Dimensi: 898, Akurasi: 0.78
+Dimensi: 897, Akurasi: 0.77
+Dimensi: 896, Akurasi: 0.83
+Dimensi: 895, Akurasi: 0.68
+Dimensi: 894, Akurasi: 0.81
+Dimensi: 893, Akurasi: 0.85
+Dimensi: 892, Akurasi: 0.77
+Dimensi: 891, Akurasi: 0.60
+Dimensi: 890, Akurasi: 0.61
+Dimensi: 889, Akurasi: 0.77
+Dimensi: 888, Akurasi: 0.66
+Dimensi: 887, Akurasi: 0.67
+Dimensi: 886, Akurasi: 0.75
+Dimensi: 885, Akurasi: 0.74
+Dimensi: 884, Akurasi: 0.82
+Dimensi: 883, Akurasi: 0.90
+Dimensi: 882, Akurasi: 0.85
+Dimensi: 881, Akurasi: 0.79
+Dimensi: 880, Akurasi: 0.71
+Dimensi: 879, Akurasi: 0.71
+Dimensi: 878, Akurasi: 0.76
+Dimensi: 877, Akurasi: 0.64
+Dimensi: 876, Akurasi: 0.79
+Dimensi: 875, Akurasi: 0.72
+Dimensi: 874, Akurasi: 0.53
+Dimensi: 873, Akurasi: 0.73
+Dimensi: 872, Akurasi: 0.80
+Dimensi: 871, Akurasi: 0.73
+Dimensi: 870, Akurasi: 0.74
+Dimensi: 869, Akurasi: 0.85
+Dimensi: 868, Akurasi: 0.83
+Dimensi: 867, Akurasi: 0.83
+Dimensi: 866, Akurasi: 0.63
+Dimensi: 865, Akurasi: 0.61
+Dimensi: 864, Akurasi: 0.70
+Dimensi: 863, Akurasi: 0.71
+Dimensi: 862, Akurasi: 0.75
+Dimensi: 861, Akurasi: 0.80
+Dimensi: 860, Akurasi: 0.69
+Dimensi: 859, Akurasi: 0.69
+Dimensi: 858, Akurasi: 0.78
+Dimensi: 857, Akurasi: 0.71
+Dimensi: 856, Akurasi: 0.67
+Dimensi: 855, Akurasi: 0.64
+Dimensi: 854, Akurasi: 0.74
+Dimensi: 853, Akurasi: 0.53
+Dimensi: 852, Akurasi: 0.76
+Dimensi: 851, Akurasi: 0.73
+Dimensi: 850, Akurasi: 0.71
+Dimensi: 849, Akurasi: 0.65
+Dimensi: 848, Akurasi: 0.80
+Dimensi: 847, Akurasi: 0.85
+Dimensi: 846, Akurasi: 0.78
+Dimensi: 845, Akurasi: 0.87
+Dimensi: 844, Akurasi: 0.83
+Dimensi: 843, Akurasi: 0.79
+Dimensi: 842, Akurasi: 0.84
+Dimensi: 841, Akurasi: 0.50
+Dimensi: 840, Akurasi: 0.89
+Dimensi: 839, Akurasi: 0.94
+Dimensi: 838, Akurasi: 0.66
+Dimensi: 837, Akurasi: 0.51
+Dimensi: 836, Akurasi: 0.82
+Dimensi: 835, Akurasi: 0.77
+Dimensi: 834, Akurasi: 0.73
+Dimensi: 833, Akurasi: 0.74
+Dimensi: 832, Akurasi: 0.75
+Dimensi: 831, Akurasi: 0.83
+Dimensi: 830, Akurasi: 0.76
+Dimensi: 829, Akurasi: 0.62
+Dimensi: 828, Akurasi: 0.89
+Dimensi: 827, Akurasi: 0.70
+Dimensi: 826, Akurasi: 0.83
+Dimensi: 825, Akurasi: 0.78
+Dimensi: 824, Akurasi: 0.60
+Dimensi: 823, Akurasi: 0.72
+Dimensi: 822, Akurasi: 0.78
+Dimensi: 821, Akurasi: 0.56
+Dimensi: 820, Akurasi: 0.87
+Dimensi: 819, Akurasi: 0.63
+Dimensi: 818, Akurasi: 0.85
+Dimensi: 817, Akurasi: 0.84
+Dimensi: 816, Akurasi: 0.69
+Dimensi: 815, Akurasi: 0.70
+Dimensi: 814, Akurasi: 0.70
+Dimensi: 813, Akurasi: 0.63
+Dimensi: 812, Akurasi: 0.76
+Dimensi: 811, Akurasi: 0.65
+Dimensi: 810, Akurasi: 0.78
+Dimensi: 809, Akurasi: 0.58
+Dimensi: 808, Akurasi: 0.83
+Dimensi: 807, Akurasi: 0.70
+Dimensi: 806, Akurasi: 0.63
+Dimensi: 805, Akurasi: 0.88
+Dimensi: 804, Akurasi: 0.83
+Dimensi: 803, Akurasi: 0.62
+Dimensi: 802, Akurasi: 0.85
+Dimensi: 801, Akurasi: 0.77
+Dimensi: 800, Akurasi: 0.74
+Dimensi: 799, Akurasi: 0.73
+Dimensi: 798, Akurasi: 0.80
+Dimensi: 797, Akurasi: 0.81
+Dimensi: 796, Akurasi: 0.76
+Dimensi: 795, Akurasi: 0.76
+Dimensi: 794, Akurasi: 0.91
+Dimensi: 793, Akurasi: 0.65
+Dimensi: 792, Akurasi: 0.63
+Dimensi: 791, Akurasi: 0.70
+Dimensi: 790, Akurasi: 0.54
+Dimensi: 789, Akurasi: 0.79
+Dimensi: 788, Akurasi: 0.61
+Dimensi: 787, Akurasi: 0.73
+Dimensi: 786, Akurasi: 0.75
+Dimensi: 785, Akurasi: 0.72
+Dimensi: 784, Akurasi: 0.63
+Dimensi: 783, Akurasi: 0.84
+Dimensi: 782, Akurasi: 0.84
+Dimensi: 781, Akurasi: 0.71
+Dimensi: 780, Akurasi: 0.69
+Dimensi: 779, Akurasi: 0.84
+Dimensi: 778, Akurasi: 0.66
+Dimensi: 777, Akurasi: 0.76
+Dimensi: 776, Akurasi: 0.60
+Dimensi: 775, Akurasi: 0.73
+Dimensi: 774, Akurasi: 0.80
+Dimensi: 773, Akurasi: 0.80
+Dimensi: 772, Akurasi: 0.60
+Dimensi: 771, Akurasi: 0.69
+Dimensi: 770, Akurasi: 0.67
+Dimensi: 769, Akurasi: 0.76
+Dimensi: 768, Akurasi: 0.70
+Dimensi: 767, Akurasi: 0.74
+Dimensi: 766, Akurasi: 0.81
+Dimensi: 765, Akurasi: 0.80
+Dimensi: 764, Akurasi: 0.72
+Dimensi: 763, Akurasi: 0.54
+Dimensi: 762, Akurasi: 0.76
+Dimensi: 761, Akurasi: 0.82
+Dimensi: 760, Akurasi: 0.76
+Dimensi: 759, Akurasi: 0.87
+Dimensi: 758, Akurasi: 0.51
+Dimensi: 757, Akurasi: 0.74
+Dimensi: 756, Akurasi: 0.87
+Dimensi: 755, Akurasi: 0.69
+Dimensi: 754, Akurasi: 0.58
+Dimensi: 753, Akurasi: 0.82
+Dimensi: 752, Akurasi: 0.77
+Dimensi: 751, Akurasi: 0.76
+Dimensi: 750, Akurasi: 0.75
+Dimensi: 749, Akurasi: 0.69
+Dimensi: 748, Akurasi: 0.77
+Dimensi: 747, Akurasi: 0.69
+Dimensi: 746, Akurasi: 0.81
+Dimensi: 745, Akurasi: 0.70
+Dimensi: 744, Akurasi: 0.84
+Dimensi: 743, Akurasi: 0.75
+Dimensi: 742, Akurasi: 0.66
+Dimensi: 741, Akurasi: 0.73
+Dimensi: 740, Akurasi: 0.73
+Dimensi: 739, Akurasi: 0.61
+Dimensi: 738, Akurasi: 0.61
+Dimensi: 737, Akurasi: 0.58
+Dimensi: 736, Akurasi: 0.72
+Dimensi: 735, Akurasi: 0.69
+Dimensi: 734, Akurasi: 0.81
+Dimensi: 733, Akurasi: 0.64
+Dimensi: 732, Akurasi: 0.77
+Dimensi: 731, Akurasi: 0.63
+Dimensi: 730, Akurasi: 0.54
+Dimensi: 729, Akurasi: 0.77
+Dimensi: 728, Akurasi: 0.76
+Dimensi: 727, Akurasi: 0.71
+Dimensi: 726, Akurasi: 0.76
+Dimensi: 725, Akurasi: 0.60
+Dimensi: 724, Akurasi: 0.63
+Dimensi: 723, Akurasi: 0.52
+Dimensi: 722, Akurasi: 0.84
+Dimensi: 721, Akurasi: 0.72
+Dimensi: 720, Akurasi: 0.81
+Dimensi: 719, Akurasi: 0.74
+Dimensi: 718, Akurasi: 0.58
+Dimensi: 717, Akurasi: 0.66
+Dimensi: 716, Akurasi: 0.61
+Dimensi: 715, Akurasi: 0.78
+Dimensi: 714, Akurasi: 0.79
+Dimensi: 713, Akurasi: 0.51
+Dimensi: 712, Akurasi: 0.71
+Dimensi: 711, Akurasi: 0.61
+Dimensi: 710, Akurasi: 0.63
+Dimensi: 709, Akurasi: 0.74
+Dimensi: 708, Akurasi: 0.52
+Dimensi: 707, Akurasi: 0.84
+Dimensi: 706, Akurasi: 0.77
+Dimensi: 705, Akurasi: 0.60
+Dimensi: 704, Akurasi: 0.53
+Dimensi: 703, Akurasi: 0.89
+Dimensi: 702, Akurasi: 0.84
+Dimensi: 701, Akurasi: 0.66
+Dimensi: 700, Akurasi: 0.64
+Dimensi: 699, Akurasi: 0.77
+Dimensi: 698, Akurasi: 0.82
+Dimensi: 697, Akurasi: 0.85
+Dimensi: 696, Akurasi: 0.78
+Dimensi: 695, Akurasi: 0.53
+Dimensi: 694, Akurasi: 0.79
+Dimensi: 693, Akurasi: 0.77
+Dimensi: 692, Akurasi: 0.53
+Dimensi: 691, Akurasi: 0.73
+Dimensi: 690, Akurasi: 0.75
+Dimensi: 689, Akurasi: 0.81
+Dimensi: 688, Akurasi: 0.86
+Dimensi: 687, Akurasi: 0.62
+Dimensi: 686, Akurasi: 0.76
+Dimensi: 685, Akurasi: 0.70
+Dimensi: 684, Akurasi: 0.55
+Dimensi: 683, Akurasi: 0.74
+Dimensi: 682, Akurasi: 0.85
+Dimensi: 681, Akurasi: 0.69
+Dimensi: 680, Akurasi: 0.79
+Dimensi: 679, Akurasi: 0.78
+Dimensi: 678, Akurasi: 0.71
+Dimensi: 677, Akurasi: 0.62
+Dimensi: 676, Akurasi: 0.63
+Dimensi: 675, Akurasi: 0.76
+Dimensi: 674, Akurasi: 0.72
+Dimensi: 673, Akurasi: 0.85
+Dimensi: 672, Akurasi: 0.85
+Dimensi: 671, Akurasi: 0.78
+Dimensi: 670, Akurasi: 0.80
+Dimensi: 669, Akurasi: 0.84
+Dimensi: 668, Akurasi: 0.59
+Dimensi: 667, Akurasi: 0.75
+Dimensi: 666, Akurasi: 0.61
+Dimensi: 665, Akurasi: 0.79
+Dimensi: 664, Akurasi: 0.59
+Dimensi: 663, Akurasi: 0.78
+Dimensi: 662, Akurasi: 0.80
+Dimensi: 661, Akurasi: 0.71
+Dimensi: 660, Akurasi: 0.57
+Dimensi: 659, Akurasi: 0.77
+Dimensi: 658, Akurasi: 0.72
+Dimensi: 657, Akurasi: 0.59
+Dimensi: 656, Akurasi: 0.69
+Dimensi: 655, Akurasi: 0.56
+Dimensi: 654, Akurasi: 0.72
+Dimensi: 653, Akurasi: 0.74
+Dimensi: 652, Akurasi: 0.66
+Dimensi: 651, Akurasi: 0.71
+Dimensi: 650, Akurasi: 0.61
+Dimensi: 649, Akurasi: 0.74
+Dimensi: 648, Akurasi: 0.76
+Dimensi: 647, Akurasi: 0.66
+Dimensi: 646, Akurasi: 0.79
+Dimensi: 645, Akurasi: 0.75
+Dimensi: 644, Akurasi: 0.64
+Dimensi: 643, Akurasi: 0.53
+Dimensi: 642, Akurasi: 0.91
+Dimensi: 641, Akurasi: 0.74
+Dimensi: 640, Akurasi: 0.72
+Dimensi: 639, Akurasi: 0.72
+Dimensi: 638, Akurasi: 0.61
+Dimensi: 637, Akurasi: 0.73
+Dimensi: 636, Akurasi: 0.79
+Dimensi: 635, Akurasi: 0.71
+Dimensi: 634, Akurasi: 0.73
+Dimensi: 633, Akurasi: 0.82
+Dimensi: 632, Akurasi: 0.79
+Dimensi: 631, Akurasi: 0.72
+Dimensi: 630, Akurasi: 0.79
+Dimensi: 629, Akurasi: 0.72
+Dimensi: 628, Akurasi: 0.77
+Dimensi: 627, Akurasi: 0.54
+Dimensi: 626, Akurasi: 0.57
+Dimensi: 625, Akurasi: 0.54
+Dimensi: 624, Akurasi: 0.72
+Dimensi: 623, Akurasi: 0.86
+Dimensi: 622, Akurasi: 0.77
+Dimensi: 621, Akurasi: 0.61
+Dimensi: 620, Akurasi: 0.76
+Dimensi: 619, Akurasi: 0.89
+Dimensi: 618, Akurasi: 0.72
+Dimensi: 617, Akurasi: 0.79
+Dimensi: 616, Akurasi: 0.76
+Dimensi: 615, Akurasi: 0.78
+Dimensi: 614, Akurasi: 0.87
+Dimensi: 613, Akurasi: 0.77
+Dimensi: 612, Akurasi: 0.80
+Dimensi: 611, Akurasi: 0.59
+Dimensi: 610, Akurasi: 0.78
+Dimensi: 609, Akurasi: 0.75
+Dimensi: 608, Akurasi: 0.72
+Dimensi: 607, Akurasi: 0.86
+Dimensi: 606, Akurasi: 0.84
+Dimensi: 605, Akurasi: 0.82
+Dimensi: 604, Akurasi: 0.84
+Dimensi: 603, Akurasi: 0.58
+Dimensi: 602, Akurasi: 0.69
+Dimensi: 601, Akurasi: 0.79
+Dimensi: 600, Akurasi: 0.69
+Dimensi: 599, Akurasi: 0.82
+Dimensi: 598, Akurasi: 0.71
+Dimensi: 597, Akurasi: 0.79
+Dimensi: 596, Akurasi: 0.52
+Dimensi: 595, Akurasi: 0.58
+Dimensi: 594, Akurasi: 0.50
+Dimensi: 593, Akurasi: 0.79
+Dimensi: 592, Akurasi: 0.81
+Dimensi: 591, Akurasi: 0.74
+Dimensi: 590, Akurasi: 0.86
+Dimensi: 589, Akurasi: 0.79
+Dimensi: 588, Akurasi: 0.61
+Dimensi: 587, Akurasi: 0.79
+Dimensi: 586, Akurasi: 0.88
+Dimensi: 585, Akurasi: 0.55
+Dimensi: 584, Akurasi: 0.56
+Dimensi: 583, Akurasi: 0.63
+Dimensi: 582, Akurasi: 0.81
+Dimensi: 581, Akurasi: 0.76
+Dimensi: 580, Akurasi: 0.78
+Dimensi: 579, Akurasi: 0.53
+Dimensi: 578, Akurasi: 0.57
+Dimensi: 577, Akurasi: 0.81
+Dimensi: 576, Akurasi: 0.69
+Dimensi: 575, Akurasi: 0.79
+Dimensi: 574, Akurasi: 0.79
+Dimensi: 573, Akurasi: 0.62
+Dimensi: 572, Akurasi: 0.68
+Dimensi: 571, Akurasi: 0.93
+Dimensi: 570, Akurasi: 0.74
+Dimensi: 569, Akurasi: 0.70
+Dimensi: 568, Akurasi: 0.79
+Dimensi: 567, Akurasi: 0.76
+Dimensi: 566, Akurasi: 0.57
+Dimensi: 565, Akurasi: 0.75
+Dimensi: 564, Akurasi: 0.85
+Dimensi: 563, Akurasi: 0.77
+Dimensi: 562, Akurasi: 0.78
+Dimensi: 561, Akurasi: 0.75
+Dimensi: 560, Akurasi: 0.68
+Dimensi: 559, Akurasi: 0.59
+Dimensi: 558, Akurasi: 0.57
+Dimensi: 557, Akurasi: 0.75
+Dimensi: 556, Akurasi: 0.75
+Dimensi: 555, Akurasi: 0.61
+Dimensi: 554, Akurasi: 0.65
+Dimensi: 553, Akurasi: 0.78
+Dimensi: 552, Akurasi: 0.90
+Dimensi: 551, Akurasi: 0.74
+Dimensi: 550, Akurasi: 0.86
+Dimensi: 549, Akurasi: 0.64
+Dimensi: 548, Akurasi: 0.83
+Dimensi: 547, Akurasi: 0.64
+Dimensi: 546, Akurasi: 0.72
+Dimensi: 545, Akurasi: 0.76
+Dimensi: 544, Akurasi: 0.85
+Dimensi: 543, Akurasi: 0.72
+Dimensi: 542, Akurasi: 0.76
+Dimensi: 541, Akurasi: 0.79
+Dimensi: 540, Akurasi: 0.78
+Dimensi: 539, Akurasi: 0.62
+Dimensi: 538, Akurasi: 0.77
+Dimensi: 537, Akurasi: 0.80
+Dimensi: 536, Akurasi: 0.54
+Dimensi: 535, Akurasi: 0.78
+Dimensi: 534, Akurasi: 0.79
+Dimensi: 533, Akurasi: 0.78
+Dimensi: 532, Akurasi: 0.82
+Dimensi: 531, Akurasi: 0.85
+Dimensi: 530, Akurasi: 0.67
+Dimensi: 529, Akurasi: 0.78
+Dimensi: 528, Akurasi: 0.84
+Dimensi: 527, Akurasi: 0.85
+Dimensi: 526, Akurasi: 0.76
+Dimensi: 525, Akurasi: 0.80
+Dimensi: 524, Akurasi: 0.76
+Dimensi: 523, Akurasi: 0.58
+Dimensi: 522, Akurasi: 0.91
+Dimensi: 521, Akurasi: 0.82
+Dimensi: 520, Akurasi: 0.74
+Dimensi: 519, Akurasi: 0.59
+Dimensi: 518, Akurasi: 0.72
+Dimensi: 517, Akurasi: 0.84
+Dimensi: 516, Akurasi: 0.82
+Dimensi: 515, Akurasi: 0.52
+Dimensi: 514, Akurasi: 0.54
+Dimensi: 513, Akurasi: 0.74
+Dimensi: 512, Akurasi: 0.71
+Dimensi: 511, Akurasi: 0.89
+Dimensi: 510, Akurasi: 0.67
+Dimensi: 509, Akurasi: 0.72
+Dimensi: 508, Akurasi: 0.71
+Dimensi: 507, Akurasi: 0.90
+Dimensi: 506, Akurasi: 0.76
+Dimensi: 505, Akurasi: 0.78
+Dimensi: 504, Akurasi: 0.58
+Dimensi: 503, Akurasi: 0.53
+Dimensi: 502, Akurasi: 0.62
+Dimensi: 501, Akurasi: 0.63
+Dimensi: 500, Akurasi: 0.56
+Dimensi: 499, Akurasi: 0.70
+Dimensi: 498, Akurasi: 0.61
+Dimensi: 497, Akurasi: 0.71
+Dimensi: 496, Akurasi: 0.81
+Dimensi: 495, Akurasi: 0.72
+Dimensi: 494, Akurasi: 0.71
+Dimensi: 493, Akurasi: 0.71
+Dimensi: 492, Akurasi: 0.78
+Dimensi: 491, Akurasi: 0.81
+Dimensi: 490, Akurasi: 0.72
+Dimensi: 489, Akurasi: 0.74
+Dimensi: 488, Akurasi: 0.72
+Dimensi: 487, Akurasi: 0.67
+Dimensi: 486, Akurasi: 0.60
+Dimensi: 485, Akurasi: 0.54
+Dimensi: 484, Akurasi: 0.60
+Dimensi: 483, Akurasi: 0.85
+Dimensi: 482, Akurasi: 0.61
+Dimensi: 481, Akurasi: 0.76
+Dimensi: 480, Akurasi: 0.80
+Dimensi: 479, Akurasi: 0.81
+Dimensi: 478, Akurasi: 0.54
+Dimensi: 477, Akurasi: 0.87
+Dimensi: 476, Akurasi: 0.90
+Dimensi: 475, Akurasi: 0.60
+Dimensi: 474, Akurasi: 0.76
+Dimensi: 473, Akurasi: 0.83
+Dimensi: 472, Akurasi: 0.76
+Dimensi: 471, Akurasi: 0.72
+Dimensi: 470, Akurasi: 0.80
+Dimensi: 469, Akurasi: 0.80
+Dimensi: 468, Akurasi: 0.81
+Dimensi: 467, Akurasi: 0.81
+Dimensi: 466, Akurasi: 0.67
+Dimensi: 465, Akurasi: 0.62
+Dimensi: 464, Akurasi: 0.87
+Dimensi: 463, Akurasi: 0.83
+Dimensi: 462, Akurasi: 0.53
+Dimensi: 461, Akurasi: 0.80
+Dimensi: 460, Akurasi: 0.86
+Dimensi: 459, Akurasi: 0.77
+Dimensi: 458, Akurasi: 0.70
+Dimensi: 457, Akurasi: 0.52
+Dimensi: 456, Akurasi: 0.90
+Dimensi: 455, Akurasi: 0.81
+Dimensi: 454, Akurasi: 0.70
+Dimensi: 453, Akurasi: 0.75
+Dimensi: 452, Akurasi: 0.72
+Dimensi: 451, Akurasi: 0.72
+Dimensi: 450, Akurasi: 0.77
+Dimensi: 449, Akurasi: 0.71
+Dimensi: 448, Akurasi: 0.77
+Dimensi: 447, Akurasi: 0.73
+Dimensi: 446, Akurasi: 0.84
+Dimensi: 445, Akurasi: 0.71
+Dimensi: 444, Akurasi: 0.73
+Dimensi: 443, Akurasi: 0.84
+Dimensi: 442, Akurasi: 0.76
+Dimensi: 441, Akurasi: 0.71
+Dimensi: 440, Akurasi: 0.80
+Dimensi: 439, Akurasi: 0.62
+Dimensi: 438, Akurasi: 0.79
+Dimensi: 437, Akurasi: 0.68
+Dimensi: 436, Akurasi: 0.55
+Dimensi: 435, Akurasi: 0.78
+Dimensi: 434, Akurasi: 0.58
+Dimensi: 433, Akurasi: 0.79
+Dimensi: 432, Akurasi: 0.76
+Dimensi: 431, Akurasi: 0.80
+Dimensi: 430, Akurasi: 0.70
+Dimensi: 429, Akurasi: 0.83
+Dimensi: 428, Akurasi: 0.68
+Dimensi: 427, Akurasi: 0.68
+Dimensi: 426, Akurasi: 0.68
+Dimensi: 425, Akurasi: 0.61
+Dimensi: 424, Akurasi: 0.61
+Dimensi: 423, Akurasi: 0.72
+Dimensi: 422, Akurasi: 0.62
+Dimensi: 421, Akurasi: 0.79
+Dimensi: 420, Akurasi: 0.76
+Dimensi: 419, Akurasi: 0.66
+Dimensi: 418, Akurasi: 0.78
+Dimensi: 417, Akurasi: 0.71
+Dimensi: 416, Akurasi: 0.70
+Dimensi: 415, Akurasi: 0.59
+Dimensi: 414, Akurasi: 0.84
+Dimensi: 413, Akurasi: 0.80
+Dimensi: 412, Akurasi: 0.56
+Dimensi: 411, Akurasi: 0.68
+Dimensi: 410, Akurasi: 0.83
+Dimensi: 409, Akurasi: 0.80
+Dimensi: 408, Akurasi: 0.50
+Dimensi: 407, Akurasi: 0.69
+Dimensi: 406, Akurasi: 0.68
+Dimensi: 405, Akurasi: 0.65
+Dimensi: 404, Akurasi: 0.82
+Dimensi: 403, Akurasi: 0.85
+Dimensi: 402, Akurasi: 0.84
+Dimensi: 401, Akurasi: 0.72
+Dimensi: 400, Akurasi: 0.79
+Dimensi: 399, Akurasi: 0.54
+Dimensi: 398, Akurasi: 0.71
+Dimensi: 397, Akurasi: 0.71
+Dimensi: 396, Akurasi: 0.69
+Dimensi: 395, Akurasi: 0.63
+Dimensi: 394, Akurasi: 0.53
+Dimensi: 393, Akurasi: 0.80
+Dimensi: 392, Akurasi: 0.85
+Dimensi: 391, Akurasi: 0.60
+Dimensi: 390, Akurasi: 0.63
+Dimensi: 389, Akurasi: 0.73
+Dimensi: 388, Akurasi: 0.67
+Dimensi: 387, Akurasi: 0.78
+Dimensi: 386, Akurasi: 0.77
+Dimensi: 385, Akurasi: 0.76
+Dimensi: 384, Akurasi: 0.74
+Dimensi: 383, Akurasi: 0.71
+Dimensi: 382, Akurasi: 0.72
+Dimensi: 381, Akurasi: 0.71
+Dimensi: 380, Akurasi: 0.72
+Dimensi: 379, Akurasi: 0.74
+Dimensi: 378, Akurasi: 0.82
+Dimensi: 377, Akurasi: 0.75
+Dimensi: 376, Akurasi: 0.80
+Dimensi: 375, Akurasi: 0.69
+Dimensi: 374, Akurasi: 0.78
+Dimensi: 373, Akurasi: 0.78
+Dimensi: 372, Akurasi: 0.66
+Dimensi: 371, Akurasi: 0.77
+Dimensi: 370, Akurasi: 0.80
+Dimensi: 369, Akurasi: 0.77
+Dimensi: 368, Akurasi: 0.80
+Dimensi: 367, Akurasi: 0.79
+Dimensi: 366, Akurasi: 0.71
+Dimensi: 365, Akurasi: 0.62
+Dimensi: 364, Akurasi: 0.82
+Dimensi: 363, Akurasi: 0.82
+Dimensi: 362, Akurasi: 0.65
+Dimensi: 361, Akurasi: 0.78
+Dimensi: 360, Akurasi: 0.73
+Dimensi: 359, Akurasi: 0.88
+Dimensi: 358, Akurasi: 0.85
+Dimensi: 357, Akurasi: 0.64
+Dimensi: 356, Akurasi: 0.66
+Dimensi: 355, Akurasi: 0.75
+Dimensi: 354, Akurasi: 0.78
+Dimensi: 353, Akurasi: 0.78
+Dimensi: 352, Akurasi: 0.50
+Dimensi: 351, Akurasi: 0.56
+Dimensi: 350, Akurasi: 0.67
+Dimensi: 349, Akurasi: 0.81
+Dimensi: 348, Akurasi: 0.84
+Dimensi: 347, Akurasi: 0.78
+Dimensi: 346, Akurasi: 0.85
+Dimensi: 345, Akurasi: 0.58
+Dimensi: 344, Akurasi: 0.62
+Dimensi: 343, Akurasi: 0.74
+Dimensi: 342, Akurasi: 0.83
+Dimensi: 341, Akurasi: 0.51
+Dimensi: 340, Akurasi: 0.78
+Dimensi: 339, Akurasi: 0.66
+Dimensi: 338, Akurasi: 0.82
+Dimensi: 337, Akurasi: 0.79
+Dimensi: 336, Akurasi: 0.80
+Dimensi: 335, Akurasi: 0.69
+Dimensi: 334, Akurasi: 0.81
+Dimensi: 333, Akurasi: 0.73
+Dimensi: 332, Akurasi: 0.67
+Dimensi: 331, Akurasi: 0.73
+Dimensi: 330, Akurasi: 0.71
+Dimensi: 329, Akurasi: 0.69
+Dimensi: 328, Akurasi: 0.81
+Dimensi: 327, Akurasi: 0.51
+Dimensi: 326, Akurasi: 0.76
+Dimensi: 325, Akurasi: 0.65
+Dimensi: 324, Akurasi: 0.84
+Dimensi: 323, Akurasi: 0.67
+Dimensi: 322, Akurasi: 0.82
+Dimensi: 321, Akurasi: 0.74
+Dimensi: 320, Akurasi: 0.52
+Dimensi: 319, Akurasi: 0.75
+Dimensi: 318, Akurasi: 0.79
+Dimensi: 317, Akurasi: 0.85
+Dimensi: 316, Akurasi: 0.86
+Dimensi: 315, Akurasi: 0.63
+Dimensi: 314, Akurasi: 0.74
+Dimensi: 313, Akurasi: 0.57
+Dimensi: 312, Akurasi: 0.64
+Dimensi: 311, Akurasi: 0.78
+Dimensi: 310, Akurasi: 0.81
+Dimensi: 309, Akurasi: 0.83
+Dimensi: 308, Akurasi: 0.92
+Dimensi: 307, Akurasi: 0.63
+Dimensi: 306, Akurasi: 0.74
+Dimensi: 305, Akurasi: 0.70
+Dimensi: 304, Akurasi: 0.64
+Dimensi: 303, Akurasi: 0.75
+Dimensi: 302, Akurasi: 0.89
+Dimensi: 301, Akurasi: 0.72
+Dimensi: 300, Akurasi: 0.78
+Dimensi: 299, Akurasi: 0.70
+Dimensi: 298, Akurasi: 0.61
+Dimensi: 297, Akurasi: 0.73
+Dimensi: 296, Akurasi: 0.72
+Dimensi: 295, Akurasi: 0.75
+Dimensi: 294, Akurasi: 0.80
+Dimensi: 293, Akurasi: 0.83
+Dimensi: 292, Akurasi: 0.72
+Dimensi: 291, Akurasi: 0.64
+Dimensi: 290, Akurasi: 0.73
+Dimensi: 289, Akurasi: 0.50
+Dimensi: 288, Akurasi: 0.78
+Dimensi: 287, Akurasi: 0.77
+Dimensi: 286, Akurasi: 0.85
+Dimensi: 285, Akurasi: 0.72
+Dimensi: 284, Akurasi: 0.52
+Dimensi: 283, Akurasi: 0.73
+Dimensi: 282, Akurasi: 0.78
+Dimensi: 281, Akurasi: 0.78
+Dimensi: 280, Akurasi: 0.65
+Dimensi: 279, Akurasi: 0.60
+Dimensi: 278, Akurasi: 0.58
+Dimensi: 277, Akurasi: 0.84
+Dimensi: 276, Akurasi: 0.77
+Dimensi: 275, Akurasi: 0.52
+Dimensi: 274, Akurasi: 0.68
+Dimensi: 273, Akurasi: 0.75
+Dimensi: 272, Akurasi: 0.73
+Dimensi: 271, Akurasi: 0.86
+Dimensi: 270, Akurasi: 0.60
+Dimensi: 269, Akurasi: 0.51
+Dimensi: 268, Akurasi: 0.79
+Dimensi: 267, Akurasi: 0.78
+Dimensi: 266, Akurasi: 0.71
+Dimensi: 265, Akurasi: 0.74
+Dimensi: 264, Akurasi: 0.72
+Dimensi: 263, Akurasi: 0.58
+Dimensi: 262, Akurasi: 0.58
+Dimensi: 261, Akurasi: 0.70
+Dimensi: 260, Akurasi: 0.85
+Dimensi: 259, Akurasi: 0.79
+Dimensi: 258, Akurasi: 0.76
+Dimensi: 257, Akurasi: 0.81
+Dimensi: 256, Akurasi: 0.75
+Dimensi: 255, Akurasi: 0.63
+Dimensi: 254, Akurasi: 0.69
+Dimensi: 253, Akurasi: 0.79
+Dimensi: 252, Akurasi: 0.66
+Dimensi: 251, Akurasi: 0.82
+Dimensi: 250, Akurasi: 0.81
+Dimensi: 249, Akurasi: 0.64
+Dimensi: 248, Akurasi: 0.61
+Dimensi: 247, Akurasi: 0.81
+Dimensi: 246, Akurasi: 0.80
+Dimensi: 245, Akurasi: 0.83
+Dimensi: 244, Akurasi: 0.65
+Dimensi: 243, Akurasi: 0.57
+Dimensi: 242, Akurasi: 0.75
+Dimensi: 241, Akurasi: 0.83
+Dimensi: 240, Akurasi: 0.68
+Dimensi: 239, Akurasi: 0.86
+Dimensi: 238, Akurasi: 0.68
+Dimensi: 237, Akurasi: 0.72
+Dimensi: 236, Akurasi: 0.86
+Dimensi: 235, Akurasi: 0.81
+Dimensi: 234, Akurasi: 0.81
+Dimensi: 233, Akurasi: 0.75
+Dimensi: 232, Akurasi: 0.82
+Dimensi: 231, Akurasi: 0.71
+Dimensi: 230, Akurasi: 0.70
+Dimensi: 229, Akurasi: 0.79
+Dimensi: 228, Akurasi: 0.72
+Dimensi: 227, Akurasi: 0.68
+Dimensi: 226, Akurasi: 0.75
+Dimensi: 225, Akurasi: 0.77
+Dimensi: 224, Akurasi: 0.75
+Dimensi: 223, Akurasi: 0.83
+Dimensi: 222, Akurasi: 0.72
+Dimensi: 221, Akurasi: 0.69
+Dimensi: 220, Akurasi: 0.70
+Dimensi: 219, Akurasi: 0.51
+Dimensi: 218, Akurasi: 0.74
+Dimensi: 217, Akurasi: 0.77
+Dimensi: 216, Akurasi: 0.67
+Dimensi: 215, Akurasi: 0.74
+Dimensi: 214, Akurasi: 0.74
+Dimensi: 213, Akurasi: 0.89
+Dimensi: 212, Akurasi: 0.74
+Dimensi: 211, Akurasi: 0.87
+Dimensi: 210, Akurasi: 0.69
+Dimensi: 209, Akurasi: 0.51
+Dimensi: 208, Akurasi: 0.76
+Dimensi: 207, Akurasi: 0.79
+Dimensi: 206, Akurasi: 0.77
+Dimensi: 205, Akurasi: 0.79
+Dimensi: 204, Akurasi: 0.80
+Dimensi: 203, Akurasi: 0.53
+Dimensi: 202, Akurasi: 0.91
+Dimensi: 201, Akurasi: 0.61
+Dimensi: 200, Akurasi: 0.72
+Dimensi: 199, Akurasi: 0.86
+Dimensi: 198, Akurasi: 0.60
+Dimensi: 197, Akurasi: 0.64
+Dimensi: 196, Akurasi: 0.83
+Dimensi: 195, Akurasi: 0.88
+Dimensi: 194, Akurasi: 0.61
+Dimensi: 193, Akurasi: 0.63
+Dimensi: 192, Akurasi: 0.81
+Dimensi: 191, Akurasi: 0.67
+Dimensi: 190, Akurasi: 0.64
+Dimensi: 189, Akurasi: 0.78
+Dimensi: 188, Akurasi: 0.70
+Dimensi: 187, Akurasi: 0.73
+Dimensi: 186, Akurasi: 0.70
+Dimensi: 185, Akurasi: 0.65
+Dimensi: 184, Akurasi: 0.83
+Dimensi: 183, Akurasi: 0.82
+Dimensi: 182, Akurasi: 0.76
+Dimensi: 181, Akurasi: 0.65
+Dimensi: 180, Akurasi: 0.65
+Dimensi: 179, Akurasi: 0.89
+Dimensi: 178, Akurasi: 0.63
+Dimensi: 177, Akurasi: 0.77
+Dimensi: 176, Akurasi: 0.88
+Dimensi: 175, Akurasi: 0.68
+Dimensi: 174, Akurasi: 0.72
+Dimensi: 173, Akurasi: 0.67
+Dimensi: 172, Akurasi: 0.80
+Dimensi: 171, Akurasi: 0.76
+Dimensi: 170, Akurasi: 0.78
+Dimensi: 169, Akurasi: 0.67
+Dimensi: 168, Akurasi: 0.54
+Dimensi: 167, Akurasi: 0.78
+Dimensi: 166, Akurasi: 0.82
+Dimensi: 165, Akurasi: 0.68
+Dimensi: 164, Akurasi: 0.84
+Dimensi: 163, Akurasi: 0.82
+Dimensi: 162, Akurasi: 0.80
+Dimensi: 161, Akurasi: 0.91
+Dimensi: 160, Akurasi: 0.71
+Dimensi: 159, Akurasi: 0.83
+Dimensi: 158, Akurasi: 0.80
+Dimensi: 157, Akurasi: 0.75
+Dimensi: 156, Akurasi: 0.80
+Dimensi: 155, Akurasi: 0.73
+Dimensi: 154, Akurasi: 0.85
+Dimensi: 153, Akurasi: 0.57
+Dimensi: 152, Akurasi: 0.93
+Dimensi: 151, Akurasi: 0.56
+Dimensi: 150, Akurasi: 0.62
+Dimensi: 149, Akurasi: 0.74
+Dimensi: 148, Akurasi: 0.62
+Dimensi: 147, Akurasi: 0.70
+Dimensi: 146, Akurasi: 0.63
+Dimensi: 145, Akurasi: 0.58
+Dimensi: 144, Akurasi: 0.66
+Dimensi: 143, Akurasi: 0.68
+Dimensi: 142, Akurasi: 0.70
+Dimensi: 141, Akurasi: 0.58
+Dimensi: 140, Akurasi: 0.82
+Dimensi: 139, Akurasi: 0.79
+Dimensi: 138, Akurasi: 0.79
+Dimensi: 137, Akurasi: 0.52
+Dimensi: 136, Akurasi: 0.83
+Dimensi: 135, Akurasi: 0.73
+Dimensi: 134, Akurasi: 0.72
+Dimensi: 133, Akurasi: 0.61
+Dimensi: 132, Akurasi: 0.86
+Dimensi: 131, Akurasi: 0.70
+Dimensi: 130, Akurasi: 0.81
+Dimensi: 129, Akurasi: 0.77
+Dimensi: 128, Akurasi: 0.80
+Dimensi: 127, Akurasi: 0.70
+Dimensi: 126, Akurasi: 0.51
+Dimensi: 125, Akurasi: 0.73
+Dimensi: 124, Akurasi: 0.72
+Dimensi: 123, Akurasi: 0.66
+Dimensi: 122, Akurasi: 0.81
+Dimensi: 121, Akurasi: 0.85
+Dimensi: 120, Akurasi: 0.80
+Dimensi: 119, Akurasi: 0.73
+Dimensi: 118, Akurasi: 0.81
+Dimensi: 117, Akurasi: 0.81
+Dimensi: 116, Akurasi: 0.80
+Dimensi: 115, Akurasi: 0.85
+Dimensi: 114, Akurasi: 0.83
+Dimensi: 113, Akurasi: 0.83
+Dimensi: 112, Akurasi: 0.87
+Dimensi: 111, Akurasi: 0.76
+Dimensi: 110, Akurasi: 0.64
+Dimensi: 109, Akurasi: 0.87
+Dimensi: 108, Akurasi: 0.79
+Dimensi: 107, Akurasi: 0.85
+Dimensi: 106, Akurasi: 0.74
+Dimensi: 105, Akurasi: 0.79
+Dimensi: 104, Akurasi: 0.62
+Dimensi: 103, Akurasi: 0.80
+Dimensi: 102, Akurasi: 0.74
+Dimensi: 101, Akurasi: 0.80
+Dimensi: 100, Akurasi: 0.82
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="akurasi-terbaik">
+<h2>Akurasi Terbaik<a class="headerlink" href="#akurasi-terbaik" title="Link to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">best_dim</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">results</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">dim</span><span class="p">:</span> <span class="n">results</span><span class="p">[</span><span class="n">dim</span><span class="p">][</span><span class="s1">&#39;accuracy&#39;</span><span class="p">])</span>
+<span class="n">best_accuracy</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span><span class="n">best_dim</span><span class="p">][</span><span class="s1">&#39;accuracy&#39;</span><span class="p">]</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Akurasi terbaik: </span><span class="si">{</span><span class="n">best_accuracy</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> pada dimensi </span><span class="si">{</span><span class="n">best_dim</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Akurasi terbaik: 0.94 pada dimensi 2211.
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="scater-plot-dimensi-terbaik">
+<h2>Scater Plot Dimensi Terbaik<a class="headerlink" href="#scater-plot-dimensi-terbaik" title="Link to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Scatter Plot untuk dimensi terbaik</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+<span class="n">colors</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="s1">&#39;blue&#39;</span><span class="p">]</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">):</span>  <span class="c1"># Untuk 2 cluster</span>
+    <span class="n">cluster_points</span> <span class="o">=</span> <span class="n">svd_features</span><span class="p">[</span><span class="n">membership</span> <span class="o">==</span> <span class="n">i</span><span class="p">]</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">cluster_points</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">cluster_points</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">c</span><span class="o">=</span><span class="n">colors</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;Cluster </span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.6</span><span class="p">)</span>
+
+<span class="c1"># Tambahkan centroid</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">centroids</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">centroids</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">c</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Centroid&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Fuzzy C-Means Clustering (Dimensi SVD </span><span class="si">{</span><span class="n">best_dim</span><span class="si">}</span><span class="s2">) - Akurasi: </span><span class="si">{</span><span class="n">best_accuracy</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Komponen SVD 1&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Komponen SVD 2&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/3d5f69e47156ead27b85fda6b662f10d0a0901385b0c659e4cac1500a301c2f8.png" src="_images/3d5f69e47156ead27b85fda6b662f10d0a0901385b0c659e4cac1500a301c2f8.png" />
+</div>
+</div>
+</section>
+<section id="grafik-akurasi">
+<h2>Grafik Akurasi<a class="headerlink" href="#grafik-akurasi" title="Link to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">accuracies</span> <span class="o">=</span> <span class="p">[</span><span class="n">result</span><span class="p">[</span><span class="s1">&#39;accuracy&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="n">results</span><span class="o">.</span><span class="n">values</span><span class="p">()]</span>
+<span class="n">dimensions</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">results</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">dimensions</span><span class="p">,</span> <span class="n">accuracies</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;o&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;-&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Akurasi&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Dimensi&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Akurasi&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Akurasi terhadap Dimensi&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Dimensi dengan akurasi terbaik: </span><span class="si">{</span><span class="n">best_dim</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Akurasi terbaik: </span><span class="si">{</span><span class="n">best_accuracy</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/d77042528d5b1ed4bbf83f73ab99af5574a9a4ee17e713149b711c2350d5685d.png" src="_images/d77042528d5b1ed4bbf83f73ab99af5574a9a4ee17e713149b711c2350d5685d.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Dimensi dengan akurasi terbaik: 2211
+Akurasi terbaik: 0.94
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="tugas_9.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title"><strong>Tugas-9 Klasifikasi Dengan Pengurangan Dimensi Secara Bertahap</strong></p>
+      </div>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#installasi-library">Installasi Library</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#load-data">Load Data</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#memisahkan-label-dan-data-fitur">Memisahkan label dan data fitur</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#data-sebelum-reduksi"><strong>Data Sebelum Reduksi</strong></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#fuzzy-c-means-clustering-dan-svd-untuk-dimensi-yang-berbeda">Fuzzy C-Means Clustering dan SVD untuk dimensi yang berbeda</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#data-setelah-reduksi"><strong>Data Setelah Reduksi</strong></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#scater-plot-dimensi-2">Scater Plot Dimensi 2</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#akurasi-tiap-dimensi">Akurasi Tiap Dimensi</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#akurasi-terbaik">Akurasi Terbaik</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#scater-plot-dimensi-terbaik">Scater Plot Dimensi Terbaik</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#grafik-akurasi">Grafik Akurasi</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By The Jupyter Book Community
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
